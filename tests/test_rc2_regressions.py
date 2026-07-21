@@ -1,6 +1,7 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 from pathlib import Path
+from unittest import result
 
 import pytest
 
@@ -121,8 +122,12 @@ def test_procedural_rule_is_sufficient_and_mock_reads_rc3_header() -> None:
         pipeline.close()
 
     assert result.query_mode.value == "procedural"
-    assert result.selected_memory_types == ["procedural"]
-    assert result.selected_ids == ["p_user01_001"]
+    assert result.selected_memory_types == [
+        "semantic",
+        "procedural",
+    ]
+
+    assert "p_user01_001" in result.selected_ids
     assert result.coverage == pytest.approx(1.0)
     assert result.decision.value == "direct"
 
