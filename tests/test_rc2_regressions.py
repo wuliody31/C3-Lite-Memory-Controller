@@ -180,3 +180,70 @@ def test_llm_facing_prompt_hides_internal_scores_and_is_well_formed() -> None:
     assert "EPISODICEVIDENCE" not in prompt
     assert "Answerdirectly" not in prompt
     assert "a technical explanation" in prompt
+
+
+def test_rc5_full_candidate_trace_covers_raw_candidates() -> None:
+    pipeline = build_pipeline()
+
+    try:
+        result = pipeline.answer(
+            QueryState(
+                query=(
+                    "When discussing my dissertation with my supervisor, "
+                    "how should the answer be written?"
+                ),
+                user_id="user01",
+            )
+        )
+    finally:
+        pipeline.close()
+
+    trace = result.debug["full_candidate_score_trace"]
+
+    assert len(trace) == result.debug[
+        "candidate_count_raw_retrieved"
+    ]
+
+    trace_ids = {
+        row["memory_id"]
+        for row in trace
+    }
+
+    assert trace_ids == set(result.raw_retrieved_ids)
+
+    required_fields = {
+        "memory_id",
+        "memory_type",
+        "candidate_utility_v0",
+        "post_resolution_final_score",
+        "rank_global_all_scored",
+        "rank_within_type_all_scored",
+        "passed_ranker_gate",
+        "kept_after_type_top_k",
+        "survived_conflict_resolution",
+        "selected_final",
+        "estimated_token_cost",
+        "utility_per_estimated_token",
+        "drop_stage",
+    }
+
+    for row in trace:
+        assert required_fields <= row.keys()
+
+        assert row["drop_stage"] in {
+            None,
+            "ranker_gate",
+            "type_top_k",
+            "conflict_resolution",
+            "evidence_selector",
+        }
+
+        assert row["estimated_token_cost"] >= 1
+
+    selected_from_trace = {
+        row["memory_id"]
+        for row in trace
+        if row["selected_final"]
+    }
+
+    assert selected_from_trace == set(result.selected_ids)
