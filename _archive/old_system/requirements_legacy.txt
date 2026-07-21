@@ -1,0 +1,5 @@
+neo4j>=5.0
+pandas>=2.0
+python-dotenv>=1.0
+tqdm>=4.66
+openai>=1.0

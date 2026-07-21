@@ -1,0 +1,7 @@
+{
+  "procedures": [
+    {"rule_id":"p_user01_001","user_id":"user01","task_type":"academic_writing","task_types":["academic_writing"],"triggers":["dissertation","methodology","supervisor","project"],"instruction":"Use structured academic language suitable for dissertation and supervisor discussion.","scope":"project","priority":8,"enabled":true,"confidence":1.0,"authority":"user_confirmed"},
+    {"rule_id":"p_user01_003","user_id":"user01","task_type":"conflict_resolution","triggers":["older memory","conflict","current","outdated"],"instruction":"Prefer a later supervisor-confirmed or user-confirmed decision while preserving older information as historical context when useful.","scope":"project","priority":10,"enabled":true,"confidence":1.0,"authority":"supervisor_confirmed"},
+    {"rule_id":"p_user01_004","user_id":"user01","task_type":"evidence_policy","triggers":["no evidence","not stored","claim"],"instruction":"When stored evidence is insufficient, state that there is not enough evidence instead of guessing.","scope":"project","priority":10,"enabled":true,"confidence":1.0,"authority":"user_confirmed"}
+  ]
+}

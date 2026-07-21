@@ -1,0 +1,80 @@
+controller:
+  name: C3-Lite
+  version: v2.2-final
+  expansion: Context-adaptive, Conflict-aware, Confidence-controlled
+query_analysis:
+  aliases:
+    dissertation: [project, msc project, thesis]
+    current: [currently, now, latest, present]
+    historical: [previously, originally, before, earlier, past]
+    timeline: [over time, change, changed, evolve, history]
+  stopwords: [the, a, an, is, are, was, were, do, does, did, my, me, i, to, of, and, or, in, on, for, what, which, how, why, when]
+routing:
+  thresholds: {episodic: 0.45, semantic: 0.45, procedural: 0.50}
+  utility_weights: {intent: 0.30, lexical: 0.25, entity: 0.20, temporal_task: 0.15, prior: 0.10}
+  priors: {episodic: 0.35, semantic: 0.45, procedural: 0.20}
+  structural_gates:
+    force_timeline_route: true
+    force_conflict_route: true
+    fallback_top_route: true
+retrieval:
+  top_k: {episodic: 10, semantic: 10, procedural: 5}
+  candidate_pool_multiplier: 3
+  include_archived_for: [historical_state, timeline, conflict, explainability]
+  lexical_relevance_gate: 0.02
+ranking:
+  lexical_weight: 0.35
+  graph_entity_weight: 0.20
+  temporal_task_weight: 0.15
+  validity_weight: 0.10
+  source_confidence_weight: 0.10
+  route_compatibility_weight: 0.10
+conflict:
+  explicit_relation_detection: true
+  implicit_slot_detection: true
+  preserve_historical_evidence: true
+  current_status_values: [current, active, valid]
+  outdated_status_values: [outdated, superseded, archived, invalid]
+  authority_order: {supervisor_confirmed: 1.0, user_confirmed: 0.9, system_inferred: 0.6, unknown: 0.5}
+selection:
+  method: coverage_aware_mmr
+  max_evidence: 5
+  max_per_memory_type: 3
+  relevance_weight: 0.70
+  redundancy_weight: 0.20
+  coverage_gain_weight: 0.10
+  evidence_token_budget: 1200
+  guarantee_procedural_if_routed: true
+  timeline_min_states: 2
+confidence:
+  top_evidence_weight: 0.45
+  top3_mean_weight: 0.25
+  route_confidence_weight: 0.15
+  agreement_weight: 0.15
+  resolved_conflict_agreement: 0.85
+  no_conflict_agreement: 1.0
+  unresolved_conflict_agreement: 0.20
+decision:
+  direct_adequacy_threshold: 0.65
+  direct_coverage_threshold: 0.70
+  caveat_adequacy_threshold: 0.45
+  caveat_coverage_threshold: 0.35
+  abstain_message: There is not enough stored evidence to answer this reliably.
+  caveat_prefix: Based on the available memories,
+generation:
+  frozen_backbone: true
+  temperature: 0.0
+  max_new_tokens: 256
+  ollama_base_url: http://localhost:11434
+  default_model: llama3.2:3b
+logging:
+  save_route_scores: true
+  save_retrieved_ids: true
+  save_selected_ids: true
+  save_conflict_trace: true
+  save_final_prompt: true
+  save_latency: true
+  save_token_usage: true
+neo4j:
+  episode_fulltext_index: episode_text
+  semantic_fulltext_index: semantic_fact_text

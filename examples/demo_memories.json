@@ -1,0 +1,11 @@
+{
+  "memories": [
+    {"memory_id":"e_user01_001","memory_type":"episodic","user_id":"user01","timestamp":"2026-05-20T10:00:00","text":"The user originally considered a broad long-term memory chatbot.","confidence":1.0,"importance":0.7},
+    {"memory_id":"e_user01_006","memory_type":"episodic","user_id":"user01","timestamp":"2026-06-10T10:00:00","text":"The user considered building a large multi-agent memory system.","confidence":1.0,"importance":0.8},
+    {"memory_id":"e_user01_007","memory_type":"episodic","user_id":"user01","timestamp":"2026-06-16T10:00:00","text":"The project scope was narrowed to a smaller C3-Lite memory controller prototype.","confidence":1.0,"importance":1.0},
+    {"memory_id":"s_user01_004","memory_type":"semantic","user_id":"user01","timestamp":"2026-06-01T00:00:00","subject":"MSc project","predicate":"scope","object":"large multi-agent memory system","text":"The MSc project scope is a large multi-agent memory system.","status":"superseded","confidence":0.9,"authority":"user_confirmed"},
+    {"memory_id":"s_user01_003","memory_type":"semantic","user_id":"user01","timestamp":"2026-06-16T00:00:00","subject":"MSc project","predicate":"scope","object":"small C3-Lite memory controller prototype","text":"The current MSc project is a small C3-Lite memory controller prototype.","status":"current","confidence":1.0,"authority":"supervisor_confirmed","source_ids":["e_user01_007"],"relations":[{"type":"SUPERSEDES","target_id":"s_user01_004"}]},
+    {"memory_id":"s_user01_009","memory_type":"semantic","user_id":"user01","subject":"episodic memory","predicate":"records","object":"what happened and when","text":"Episodic memory records what happened and when.","status":"current","confidence":1.0},
+    {"memory_id":"s_user01_010","memory_type":"semantic","user_id":"user01","subject":"semantic memory","predicate":"records","object":"currently believed facts","text":"Semantic memory records currently believed facts.","status":"current","confidence":1.0}
+  ]
+}
