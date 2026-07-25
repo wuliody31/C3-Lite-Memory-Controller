@@ -86,6 +86,27 @@ def _candidate_score_trace(
                 "candidate_budget_score_gap"
             )
         ),
+        "selector_reason": (
+            candidate.metadata.get(
+                "selector_reason"
+            )
+        ),
+        "evidence_roles": (
+            candidate.metadata.get(
+                "evidence_roles",
+                [],
+            )
+        ),
+        "selector_requirement_gain": (
+            candidate.metadata.get(
+                "selector_requirement_gain"
+            )
+        ),
+        "selector_topical_score": (
+            candidate.metadata.get(
+                "selector_topical_score"
+            )
+        ),
     }
 
 
@@ -401,6 +422,27 @@ def _build_full_candidate_score_trace(
                     "candidate_budget_score_gap"
                 )
             ),
+            "selector_reason": (
+                candidate.metadata.get(
+                    "selector_reason"
+                )
+            ),
+            "evidence_roles": (
+                candidate.metadata.get(
+                    "evidence_roles",
+                    [],
+                )
+            ),
+            "selector_requirement_gain": (
+                candidate.metadata.get(
+                    "selector_requirement_gain"
+                )
+            ),
+            "selector_topical_score": (
+                candidate.metadata.get(
+                    "selector_topical_score"
+                )
+            ),
             "route_selected": (
                 candidate.memory_type.value
                 in selected_route_types
@@ -657,6 +699,15 @@ class C3Pipeline:
             conflicts=conflicts,
         )
 
+        evidence_requirement_plan = (
+            self.selector.last_plan.to_dict()
+            if self.selector.last_plan is not None
+            else {}
+        )
+        evidence_requirement_status = dict(
+            self.selector.last_requirement_status
+        )
+
         coverage = self.coverage.compute(
             features.information_needs,
             selected,
@@ -823,6 +874,12 @@ class C3Pipeline:
                 ),
                 "information_needs": (
                     features.information_needs
+                ),
+                "evidence_requirement_plan": (
+                    evidence_requirement_plan
+                ),
+                "evidence_requirement_status": (
+                    evidence_requirement_status
                 ),
                 "entities": (
                     features.entities

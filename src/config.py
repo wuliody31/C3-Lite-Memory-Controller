@@ -35,9 +35,30 @@ def validate_config(config: dict[str, Any]) -> None:
     if abs(sum(float(config["confidence"][k]) for k in confidence_keys) - 1.0) > 1e-6:
         raise ConfigError("Confidence weights must sum to 1.0.")
     selection = config["selection"]
-    total = float(selection["relevance_weight"]) + float(selection["redundancy_weight"]) + float(selection["coverage_gain_weight"])
-    if abs(total - 1.0) > 1e-6:
-        raise ConfigError("Selection weights must sum to 1.0.")
+
+    # RC7 and earlier use three selector weights. RC8 adds
+    # requirement_weight for structured evidence requirements.
+    selection_weight_keys = [
+        "relevance_weight",
+        "coverage_gain_weight",
+        "redundancy_weight",
+    ]
+    if "requirement_weight" in selection:
+        selection_weight_keys.insert(
+            1,
+            "requirement_weight",
+        )
+
+    selection_total = sum(
+        float(selection[key])
+        for key in selection_weight_keys
+    )
+    if abs(selection_total - 1.0) > 1e-6:
+        raise ConfigError(
+            "Selection weights must sum to 1.0. "
+            f"Found {selection_total:.6f} across "
+            f"{selection_weight_keys}."
+        )
 
 
 def frozen_config(config: dict[str, Any]) -> dict[str, Any]:
