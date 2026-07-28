@@ -53,17 +53,16 @@ class QueryAnalyzer:
         "history",
     }
 
-    # Strong procedural phrases. Bare task-domain words do not count.
+    # Strong procedural phrases. Broad factual-selection requests such as
+    # "what should I mention in my CV" are handled separately and do not
+    # automatically imply procedural-memory use.
     PROCEDURAL_SIGNALS = {
         "how should",
-        "what should",
         "how should you",
         "how should the system",
         "what should the system",
         "should i",
         "should you",
-        "should my",
-        "should the",
         "should not",
         "how do i",
         "what steps",
@@ -82,6 +81,38 @@ class QueryAnalyzer:
         "choose between",
         "which should",
     }
+
+    FACTUAL_SELECTION_PATTERNS = (
+        r"\bwhat\s+(?:technical\s+)?details\s+should\s+i\s+"
+        r"(?:add|include|mention)\b",
+        r"\bwhat\s+should\s+i\s+(?:mention|add|include)\s+"
+        r"(?:for|in|about|to)\b",
+        r"\bwhat\s+should\s+my\s+(?:current\s+)?cv\s+"
+        r"(?:emphasise|emphasize|highlight)\b",
+        r"\bwhat\s+.+\s+can\s+i\s+discuss\s+in\s+interviews?\b",
+        r"\bwhat\s+should\s+be\s+protected\s+as\s+the\s+core\s+project\b",
+    )
+
+    PROCEDURAL_POLICY_PATTERNS = (
+        r"\bwhat\s+should\s+i\s+"
+        r"(?:do|say|answer|write|claim|use|follow|handle|respond)\b",
+        r"\bwhat\s+should\s+(?:you|the\s+system|the\s+answer|"
+        r"the\s+response)\s+"
+        r"(?:do|say|answer|write|claim|use|follow|handle|respond|invent)\b",
+        r"\bhow\s+should\s+(?:i|you|we|the\s+system|the\s+answer|"
+        r"the\s+response)\b",
+        r"\bif\b.+\b(?:how\s+should|what\s+should|should\s+the\s+system|"
+        r"should\s+you)\b",
+        r"\banswer\s+in\b",
+    )
+
+    TEMPORAL_CONTINUITY_PATTERNS = (
+        r"\bwas\b.+\balways\b",
+        r"\bwere\b.+\balways\b",
+        r"\bhave\b.+\balways\b",
+        r"\bhas\b.+\balways\b",
+    )
+
 
     EXPLANATION_SIGNALS = {
         "explain",
@@ -114,6 +145,9 @@ class QueryAnalyzer:
         "versus",
         " vs ",
         "rather than",
+        "no longer",
+        "completely removed",
+        "removed from",
     }
 
     HISTORICAL_DECISION_PATTERNS = (
@@ -254,9 +288,15 @@ class QueryAnalyzer:
             asks_current
             or self._matches_any(normalised, self.CURRENT_COMMITMENT_PATTERNS)
         )
-        asks_timeline = self._contains_any(
-            normalised,
-            self.TEMPORAL_TIMELINE,
+        asks_timeline = (
+            self._contains_any(
+                normalised,
+                self.TEMPORAL_TIMELINE,
+            )
+            or self._matches_any(
+                normalised,
+                self.TEMPORAL_CONTINUITY_PATTERNS,
+            )
         )
 
         asks_procedure = self._detect_procedural_intent(normalised)
@@ -307,7 +347,15 @@ class QueryAnalyzer:
         )
 
     def _detect_procedural_intent(self, text: str) -> bool:
+        # Requests to select factual CV/project content are memory-selection
+        # questions, even when they contain the modal word "should".
+        if self._is_factual_selection_query(text):
+            return False
+
         if self._contains_any(text, self.PROCEDURAL_SIGNALS):
+            return True
+
+        if self._matches_any(text, self.PROCEDURAL_POLICY_PATTERNS):
             return True
 
         # Normative alternatives: "Should A or B?" / "prioritise A or B".
@@ -325,6 +373,12 @@ class QueryAnalyzer:
             return True
 
         return False
+
+    def _is_factual_selection_query(self, text: str) -> bool:
+        # Alternatives and explicit conditions remain policy questions.
+        if " or " in f" {text} " or " if " in f" {text} ":
+            return False
+        return self._matches_any(text, self.FACTUAL_SELECTION_PATTERNS)
 
     @staticmethod
     def _is_procedural_policy_query(text: str) -> bool:
