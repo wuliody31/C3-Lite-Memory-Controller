@@ -312,7 +312,19 @@ class EvidenceSelector:
                 route=route,
                 conflicts=conflicts,
             )
-            self.last_requirement_status = {}
+            self.last_requirement_status = {
+                requirement.role: {
+                    "required": requirement.min_count,
+                    "satisfied": 0,
+                    "hard": requirement.hard,
+                    "distinct": requirement.distinct,
+                    "eligible_count": 0,
+                    "feasible": False,
+                    "complete": False,
+                    "feasible_complete": None,
+                }
+                for requirement in self.last_plan.requirements
+            }
             return []
 
         plan = self.planner.plan(
@@ -321,6 +333,12 @@ class EvidenceSelector:
             conflicts=conflicts,
         )
         self.last_plan = plan
+        eligibility = self._annotate_role_eligibility(
+            candidates=candidates,
+            plan=plan,
+            features=features,
+            conflicts=conflicts,
+        )
 
         selected: list[MemoryCandidate] = []
         selected_ids: set[str] = set()
@@ -513,83 +531,99 @@ class EvidenceSelector:
                         requirement_gain=gain,
                     )
 
-        # Phase A: repeatedly select the candidate that satisfies the most
-        # important currently unmet roles.
-        while len(selected) < plan.max_evidence:
-            unsatisfied = [
-                requirement
-                for requirement in plan.requirements
-                if satisfied[requirement.role]
-                < requirement.min_count
-            ]
-            if not unsatisfied:
-                break
-
-            scored: list[
-                tuple[
-                    tuple[float, float, float, float, str],
-                    MemoryCandidate,
-                    set[str],
-                    float,
+        # Phase A: satisfy hard requirements first, then use remaining
+        # capacity for feasible soft enrichment roles. A soft requirement must
+        # never block completion of a hard answer role.
+        def satisfy_requirements(
+            *,
+            hard: bool,
+            reason: str,
+        ) -> None:
+            while len(selected) < plan.max_evidence:
+                unsatisfied = [
+                    requirement
+                    for requirement in plan.requirements
+                    if requirement.hard is hard
+                    and satisfied[requirement.role]
+                    < requirement.min_count
                 ]
-            ] = []
+                if not unsatisfied:
+                    break
 
-            for item in candidates:
-                if not feasible(item):
-                    continue
+                scored: list[
+                    tuple[
+                        tuple[float, float, float, float, str],
+                        MemoryCandidate,
+                        set[str],
+                        float,
+                    ]
+                ] = []
 
-                matched_roles = self._matched_roles(
-                    item=item,
-                    requirements=unsatisfied,
-                    features=features,
-                    conflicts=conflicts,
-                    distinct_keys=distinct_keys,
-                )
-                if not matched_roles:
-                    continue
+                for item in candidates:
+                    if not feasible(item):
+                        continue
 
-                requirement_gain = self._requirement_gain(
-                    matched_roles=matched_roles,
-                    unsatisfied=unsatisfied,
-                    satisfied=satisfied,
-                )
-                score = self._structured_score(
-                    item=item,
-                    selected=selected,
-                    covered=covered,
-                    needs=features.information_needs,
-                    features=features,
-                    requirement_gain=requirement_gain,
-                )
-
-                scored.append(
-                    (
-                        (
-                            requirement_gain,
-                            score,
-                            item.final_score,
-                            item.confidence,
-                            item.memory_id,
-                        ),
-                        item,
-                        matched_roles,
-                        requirement_gain,
+                    matched_roles = self._matched_roles(
+                        item=item,
+                        requirements=unsatisfied,
+                        features=features,
+                        conflicts=conflicts,
+                        distinct_keys=distinct_keys,
                     )
+                    if not matched_roles:
+                        continue
+
+                    requirement_gain = self._requirement_gain(
+                        matched_roles=matched_roles,
+                        unsatisfied=unsatisfied,
+                        satisfied=satisfied,
+                    )
+                    score = self._structured_score(
+                        item=item,
+                        selected=selected,
+                        covered=covered,
+                        needs=features.information_needs,
+                        features=features,
+                        requirement_gain=requirement_gain,
+                    )
+
+                    scored.append(
+                        (
+                            (
+                                requirement_gain,
+                                score,
+                                item.final_score,
+                                item.confidence,
+                                item.memory_id,
+                            ),
+                            item,
+                            matched_roles,
+                            requirement_gain,
+                        )
+                    )
+
+                if not scored:
+                    break
+
+                _, item, matched_roles, gain = max(
+                    scored,
+                    key=lambda value: value[0],
+                )
+                add(
+                    item,
+                    reason=reason,
+                    matched_roles=matched_roles,
+                    requirement_gain=gain,
                 )
 
-            if not scored:
-                break
-
-            _, item, matched_roles, gain = max(
-                scored,
-                key=lambda value: value[0],
-            )
-            add(
-                item,
-                reason="requirement_satisfaction",
-                matched_roles=matched_roles,
-                requirement_gain=gain,
-            )
+        satisfy_requirements(
+            hard=True,
+            reason="hard_requirement_satisfaction",
+        )
+        satisfy_requirements(
+            hard=False,
+            reason="soft_requirement_enrichment",
+        )
 
         # Safety fallback for a routed procedural query when no procedure was
         # selected because metadata was incomplete.
@@ -812,15 +846,83 @@ class EvidenceSelector:
                 ),
                 "hard": requirement.hard,
                 "distinct": requirement.distinct,
+                "eligible_count": int(
+                    eligibility[requirement.role]["eligible_count"]
+                ),
+                "feasible": bool(
+                    eligibility[requirement.role]["feasible"]
+                ),
                 "complete": (
                     satisfied[requirement.role]
                     >= requirement.min_count
+                ),
+                "feasible_complete": (
+                    satisfied[requirement.role]
+                    >= requirement.min_count
+                    if eligibility[requirement.role]["feasible"]
+                    else None
                 ),
             }
             for requirement in plan.requirements
         }
 
         return selected
+
+    def _annotate_role_eligibility(
+        self,
+        *,
+        candidates: list[MemoryCandidate],
+        plan: EvidencePlan,
+        features: QueryFeatures,
+        conflicts: list[ConflictGroup],
+    ) -> dict[str, dict[str, Any]]:
+        """Annotate all resolved candidates and estimate role feasibility."""
+        role_items: dict[str, set[str]] = defaultdict(set)
+        role_distinct_keys: dict[str, set[str]] = defaultdict(set)
+
+        for item in candidates:
+            strengths: dict[str, float] = {}
+            eligible_roles: list[str] = []
+
+            for requirement in plan.requirements:
+                strength = self._role_strength(
+                    role=requirement.role,
+                    item=item,
+                    features=features,
+                    conflicts=conflicts,
+                )
+                strengths[requirement.role] = round(strength, 6)
+                if strength <= 0.0:
+                    continue
+
+                if requirement.distinct:
+                    key = self._distinct_item_key(item, features)
+                    if not key:
+                        continue
+                    role_distinct_keys[requirement.role].add(key)
+                else:
+                    role_items[requirement.role].add(item.memory_id)
+
+                eligible_roles.append(requirement.role)
+
+            item.metadata["eligible_evidence_roles"] = sorted(
+                eligible_roles
+            )
+            item.metadata["evidence_role_strengths"] = strengths
+
+        summary: dict[str, dict[str, Any]] = {}
+        for requirement in plan.requirements:
+            eligible_count = (
+                len(role_distinct_keys[requirement.role])
+                if requirement.distinct
+                else len(role_items[requirement.role])
+            )
+            summary[requirement.role] = {
+                "eligible_count": eligible_count,
+                "feasible": eligible_count >= requirement.min_count,
+            }
+
+        return summary
 
     def _matched_roles(
         self,
@@ -1029,11 +1131,45 @@ class EvidenceSelector:
         # primary topic, not merely in generic intent words such as current,
         # explain, evidence or preferred.
         if role == "answer_target":
-            return (
-                primary_topical
-                if primary_topical >= threshold
-                else 0.0
-            )
+            # A directly applicable procedure can itself be the answer target
+            # for a normative/policy query, even when its trigger metadata has
+            # lower lexical overlap than an ordinary semantic fact.
+            if (
+                features.asks_procedure
+                and item.memory_type == MemoryType.PROCEDURAL
+            ):
+                applicability = self._procedure_applicability(item)
+                procedural_topical = max(
+                    primary_topical,
+                    0.80 * broad_topical,
+                )
+                if (
+                    applicability >= 0.65
+                    or procedural_topical >= threshold
+                ):
+                    return min(
+                        1.0,
+                        0.60 * applicability
+                        + 0.40 * procedural_topical,
+                    )
+
+            if primary_topical >= threshold:
+                return primary_topical
+
+            # Calibrated fallback for concise yes/no and negative-evidence
+            # facts whose wording differs from the question but which remain
+            # strongly ranked and broadly topical.
+            relaxed_threshold = max(0.10, 0.75 * threshold)
+            if (
+                broad_topical >= relaxed_threshold
+                and float(item.final_score) >= 0.55
+            ):
+                return min(
+                    1.0,
+                    0.55 * broad_topical
+                    + 0.45 * float(item.final_score),
+                )
+            return 0.0
 
         if role == "current_state":
             if primary_topical < threshold:

@@ -57,7 +57,11 @@ class QueryAnalyzer:
     PROCEDURAL_SIGNALS = {
         "how should",
         "what should",
+        "how should you",
+        "how should the system",
+        "what should the system",
         "should i",
+        "should you",
         "should my",
         "should the",
         "should not",
@@ -65,6 +69,9 @@ class QueryAnalyzer:
         "what steps",
         "step by step",
         "answer style",
+        "answer in",
+        "friendly language",
+        "hr-friendly",
         "format",
         "instruction",
         "procedure",
@@ -115,6 +122,8 @@ class QueryAnalyzer:
         r"\bhave\s+i\s+(?:selected|chosen|decided|adopted)\b",
         r"\bwhat\b.+\bhave\s+i\s+(?:selected|chosen|adopted)\b",
         r"\bwhich\b.+\bhave\s+i\s+(?:selected|chosen|adopted)\b",
+        r"\bdid\s+i\s+(?:ask|request|want|mention)\b",
+        r"\bwhat\s+happened\b",
     )
 
     CURRENT_COMMITMENT_PATTERNS = (
@@ -253,6 +262,9 @@ class QueryAnalyzer:
         asks_procedure = self._detect_procedural_intent(normalised)
         asks_explanation = self._detect_explanation_intent(normalised)
         asks_conflict = self._detect_conflict_intent(normalised)
+        procedural_policy_override = (
+            self._is_procedural_policy_query(normalised)
+        )
 
         # A present/current alternative normally needs historical comparison,
         # the current state, and a policy for resolving the alternatives.
@@ -264,6 +276,7 @@ class QueryAnalyzer:
             asks_historical=asks_historical,
             asks_timeline=asks_timeline,
             asks_procedure=asks_procedure,
+            procedural_policy_override=procedural_policy_override,
         )
 
         task_type = self._detect_task_type(normalised)
@@ -313,6 +326,23 @@ class QueryAnalyzer:
 
         return False
 
+    @staticmethod
+    def _is_procedural_policy_query(text: str) -> bool:
+        return (
+            (
+                text.startswith("if ")
+                or " if an " in text
+                or " if a " in text
+                or " if the " in text
+            )
+            and re.search(
+                r"\b(?:how should|what should|should the system|"
+                r"should i say|should the answer|should you)\b",
+                text,
+            )
+            is not None
+        )
+
     def _detect_explanation_intent(self, text: str) -> bool:
         if "explain" in text or self._contains_phrase(text, "why"):
             return True
@@ -344,7 +374,12 @@ class QueryAnalyzer:
         asks_historical: bool,
         asks_timeline: bool,
         asks_procedure: bool,
+        procedural_policy_override: bool = False,
     ) -> QueryMode:
+        # Conditional policy questions can mention old/new/conflict terms but
+        # still primarily ask for an applicable response rule.
+        if asks_procedure and procedural_policy_override:
+            return QueryMode.PROCEDURAL
         if asks_timeline or (asks_current and asks_historical):
             return QueryMode.TIMELINE
         if asks_historical:

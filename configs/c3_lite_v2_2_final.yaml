@@ -1,6 +1,6 @@
 controller:
   name: C3-Lite
-  version: v2.2-rc8.1
+  version: v2.2-rc8.2
   expansion: Context-adaptive, Conflict-aware, Confidence-controlled
 
 query_analysis:
@@ -183,25 +183,28 @@ evidence_requirements:
   max_per_memory_type: 4
   evidence_token_budget: 1200
 
-  # Timeline queries require multiple earlier states, a current endpoint and
-  # an explicit transition where available.
-  timeline_min_historical_states: 2
+  # RC8.2 treats one earlier endpoint and one current endpoint as hard.
+  # Transition evidence is useful enrichment unless explicitly configured hard.
+  timeline_min_historical_states: 1
   timeline_min_current_states: 1
   timeline_min_transition_evidence: 1
-  timeline_preferred_evidence: 6
+  timeline_transition_hard: false
+  timeline_preferred_evidence: 5
 
-  # Procedural queries retain an applicable rule plus answer-specific facts.
+  # Explicit procedural intent makes this a hard requirement. A route-only
+  # procedural suggestion becomes a soft enrichment role.
   procedural_min_rules: 1
-  procedural_preferred_evidence: 6
+  procedural_preferred_evidence: 5
 
-  # Conflict/comparison queries preserve an alternative and a resolution.
+  # Only an explicit comparison makes these hard requirements. Incidental
+  # conflict groups no longer create unrelated state requirements.
   conflict_min_alternatives: 1
   conflict_min_resolutions: 1
-  conflict_preferred_evidence: 6
+  conflict_preferred_evidence: 5
 
   # Explanation requests require more than the answer fact alone.
-  explanation_min_supporting_evidence: 2
-  explanation_preferred_evidence: 6
+  explanation_min_supporting_evidence: 1
+  explanation_preferred_evidence: 5
 
   # An explicit number such as "three memory types" becomes a distinct-item
   # cardinality requirement. RC8.1 stops filling once all requested distinct

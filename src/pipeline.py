@@ -107,6 +107,18 @@ def _candidate_score_trace(
                 "selector_topical_score"
             )
         ),
+        "eligible_evidence_roles": (
+            candidate.metadata.get(
+                "eligible_evidence_roles",
+                [],
+            )
+        ),
+        "evidence_role_strengths": (
+            candidate.metadata.get(
+                "evidence_role_strengths",
+                {},
+            )
+        ),
     }
 
 
@@ -441,6 +453,18 @@ def _build_full_candidate_score_trace(
             "selector_topical_score": (
                 candidate.metadata.get(
                     "selector_topical_score"
+                )
+            ),
+            "eligible_evidence_roles": (
+                candidate.metadata.get(
+                    "eligible_evidence_roles",
+                    [],
+                )
+            ),
+            "evidence_role_strengths": (
+                candidate.metadata.get(
+                    "evidence_role_strengths",
+                    {},
                 )
             ),
             "route_selected": (
