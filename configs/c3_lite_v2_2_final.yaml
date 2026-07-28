@@ -1,6 +1,6 @@
 controller:
   name: C3-Lite
-  version: v2.2-rc8.2
+  version: v2.2-rc8.3a
   expansion: Context-adaptive, Conflict-aware, Confidence-controlled
 
 query_analysis:
@@ -75,6 +75,10 @@ routing:
   structural_gates:
     force_timeline_route: true
     force_conflict_route: true
+    force_historical_semantic_companion: true
+    force_procedural_semantic_companion: true
+    force_explanation_policy_route: true
+    force_factual_selection_route: true
     fallback_top_route: true
 
 retrieval:

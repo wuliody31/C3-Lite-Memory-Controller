@@ -1,22 +1,17 @@
 from __future__ import annotations
 
-from pyexpat import features
 import re
 from typing import Any
 
-from .schemas import MemoryType, QueryFeatures, QueryMode, RouteDecision
+from .schemas import (
+    MemoryType,
+    QueryFeatures,
+    QueryMode,
+    RouteDecision,
+)
 
 
 class RoutePlanner:
-    """Context-adaptive, training-free multi-memory route planner.
-
-    Important design rules:
-    1. ``task_type`` is weak domain context and never forces procedural memory.
-    2. Structural gates are driven by query intent.
-    3. Hypothetical policy questions should not retrieve historical facts merely
-       because the condition mentions an old/new conflict.
-    """
-
     TERMS = {
         MemoryType.EPISODIC: {
             "when",
@@ -33,15 +28,19 @@ class RoutePlanner:
             "decided",
             "selected",
             "chosen",
+            "picked",
             "adopted",
-            "history",
-            "over time",
+            "发生",
+            "最初",
+            "之前",
+            "经历",
+            "决定",
+            "选择",
         },
         MemoryType.SEMANTIC: {
             "current",
             "currently",
             "what is",
-            "what are",
             "which",
             "uses",
             "preference",
@@ -49,16 +48,15 @@ class RoutePlanner:
             "role",
             "main",
             "now",
-            "selected",
-            "chosen",
-            "baseline",
-            "baselines",
+            "目前",
+            "现在",
+            "是什么",
+            "使用",
+            "偏好",
         },
         MemoryType.PROCEDURAL: {
             "how should",
-            "what should",
             "should i",
-            "should my",
             "format",
             "write",
             "follow",
@@ -66,11 +64,48 @@ class RoutePlanner:
             "step",
             "style",
             "procedure",
-            "prioritise",
-            "prioritize",
-            "choose between",
+            "guideline",
+            "怎么",
+            "应该",
+            "格式",
+            "写",
+            "遵循",
+            "必须",
         },
     }
+
+    FACTUAL_SELECTION_PATTERNS = (
+        r"\bwhat\s+(?:technical\s+)?details\s+should\s+i\s+"
+        r"(?:add|include|mention)\b",
+        r"\bwhat\s+should\s+i\s+(?:mention|add|include)\s+"
+        r"(?:for|in|about|to)\b",
+        r"\bwhat\s+should\s+my\s+(?:current\s+)?cv\s+"
+        r"(?:emphasise|emphasize|highlight)\b",
+        r"\bwhat\s+.+\s+can\s+i\s+discuss\s+in\s+interviews?\b",
+        r"\bwhat\s+should\s+be\s+protected\s+as\s+the\s+core\s+project\b",
+        r"\bwhat\s+is\s+the\s+role\s+of\s+the\s+memory\s+controller\b",
+    )
+
+    HISTORICAL_SEMANTIC_PATTERNS = (
+        r"\bwhere\s+did\s+i\s+originally\s+think\b",
+        r"\bdid\s+i\s+ask\s+for\b",
+        r"\bhow\s+did\s+it\s+affect\b",
+        r"\bwhat\s+happened\b.+\bplan\b",
+        r"\b(?:hotel|stay|location|preference|route|plan|role|target|direction)\b",
+    )
+
+    EXPLANATION_PROCEDURAL_PATTERNS = (
+        r"\bcite\s+the\s+memory\s+types\s+used\b",
+        r"\bwhich\s+memory\s+supports\b.+\brecommend",
+        r"\bwhat\s+location\s+should\s+be\s+used\b",
+        r"\bhow\s+should\s+(?:the\s+answer|you|the\s+system)\b",
+    )
+
+    PROCEDURAL_SEMANTIC_PATTERNS = (
+        r"\b(?:booking|price|prices|opening\s+hours|restaurant|hotel|travel|"
+        r"bus|train|itinerary)\b",
+        r"\b(?:unclear|unknown|not\s+stored|not\s+available)\b",
+    )
 
     HISTORICAL_COMMITMENT_PATTERNS = (
         r"\bdid\s+i\s+(?:decide|choose|select|adopt|agree)\b",
@@ -85,36 +120,68 @@ class RoutePlanner:
         r"\bis\s+.+\s+the\s+main\s+(?:focus|purpose)\b",
     )
 
-    def __init__(self, config: dict[str, Any]):
+    def __init__(
+        self,
+        config: dict[str, Any],
+    ):
         routing = config["routing"]
         self.thresholds = routing["thresholds"]
         self.weights = routing["utility_weights"]
         self.priors = routing["priors"]
-        self.gates = routing.get("structural_gates", {})
+        self.gates = routing["structural_gates"]
 
-    def plan(self, features: QueryFeatures) -> RouteDecision:
-        raw_scores: dict[MemoryType, float] = {}
-        reasons = {memory_type.value: [] for memory_type in MemoryType}
+    def plan(
+        self,
+        features: QueryFeatures,
+    ) -> RouteDecision:
+        raw: dict[MemoryType, float] = {}
+
+        reasons = {
+            memory_type.value: []
+            for memory_type in MemoryType
+        }
 
         for memory_type in MemoryType:
-            signals = self._signals(memory_type, features)
-            score = sum(
-                float(self.weights[key]) * value
-                for key, value in signals.items()
+            signals = self._signals(
+                memory_type,
+                features,
             )
-            raw_scores[memory_type] = min(1.0, max(0.0, score))
 
-            for key, value in signals.items():
-                if key != "prior" and value >= 0.60:
-                    reasons[memory_type.value].append(key)
+            raw[memory_type] = min(
+                1.0,
+                max(
+                    0.0,
+                    sum(
+                        float(self.weights[key])
+                        * value
+                        for key, value
+                        in signals.items()
+                    ),
+                ),
+            )
+
+            reasons[memory_type.value].extend(
+                key
+                for key, value in signals.items()
+                if (
+                    key != "prior"
+                    and value >= 0.6
+                )
+            )
 
         selected = [
             memory_type
-            for memory_type, score in raw_scores.items()
-            if score >= float(self.thresholds[memory_type.value])
+            for memory_type, score
+            in raw.items()
+            if score
+            >= float(
+                self.thresholds[
+                    memory_type.value
+                ]
+            )
         ]
 
-        self._apply_structural_gates(
+        self._gates(
             features,
             selected,
             reasons,
@@ -122,33 +189,38 @@ class RoutePlanner:
 
         if (
             not selected
-            and self.gates.get("fallback_top_route", True)
+            and self.gates.get(
+                "fallback_top_route",
+                True,
+            )
         ):
-            top_route = max(raw_scores, key=raw_scores.get)
-            selected.append(top_route)
-            reasons[top_route.value].append("fallback_top_route")
+            fallback = max(
+                raw,
+                key=raw.get,
+            )
+            selected = [fallback]
+            reasons[fallback.value].append(
+                "fallback_top_route"
+            )
 
-        ordered_selected = [
+        selected_set = set(selected)
+
+        selected = [
             memory_type
             for memory_type in MemoryType
-            if memory_type in set(selected)
+            if memory_type in selected_set
         ]
 
-        cleaned_reasons = {
-            key: list(dict.fromkeys(value))
-            for key, value in reasons.items()
-        }
-
         return RouteDecision(
-            ordered_selected,
-            {
+            selected_types=selected,
+            scores={
                 memory_type.value: round(
-                    raw_scores[memory_type],
+                    raw[memory_type],
                     6,
                 )
                 for memory_type in MemoryType
             },
-            cleaned_reasons,
+            reasons=reasons,
         )
 
     def _signals(
@@ -156,62 +228,88 @@ class RoutePlanner:
         memory_type: MemoryType,
         features: QueryFeatures,
     ) -> dict[str, float]:
-        lexical = self._lexical_score(
-            features.normalised_query,
-            set(features.tokens),
-            self.TERMS[memory_type],
+        query = features.normalised_query
+        tokens = set(features.tokens)
+
+        lexical_hits = sum(
+            int(
+                (
+                    term in query
+                    if " " in term
+                    else term in tokens
+                )
+            )
+            for term in self.TERMS[
+                memory_type
+            ]
         )
-        entity_signal = (
-            min(1.0, 0.20 + 0.15 * len(features.entities))
-            if features.entities
-            else 0.10
+
+        lexical = min(
+            1.0,
+            lexical_hits / 2.0,
         )
-        hypothetical_policy = self._is_hypothetical_policy(features)
 
         if memory_type == MemoryType.EPISODIC:
-            if hypothetical_policy:
-                intent = 0.05
-                temporal_task = 0.05
-                entity = min(entity_signal, 0.30)
-            else:
-                intent = (
+            return {
+                "intent": (
                     1.0
                     if features.query_mode
-                    in {QueryMode.HISTORICAL, QueryMode.TIMELINE}
-                    else 0.08
-                )
-                temporal_task = (
+                    in {
+                        QueryMode.HISTORICAL,
+                        QueryMode.TIMELINE,
+                    }
+                    else 0.15
+                ),
+                "lexical": lexical,
+                "entity": (
+                    min(
+                        1.0,
+                        0.2
+                        + 0.15
+                        * len(features.entities),
+                    )
+                    if features.entities
+                    else 0.15
+                ),
+                "temporal_task": (
                     1.0
                     if (
                         features.temporal_expressions
                         or features.asks_historical_state
                         or features.asks_timeline
                     )
-                    else 0.05
-                )
-                entity = entity_signal
-
-            return {
-                "intent": intent,
-                "lexical": lexical,
-                "entity": entity,
-                "temporal_task": temporal_task,
-                "prior": float(self.priors[memory_type.value]),
+                    else 0.1
+                ),
+                "prior": float(
+                    self.priors[
+                        memory_type.value
+                    ]
+                ),
             }
 
         if memory_type == MemoryType.SEMANTIC:
-            if hypothetical_policy:
-                intent = 0.25
-                temporal_task = 0.20
-                entity = min(entity_signal, 0.35)
-            else:
-                intent = (
+            return {
+                "intent": (
                     1.0
                     if features.query_mode
-                    in {QueryMode.CURRENT, QueryMode.TIMELINE}
-                    else 0.65
-                )
-                temporal_task = (
+                    in {
+                        QueryMode.CURRENT,
+                        QueryMode.TIMELINE,
+                    }
+                    else 0.55
+                ),
+                "lexical": lexical,
+                "entity": (
+                    min(
+                        1.0,
+                        0.35
+                        + 0.15
+                        * len(features.entities),
+                    )
+                    if features.entities
+                    else 0.3
+                ),
+                "temporal_task": (
                     1.0
                     if (
                         features.asks_current_state
@@ -219,106 +317,160 @@ class RoutePlanner:
                         or features.asks_timeline
                     )
                     else 0.45
-                )
-                entity = min(1.0, entity_signal + 0.15)
-
-            return {
-                "intent": intent,
-                "lexical": lexical,
-                "entity": entity,
-                "temporal_task": temporal_task,
-                "prior": float(self.priors[memory_type.value]),
+                ),
+                "prior": float(
+                    self.priors[
+                        memory_type.value
+                    ]
+                ),
             }
 
-        # Procedural memory is driven primarily by procedural intent.
-        # task_type contributes only a weak domain-context signal.
         return {
-            "intent": 1.0 if features.asks_procedure else 0.05,
+            "intent": (
+                1.0
+                if features.asks_procedure
+                else (
+                    0.15
+                    if features.task_type
+                    else 0.05
+                )
+            ),
             "lexical": lexical,
-            "entity": 0.25 if features.task_type else 0.05,
+            "entity": (
+                0.45
+                if features.task_type
+                else 0.1
+            ),
             "temporal_task": (
                 1.0
                 if features.asks_procedure
-                else (0.20 if features.task_type else 0.05)
+                else (
+                    0.25
+                    if features.task_type
+                    else 0.05
+                )
             ),
-            "prior": float(self.priors[memory_type.value]),
+            "prior": float(
+                self.priors[
+                    memory_type.value
+                ]
+            ),
         }
 
-    def _apply_structural_gates(
+    def _gates(
         self,
         features: QueryFeatures,
         selected: list[MemoryType],
         reasons: dict[str, list[str]],
     ) -> None:
-        def add(memory_type: MemoryType, reason: str) -> None:
+        def add(
+            memory_type: MemoryType,
+            reason: str,
+        ) -> None:
             if memory_type not in selected:
                 selected.append(memory_type)
-            reasons[memory_type.value].append(reason)
 
+            if reason not in reasons[
+                memory_type.value
+            ]:
+                reasons[
+                    memory_type.value
+                ].append(reason)
+
+        query = features.normalised_query
         hypothetical_policy = self._is_hypothetical_policy(features)
-        normative_alternative = (
-            features.asks_conflict
-            and features.asks_procedure
-            and not hypothetical_policy
-        )
-        current_conflict = (
-            features.asks_conflict
-            and features.asks_current_state
-            and not hypothetical_policy
-        )
 
         if (
             features.asks_timeline
-            and self.gates.get("force_timeline_route", True)
-            and not hypothetical_policy
-        ):
-            add(MemoryType.EPISODIC, "timeline_gate")
-            add(MemoryType.SEMANTIC, "timeline_gate")
-
-        if (
-            features.asks_conflict
-            and self.gates.get("force_conflict_route", True)
-            and not hypothetical_policy
-        ):
-            add(MemoryType.EPISODIC, "conflict_gate")
-            add(MemoryType.SEMANTIC, "conflict_gate")
-
-        if (
-            features.asks_historical_state
-            and not hypothetical_policy
-        ):
-            add(MemoryType.EPISODIC, "historical_gate")
-
-        if features.asks_current_state:
-            add(MemoryType.SEMANTIC, "current_state_gate")
-
-        if features.asks_procedure:
-            add(MemoryType.PROCEDURAL, "procedural_gate")
-
-        # A current A-or-B query needs the policy that decides which state wins.
-        if current_conflict:
-            add(
-                MemoryType.PROCEDURAL,
-                "current_conflict_policy_gate",
+            and self.gates.get(
+                "force_timeline_route",
+                True,
             )
-
-        # A normative A-or-B decision needs history, current facts, and policy.
-        if normative_alternative:
+        ):
             add(
                 MemoryType.EPISODIC,
-                "normative_alternative_gate",
+                "timeline_gate",
             )
             add(
                 MemoryType.SEMANTIC,
-                "normative_alternative_gate",
-            )
-            add(
-                MemoryType.PROCEDURAL,
-                "normative_alternative_gate",
+                "timeline_gate",
             )
 
-        # Historical commitments often require both the original decision and
-        # the currently retained semantic state.
+        if (
+            features.asks_conflict
+            and self.gates.get(
+                "force_conflict_route",
+                True,
+            )
+        ):
+            add(
+                MemoryType.EPISODIC,
+                "conflict_gate",
+            )
+            add(
+                MemoryType.SEMANTIC,
+                "conflict_gate",
+            )
+
+        if features.asks_historical_state:
+            add(
+                MemoryType.EPISODIC,
+                "historical_gate",
+            )
+            if (
+                self.gates.get(
+                    "force_historical_semantic_companion",
+                    True,
+                )
+                and self._matches_any(
+                    query,
+                    self.HISTORICAL_SEMANTIC_PATTERNS,
+                )
+            ):
+                add(
+                    MemoryType.SEMANTIC,
+                    "historical_semantic_companion_gate",
+                )
+
+        if features.asks_current_state:
+            add(
+                MemoryType.SEMANTIC,
+                "current_state_gate",
+            )
+
+        if features.asks_procedure:
+            add(
+                MemoryType.PROCEDURAL,
+                "procedural_gate",
+            )
+            if (
+                self.gates.get(
+                    "force_procedural_semantic_companion",
+                    True,
+                )
+                and (
+                    features.task_type == "travel_planning"
+                    or self._matches_any(
+                        query,
+                        self.PROCEDURAL_SEMANTIC_PATTERNS,
+                    )
+                )
+            ):
+                add(
+                    MemoryType.SEMANTIC,
+                    "procedural_semantic_companion_gate",
+                )
+
+        if (
+            features.asks_procedure
+            and features.task_type in {"academic_writing", "cv_writing"}
+            and not hypothetical_policy
+        ):
+            add(
+                MemoryType.SEMANTIC,
+                "procedural_context_gate",
+            )
+
         if self._is_historical_commitment(features):
             add(
                 MemoryType.EPISODIC,
@@ -329,27 +481,6 @@ class RoutePlanner:
                 "historical_commitment_gate",
             )
 
-        # User-specific CV/academic procedure questions usually require the
-        # applicable rule plus the user's current factual context.
-        if (
-            features.asks_procedure
-            and features.task_type
-            in {"academic_writing", "cv_writing"}
-            and not hypothetical_policy
-        ):
-            add(
-                MemoryType.SEMANTIC,
-                "procedural_context_gate",
-            )
-
-        # Explanation requests require evidence-bearing episodic and semantic
-        # memories. Procedural memory is added independently when requested.
-        if features.asks_explanation:
-            add(MemoryType.EPISODIC, "explanation_gate")
-            add(MemoryType.SEMANTIC, "explanation_gate")
-
-        # Scope/claim validation benefits from the current fact and the
-        # decision/history that established it.
         if self._is_scope_validation(features):
             add(
                 MemoryType.EPISODIC,
@@ -360,9 +491,67 @@ class RoutePlanner:
                 "scope_validation_gate",
             )
 
-        # A hypothetical policy question such as
-        # "If an older memory conflicts..., how should the system answer?"
-        # asks for the rule itself, not retrieval of a real historical case.
+        if features.asks_explanation:
+            add(
+                MemoryType.EPISODIC,
+                "explanation_gate",
+            )
+            add(
+                MemoryType.SEMANTIC,
+                "explanation_gate",
+            )
+            if (
+                self.gates.get(
+                    "force_explanation_policy_route",
+                    True,
+                )
+                and (
+                    features.task_type
+                    in {
+                        "cv_writing",
+                        "travel_planning",
+                    }
+                    or self._matches_any(
+                        query,
+                        self.EXPLANATION_PROCEDURAL_PATTERNS,
+                    )
+                )
+            ):
+                add(
+                    MemoryType.PROCEDURAL,
+                    "explanation_policy_gate",
+                )
+
+        if (
+            self.gates.get(
+                "force_factual_selection_route",
+                True,
+            )
+            and self._matches_any(
+                query,
+                self.FACTUAL_SELECTION_PATTERNS,
+            )
+        ):
+            add(
+                MemoryType.EPISODIC,
+                "factual_selection_gate",
+            )
+            add(
+                MemoryType.SEMANTIC,
+                "factual_selection_gate",
+            )
+
+        if (
+            features.asks_conflict
+            and features.asks_current_state
+            and " or "
+            in f" {features.normalised_query} "
+        ):
+            add(
+                MemoryType.PROCEDURAL,
+                "current_conflict_policy_gate",
+            )
+
         if hypothetical_policy:
             selected[:] = [
                 memory_type
@@ -375,68 +564,25 @@ class RoutePlanner:
             )
 
     @staticmethod
-    def _lexical_score(
-        query: str,
-        tokens: set[str],
-        terms: set[str],
-    ) -> float:
-        matches = 0
-
-        for term in terms:
-            if " " in term:
-                matched = term in query
-            else:
-                matched = term in tokens
-
-            matches += int(matched)
-
-        return min(1.0, matches / 2.0)
-
-    @staticmethod
     def _is_hypothetical_policy(
         features: QueryFeatures,
     ) -> bool:
         query = features.normalised_query
-
-    # Response-policy question:
-    # "What should I say if there is no evidence?"
-        
-        response_policy = (
-            re.search(
-                r"^(?:"
-                r"what should i say|"
-                r"how should i answer|"
-                r"what should the system say|"
-                r"how should the system answer"
-                r")\s+if\b",
-                query,
-            )
-            is not None
-        )
-
-    # Condition-first policy:
-    # "If an older memory conflicts..., how should the system answer?"
-        condition_first_policy = (
-            query.startswith("if ")
-            and re.search(
-                r"\b(?:"
-                r"how should|"
-                r"what should|"
-                r"should the system|"
-                r"should i say|"
-                r"should the answer"
-                r")\b",
-                query,
-            )
-            is not None
-        )
-
         return (
             features.asks_procedure
+            and features.task_type != "travel_planning"
             and (
-                response_policy
-                or condition_first_policy
+                query.startswith("if ")
+                or " if an " in query
+                or " if a " in query
+                or " if the " in query
             )
+            and re.search(
+                r"\b(?:how should|what should|should the system|"
+                r"should i say|should the answer)\b",
+                query,
+            )
+            is not None
         )
 
     @classmethod
@@ -444,13 +590,9 @@ class RoutePlanner:
         cls,
         features: QueryFeatures,
     ) -> bool:
-        return any(
-            re.search(
-                pattern,
-                features.normalised_query,
-            )
-            is not None
-            for pattern in cls.HISTORICAL_COMMITMENT_PATTERNS
+        return cls._matches_any(
+            features.normalised_query,
+            cls.HISTORICAL_COMMITMENT_PATTERNS,
         )
 
     @classmethod
@@ -458,13 +600,17 @@ class RoutePlanner:
         cls,
         features: QueryFeatures,
     ) -> bool:
-        return any(
-            re.search(
-                pattern,
-                features.normalised_query,
-            )
-            is not None
-            for pattern in cls.SCOPE_VALIDATION_PATTERNS
+        return cls._matches_any(
+            features.normalised_query,
+            cls.SCOPE_VALIDATION_PATTERNS,
         )
 
-
+    @staticmethod
+    def _matches_any(
+        text: str,
+        patterns: tuple[str, ...],
+    ) -> bool:
+        return any(
+            re.search(pattern, text) is not None
+            for pattern in patterns
+        )
