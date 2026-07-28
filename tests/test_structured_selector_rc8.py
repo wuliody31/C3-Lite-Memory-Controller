@@ -77,6 +77,19 @@ def config() -> dict:
             "explanation_min_supporting_evidence": 2,
             "explanation_preferred_evidence": 6,
             "cardinality_extra_buffer": 1,
+            "answer_anchor_enabled": True,
+            "conflict_preservation_min_topical": 0.18,
+            "role_topical_thresholds": {
+                "answer_target": 0.20,
+                "current_state": 0.18,
+                "historical_state": 0.15,
+                "transition": 0.15,
+                "procedural_rule": 0.05,
+                "alternative_state": 0.16,
+                "preferred_resolution": 0.18,
+                "supporting_evidence": 0.14,
+                "distinct_item": 0.18,
+            },
         },
     }
 
@@ -414,3 +427,202 @@ def test_procedural_comparison_keeps_rule_and_resolution() -> None:
     assert "p_rule" in selected_ids
     assert "s_core" in selected_ids
     assert "s_alt" in selected_ids or "e_decision" in selected_ids
+
+
+def test_memory_type_cardinality_rejects_backend_mentions() -> None:
+    evidence_selector = selector()
+    query_features = features(
+        query=(
+            "What are the three memory types in my project "
+            "and what does each record?"
+        ),
+        mode=QueryMode.ATEMPORAL,
+        needs=[
+            "three memory types project",
+            "each record",
+        ],
+    )
+    candidates = [
+        candidate(
+            "s_backend",
+            "semantic memory implementation backend is Neo4j",
+            score=0.95,
+        ),
+        candidate(
+            "s_ep",
+            "episodic memory records what happened and when",
+            score=0.58,
+        ),
+        candidate(
+            "s_sem",
+            "semantic memory records currently believed facts",
+            score=0.57,
+        ),
+        candidate(
+            "s_proc",
+            "procedural memory records rules and response policies",
+            score=0.56,
+        ),
+    ]
+
+    selected = evidence_selector.select(
+        candidates=candidates,
+        features=query_features,
+        route=route(MemoryType.SEMANTIC),
+        conflicts=[],
+    )
+    selected_ids = [
+        item.memory_id
+        for item in selected
+    ]
+
+    assert selected_ids == [
+        "s_ep",
+        "s_sem",
+        "s_proc",
+    ]
+
+
+def test_historical_text_cannot_satisfy_current_state_from_status_alone() -> None:
+    evidence_selector = selector()
+    query_features = features(
+        query="What is my current project scope?",
+        mode=QueryMode.CURRENT,
+        needs=[
+            "current project scope",
+            "current valid state",
+        ],
+    )
+    old_scope_with_current_status = candidate(
+        "s_old",
+        "project earlier scope is large multi agent memory system",
+        score=0.95,
+        status="current",
+    )
+    current_scope = candidate(
+        "s_current",
+        "project current scope is small MSc memory controller prototype",
+        score=0.75,
+        status="current",
+    )
+
+    selected = evidence_selector.select(
+        candidates=[
+            old_scope_with_current_status,
+            current_scope,
+        ],
+        features=query_features,
+        route=route(MemoryType.SEMANTIC),
+        conflicts=[],
+    )
+
+    assert selected[0].memory_id == "s_current"
+    status = evidence_selector.last_requirement_status
+    assert status["current_state"]["complete"] is True
+
+
+def test_answer_anchor_is_primary_topic_not_explanation_intent() -> None:
+    evidence_selector = selector()
+    query_features = features(
+        query=(
+            "Answer my current project scope and explain which "
+            "memories support it."
+        ),
+        mode=QueryMode.CURRENT,
+        needs=[
+            "answer current project scope",
+            "explain memories support it",
+            "current valid state",
+            "supporting reason or evidence",
+        ],
+        asks_explanation=True,
+    )
+    support_preference = candidate(
+        "e_explain",
+        "The user wanted the system to explain why it used a certain memory",
+        memory_type=MemoryType.EPISODIC,
+        score=0.90,
+    )
+    current_scope = candidate(
+        "s_scope",
+        "project current scope is small MSc memory controller prototype",
+        score=0.75,
+    )
+
+    selected = evidence_selector.select(
+        candidates=[
+            support_preference,
+            current_scope,
+        ],
+        features=query_features,
+        route=route(
+            MemoryType.SEMANTIC,
+            MemoryType.EPISODIC,
+        ),
+        conflicts=[],
+    )
+
+    assert selected[0].memory_id == "s_scope"
+    assert (
+        selected[0].metadata["selector_reason"]
+        == "answer_anchor"
+    )
+
+
+def test_unrelated_unresolved_conflict_does_not_consume_slots() -> None:
+    from src.schemas import ConflictGroup
+
+    evidence_selector = selector()
+    query_features = features(
+        query="What is my current project scope?",
+        mode=QueryMode.CURRENT,
+        needs=[
+            "current project scope",
+            "current valid state",
+        ],
+        asks_conflict=True,
+    )
+    scope = candidate(
+        "s_scope",
+        "project current scope is small MSc memory controller prototype",
+        score=0.75,
+    )
+    unrelated_a = candidate(
+        "s_a",
+        "Dataset A tests conflict resolution",
+        score=0.90,
+    )
+    unrelated_b = candidate(
+        "s_b",
+        "Dataset A tests memory selection",
+        score=0.89,
+    )
+    conflict = ConflictGroup(
+        conflict_id="c1",
+        key="dataset_test",
+        candidate_ids=["s_a", "s_b"],
+        conflict_type="implicit",
+        explicit=False,
+        unresolved=True,
+    )
+
+    selected = evidence_selector.select(
+        candidates=[
+            unrelated_a,
+            unrelated_b,
+            scope,
+        ],
+        features=query_features,
+        route=route(MemoryType.SEMANTIC),
+        conflicts=[conflict],
+    )
+    selected_ids = {
+        item.memory_id
+        for item in selected
+    }
+
+    assert "s_scope" in selected_ids
+    assert not {
+        "s_a",
+        "s_b",
+    }.issubset(selected_ids)

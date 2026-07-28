@@ -1,6 +1,6 @@
 controller:
   name: C3-Lite
-  version: v2.2-rc8
+  version: v2.2-rc8.1
   expansion: Context-adaptive, Conflict-aware, Confidence-controlled
 
 query_analysis:
@@ -204,8 +204,27 @@ evidence_requirements:
   explanation_preferred_evidence: 6
 
   # An explicit number such as "three memory types" becomes a distinct-item
-  # cardinality requirement.
+  # cardinality requirement. RC8.1 stops filling once all requested distinct
+  # items are satisfied.
   cardinality_extra_buffer: 1
+
+  # RC8.1 selects a primary answer anchor before secondary evidence roles.
+  answer_anchor_enabled: true
+
+  # Unresolved conflicts are retained only when they concern the answer topic.
+  conflict_preservation_min_topical: 0.18
+
+  # Every structural role must be grounded in the primary information need.
+  role_topical_thresholds:
+    answer_target: 0.20
+    current_state: 0.18
+    historical_state: 0.15
+    transition: 0.15
+    procedural_rule: 0.05
+    alternative_state: 0.16
+    preferred_resolution: 0.18
+    supporting_evidence: 0.14
+    distinct_item: 0.18
 
 confidence:
   top_evidence_weight: 0.45

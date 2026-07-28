@@ -182,6 +182,45 @@ class EvidenceSelector:
         "程序记忆",
     )
 
+    MEMORY_DEFINITION_SIGNALS = {
+        "record",
+        "records",
+        "recorded",
+        "store",
+        "stores",
+        "stored",
+        "represents",
+        "contains",
+        "facts",
+        "events",
+        "happened",
+        "when",
+        "rules",
+        "policies",
+        "currently believed",
+        "what happened",
+        "response policies",
+        "记录",
+        "存储",
+        "事实",
+        "事件",
+        "发生",
+        "规则",
+        "策略",
+    }
+
+    DEFAULT_ROLE_TOPICAL_THRESHOLDS = {
+        "answer_target": 0.20,
+        "current_state": 0.18,
+        "historical_state": 0.15,
+        "transition": 0.15,
+        "procedural_rule": 0.05,
+        "alternative_state": 0.16,
+        "preferred_resolution": 0.18,
+        "supporting_evidence": 0.14,
+        "distinct_item": 0.18,
+    }
+
     def __init__(
         self,
         config: dict[str, Any],
@@ -224,6 +263,33 @@ class EvidenceSelector:
         )
         self.minimum_evidence = int(
             self.s.get("minimum_evidence", 2)
+        )
+
+        configured_thresholds = self.requirement_settings.get(
+            "role_topical_thresholds",
+            {},
+        )
+        self.role_topical_thresholds = {
+            role: float(
+                configured_thresholds.get(
+                    role,
+                    default,
+                )
+            )
+            for role, default
+            in self.DEFAULT_ROLE_TOPICAL_THRESHOLDS.items()
+        }
+        self.conflict_preservation_min_topical = float(
+            self.requirement_settings.get(
+                "conflict_preservation_min_topical",
+                0.18,
+            )
+        )
+        self.answer_anchor_enabled = bool(
+            self.requirement_settings.get(
+                "answer_anchor_enabled",
+                True,
+            )
         )
 
         self.last_plan: EvidencePlan | None = None
@@ -332,6 +398,120 @@ class EvidenceSelector:
                 self._topical_score(item, features),
                 6,
             )
+
+        # Phase A0: select one topically grounded answer anchor before
+        # satisfying secondary temporal, conflict or explanation roles.
+        # This prevents a generic "current" or "support" memory from
+        # satisfying several roles while missing the actual answer topic.
+        if self.answer_anchor_enabled:
+            anchor_requirement = next(
+                (
+                    requirement
+                    for requirement in plan.requirements
+                    if requirement.role == "answer_target"
+                ),
+                None,
+            )
+
+            if anchor_requirement is not None:
+                anchor_candidates: list[
+                    tuple[
+                        tuple[float, float, float, float, str],
+                        MemoryCandidate,
+                        set[str],
+                        float,
+                    ]
+                ] = []
+
+                for item in candidates:
+                    if not feasible(item):
+                        continue
+
+                    answer_strength = self._role_strength(
+                        role="answer_target",
+                        item=item,
+                        features=features,
+                        conflicts=conflicts,
+                    )
+                    if answer_strength <= 0.0:
+                        continue
+
+                    matched_roles = self._matched_roles(
+                        item=item,
+                        requirements=plan.requirements,
+                        features=features,
+                        conflicts=conflicts,
+                        distinct_keys=distinct_keys,
+                    )
+                    matched_roles.add("answer_target")
+
+                    # For explicit-cardinality questions, the answer anchor
+                    # must itself be one of the requested distinct items.
+                    if (
+                        plan.explicit_cardinality is not None
+                        and "distinct_item" not in matched_roles
+                    ):
+                        continue
+
+                    requirement_gain = self._requirement_gain(
+                        matched_roles=matched_roles,
+                        unsatisfied=plan.requirements,
+                        satisfied=satisfied,
+                    )
+                    primary_topic = self._primary_topic_score(
+                        item,
+                        features,
+                    )
+                    anchor_score = (
+                        0.55 * primary_topic
+                        + 0.35 * float(item.final_score)
+                        + 0.10 * answer_strength
+                    )
+
+                    if (
+                        "current_state" in matched_roles
+                        and (
+                            features.asks_current_state
+                            or features.query_mode
+                            in {
+                                QueryMode.CURRENT,
+                                QueryMode.TIMELINE,
+                            }
+                        )
+                    ):
+                        anchor_score += 0.10
+                    elif (
+                        features.query_mode == QueryMode.HISTORICAL
+                        and "historical_state" in matched_roles
+                    ):
+                        anchor_score += 0.08
+
+                    anchor_candidates.append(
+                        (
+                            (
+                                anchor_score,
+                                primary_topic,
+                                item.final_score,
+                                item.confidence,
+                                item.memory_id,
+                            ),
+                            item,
+                            matched_roles,
+                            requirement_gain,
+                        )
+                    )
+
+                if anchor_candidates:
+                    _, item, matched_roles, gain = max(
+                        anchor_candidates,
+                        key=lambda value: value[0],
+                    )
+                    add(
+                        item,
+                        reason="answer_anchor",
+                        matched_roles=matched_roles,
+                        requirement_gain=gain,
+                    )
 
         # Phase A: repeatedly select the candidate that satisfies the most
         # important currently unmet roles.
@@ -446,10 +626,20 @@ class EvidenceSelector:
                     requirement_gain=1.0,
                 )
 
-        # Preserve explicit unresolved conflict alternatives.
+        # Preserve unresolved conflict alternatives only when they are
+        # topically grounded in the current query. A conflict elsewhere in
+        # memory must not consume evidence slots for this answer.
         by_id = {
             item.memory_id: item
             for item in candidates
+        }
+        conflict_roles = {
+            "answer_target",
+            "current_state",
+            "historical_state",
+            "alternative_state",
+            "preferred_resolution",
+            "transition",
         }
         for conflict in conflicts:
             if not conflict.unresolved:
@@ -458,23 +648,49 @@ class EvidenceSelector:
                 item = by_id.get(memory_id)
                 if item is None or not feasible(item):
                     continue
-                roles = self._all_matching_roles(
-                    item=item,
-                    plan=plan,
-                    features=features,
-                    conflicts=conflicts,
+
+                topical = self._primary_topic_score(
+                    item,
+                    features,
                 )
+                if (
+                    topical
+                    < self.conflict_preservation_min_topical
+                ):
+                    continue
+
+                roles = (
+                    self._all_matching_roles(
+                        item=item,
+                        plan=plan,
+                        features=features,
+                        conflicts=conflicts,
+                    )
+                    & conflict_roles
+                )
+                if not roles:
+                    continue
+
                 add(
                     item,
                     reason="unresolved_conflict_preservation",
-                    matched_roles=roles
-                    or {"alternative_state"},
+                    matched_roles=roles,
                     requirement_gain=1.0,
                 )
 
         # Phase B: fill only when the candidate is still topically useful,
-        # covers a new need, or contributes another recognised role.
-        while len(selected) < plan.max_evidence:
+        # covers a new need, or contributes another recognised role. When an
+        # explicit-cardinality request is already fully satisfied, stop at the
+        # requested number instead of adding unrelated buffer evidence.
+        cardinality_complete = (
+            plan.explicit_cardinality is not None
+            and satisfied["distinct_item"]
+            >= plan.explicit_cardinality
+        )
+        while (
+            len(selected) < plan.max_evidence
+            and not cardinality_complete
+        ):
             scored_remaining: list[
                 tuple[
                     tuple[float, float, float, str],
@@ -533,6 +749,16 @@ class EvidenceSelector:
                     or bool(roles)
                 )
                 if not useful:
+                    continue
+
+                # Once the minimum evidence floor is met, do not fill with
+                # generic current/support memories that are not grounded in
+                # the primary answer topic.
+                if (
+                    len(selected) >= self.minimum_evidence
+                    and topical < self.min_topical_score
+                    and new_coverage == 0
+                ):
                     continue
 
                 if (
@@ -786,32 +1012,86 @@ class EvidenceSelector:
         conflicts: list[ConflictGroup],
     ) -> float:
         text = self._candidate_text(item).lower()
-        topical = self._topical_score(
+        primary_topical = self._primary_topic_score(
             item,
             features,
         )
+        broad_topical = self._topical_score(
+            item,
+            features,
+        )
+        threshold = self.role_topical_thresholds.get(
+            role,
+            self.min_topical_score,
+        )
 
+        # Roles that determine the factual answer must be grounded in the
+        # primary topic, not merely in generic intent words such as current,
+        # explain, evidence or preferred.
         if role == "answer_target":
-            return topical if topical >= 0.12 else 0.0
+            return (
+                primary_topical
+                if primary_topical >= threshold
+                else 0.0
+            )
 
         if role == "current_state":
+            if primary_topical < threshold:
+                return 0.0
+
+            has_historical_signal = (
+                self._contains_historical_signal(text)
+            )
+            has_current_signal = (
+                self._contains_current_signal(text)
+            )
+            preferred = self._is_preferred(
+                item,
+                conflicts,
+            )
+
+            # A semantic record can still carry status=current while its text
+            # explicitly describes an earlier state. Do not let that satisfy
+            # the current endpoint unless it also carries an explicit current
+            # signal or was selected as the conflict resolution.
+            if (
+                has_historical_signal
+                and not has_current_signal
+                and not preferred
+            ):
+                return 0.0
+
             if self._is_current(item):
-                return 0.65 + 0.35 * topical
-            if any(signal in text for signal in self.CURRENT_SIGNALS):
-                return 0.45 + 0.35 * topical
+                return min(
+                    1.0,
+                    0.65 + 0.35 * primary_topical,
+                )
+            if has_current_signal:
+                return min(
+                    1.0,
+                    0.45 + 0.40 * primary_topical,
+                )
             return 0.0
 
         if role == "historical_state":
+            if primary_topical < threshold:
+                return 0.0
+
             if self._is_historical(item):
-                return 0.65 + 0.35 * topical
-            if any(
-                signal in text
-                for signal in self.HISTORICAL_SIGNALS
-            ):
-                return 0.50 + 0.35 * topical
+                return min(
+                    1.0,
+                    0.65 + 0.35 * primary_topical,
+                )
+            if self._contains_historical_signal(text):
+                return min(
+                    1.0,
+                    0.50 + 0.40 * primary_topical,
+                )
             return 0.0
 
         if role == "transition":
+            if primary_topical < threshold:
+                return 0.0
             if any(
                 signal in text
                 for signal in self.TRANSITION_SIGNALS
@@ -824,58 +1104,109 @@ class EvidenceSelector:
                 )
                 return min(
                     1.0,
-                    0.55 + bonus + 0.30 * topical,
+                    0.50
+                    + bonus
+                    + 0.35 * primary_topical,
                 )
             return 0.0
 
         if role == "procedural_rule":
             if item.memory_type != MemoryType.PROCEDURAL:
                 return 0.0
+
             applicability = self._procedure_applicability(
                 item
             )
-            return max(
-                0.50,
-                0.65 * applicability
-                + 0.35 * topical,
+            topical = max(
+                primary_topical,
+                0.75 * broad_topical,
+            )
+            if (
+                topical < threshold
+                and applicability < 0.80
+            ):
+                return 0.0
+
+            return min(
+                1.0,
+                0.60 * applicability
+                + 0.40 * topical,
             )
 
         if role == "alternative_state":
+            if primary_topical < threshold:
+                return 0.0
             if self._is_historical(item):
-                return 0.65 + 0.30 * topical
+                return min(
+                    1.0,
+                    0.65 + 0.30 * primary_topical,
+                )
             if any(
                 signal in text
                 for signal in self.ALTERNATIVE_SIGNALS
             ):
-                return 0.50 + 0.35 * topical
-            if self._is_conflict_member(item, conflicts):
-                return 0.45 + 0.35 * topical
+                return min(
+                    1.0,
+                    0.50 + 0.40 * primary_topical,
+                )
+            if self._is_conflict_member(
+                item,
+                conflicts,
+            ):
+                return min(
+                    1.0,
+                    0.45 + 0.40 * primary_topical,
+                )
             return 0.0
 
         if role == "preferred_resolution":
-            if self._is_preferred(item, conflicts):
-                return 0.70 + 0.25 * topical
+            if primary_topical < threshold:
+                return 0.0
+            if self._is_preferred(
+                item,
+                conflicts,
+            ):
+                return min(
+                    1.0,
+                    0.70 + 0.25 * primary_topical,
+                )
             if any(
                 signal in text
                 for signal in self.RESOLUTION_SIGNALS
             ):
-                return 0.50 + 0.35 * topical
+                return min(
+                    1.0,
+                    0.50 + 0.40 * primary_topical,
+                )
             return 0.0
 
         if role == "supporting_evidence":
+            topical = max(
+                primary_topical,
+                0.80 * broad_topical,
+            )
+            if topical < threshold:
+                return 0.0
+
             has_support_signal = any(
                 signal in text
                 for signal in self.SUPPORT_SIGNALS
             )
-            if (
-                item.memory_type == MemoryType.EPISODIC
-                and topical >= 0.10
-            ):
-                return 0.50 + 0.35 * topical
-            if has_support_signal and topical >= 0.08:
-                return 0.45 + 0.35 * topical
-            if self._is_historical(item) and topical >= 0.15:
-                return 0.40 + 0.35 * topical
+            if item.memory_type == MemoryType.EPISODIC:
+                return min(
+                    1.0,
+                    0.45 + 0.40 * topical,
+                )
+            if has_support_signal:
+                return min(
+                    1.0,
+                    0.45 + 0.40 * topical,
+                )
+            if self._is_historical(item):
+                return min(
+                    1.0,
+                    0.40 + 0.35 * topical,
+                )
             return 0.0
 
         if role == "distinct_item":
@@ -883,10 +1214,13 @@ class EvidenceSelector:
                 item,
                 features,
             )
-            return (
-                0.70 + 0.25 * topical
-                if key
-                else 0.0
+            if not key:
+                return 0.0
+            if primary_topical < threshold:
+                return 0.0
+            return min(
+                1.0,
+                0.70 + 0.25 * primary_topical,
             )
 
         return 0.0
@@ -896,6 +1230,16 @@ class EvidenceSelector:
         item: MemoryCandidate,
         features: QueryFeatures,
     ) -> float:
+        """Broad topical score used by MMR and support-role ranking.
+
+        The primary information need remains dominant so generic query intent
+        words such as explain, current or evidence cannot outweigh the actual
+        subject being asked about.
+        """
+        primary = self._primary_topic_score(
+            item,
+            features,
+        )
         candidate_tokens = tokenize(
             self._candidate_text(item),
             self.stopwords,
@@ -904,65 +1248,160 @@ class EvidenceSelector:
             features.normalised_query,
             self.stopwords,
         )
-        primary_need_tokens = tokenize(
-            (
-                features.information_needs[0]
-                if features.information_needs
-                else features.normalised_query
-            ),
-            self.stopwords,
-        )
-
-        lexical_proxy = max(
-            overlap_ratio(
-                query_tokens,
-                candidate_tokens,
-            ),
-            overlap_ratio(
-                primary_need_tokens,
-                candidate_tokens,
-            ),
-        )
-        focus_tokens = [
-            token
-            for token in primary_need_tokens
-            if token
-            not in {
-                "answer",
-                "explain",
-                "support",
-                "supports",
-                "evidence",
-                "current",
-                "currently",
-                "earlier",
-                "historical",
-                "state",
-                "preferred",
-                "alternative",
-                "conflicting",
-                "should",
-                "mainly",
-                "more",
-                "over",
-                "time",
-                "change",
-                "changed",
-            }
-        ]
-        focus_score = overlap_ratio(
-            focus_tokens,
+        full_overlap = overlap_ratio(
+            query_tokens,
             candidate_tokens,
         )
-        blended_proxy = (
-            0.60 * lexical_proxy
-            + 0.40 * focus_score
+
+        lexical_component = (
+            0.45 * float(item.lexical_score)
+            + 0.55 * primary
+        )
+        entity_component = (
+            0.50 * float(item.graph_entity_score)
+            + 0.50 * primary
         )
 
         return max(
-            float(item.lexical_score),
-            float(item.graph_entity_score),
-            blended_proxy,
+            primary,
+            0.35 * full_overlap + 0.65 * primary,
+            lexical_component,
+            entity_component,
+        )
+
+    def _primary_topic_score(
+        self,
+        item: MemoryCandidate,
+        features: QueryFeatures,
+    ) -> float:
+        """Score overlap with the answer topic, excluding intent scaffolding."""
+        candidate_tokens = tokenize(
+            self._candidate_text(item),
+            self.stopwords,
+        )
+        primary_need = (
+            features.information_needs[0]
+            if features.information_needs
+            else features.normalised_query
+        )
+        primary_tokens = tokenize(
+            primary_need,
+            self.stopwords,
+        )
+        focus_tokens = self._focus_tokens(
+            primary_tokens
+        )
+        if not focus_tokens:
+            focus_tokens = primary_tokens
+
+        slot_text = " ".join(
+            value
+            for value in (
+                item.subject or "",
+                item.predicate or "",
+                item.object_value or "",
+            )
+            if value
+        )
+        slot_tokens = tokenize(
+            slot_text,
+            self.stopwords,
+        )
+
+        text_overlap = overlap_ratio(
+            focus_tokens,
+            candidate_tokens,
+        )
+        slot_overlap = overlap_ratio(
+            focus_tokens,
+            slot_tokens,
+        )
+
+        # For "three memory types" queries, the type label itself is a
+        # legitimate primary-topic match even when the candidate defines only
+        # one of the three types.
+        query_lower = features.normalised_query.lower()
+        memory_type_bonus = 0.0
+        if (
+            "memory type" in query_lower
+            or "memory types" in query_lower
+            or "记忆类型" in query_lower
+        ):
+            text_lower = self._candidate_text(item).lower()
+            if any(
+                label in text_lower
+                for label in self.DISTINCT_MEMORY_LABELS
+            ):
+                memory_type_bonus = 0.35
+
+        return max(
+            text_overlap,
+            slot_overlap,
+            memory_type_bonus,
+        )
+
+    @staticmethod
+    def _focus_tokens(
+        tokens: list[str],
+    ) -> list[str]:
+        generic = {
+            "answer",
+            "explain",
+            "support",
+            "supports",
+            "supported",
+            "evidence",
+            "current",
+            "currently",
+            "earlier",
+            "historical",
+            "state",
+            "states",
+            "preferred",
+            "alternative",
+            "alternatives",
+            "conflicting",
+            "conflict",
+            "should",
+            "mainly",
+            "more",
+            "over",
+            "time",
+            "change",
+            "changed",
+            "which",
+            "memories",
+            "memory",
+            "what",
+            "does",
+            "each",
+            "three",
+            "originally",
+            "before",
+            "now",
+        }
+        return [
+            token
+            for token in tokens
+            if token not in generic
+        ]
+
+    def _contains_historical_signal(
+        self,
+        text: str,
+    ) -> bool:
+        return any(
+            signal in text
+            for signal in self.HISTORICAL_SIGNALS
+        )
+
+    def _contains_current_signal(
+        self,
+        text: str,
+    ) -> bool:
+        return any(
+            signal in text
+            for signal in self.CURRENT_SIGNALS
         )
 
     def _distinct_item_key(
@@ -971,17 +1410,25 @@ class EvidenceSelector:
         features: QueryFeatures,
     ) -> str | None:
         text = self._candidate_text(item).lower()
-
-        for label in self.DISTINCT_MEMORY_LABELS:
-            if label in text:
-                return label.replace(" ", "_")
-
         query_lower = features.normalised_query.lower()
-        if (
+        memory_type_query = (
             "memory type" in query_lower
             or "memory types" in query_lower
             or "记忆类型" in query_lower
-        ):
+        )
+
+        if memory_type_query:
+            has_definition_signal = any(
+                signal in text
+                for signal in self.MEMORY_DEFINITION_SIGNALS
+            )
+            if not has_definition_signal:
+                return None
+
+            for label in self.DISTINCT_MEMORY_LABELS:
+                if label in text:
+                    return label.replace(" ", "_")
+
             return None
 
         subject = self._normalise_key(item.subject)
