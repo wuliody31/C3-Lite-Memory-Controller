@@ -1,6 +1,6 @@
 controller:
   name: C3-Lite
-  version: v2.2-rc8.3a
+  version: v2.2-rc8.3b
   expansion: Context-adaptive, Conflict-aware, Confidence-controlled
 
 query_analysis:
