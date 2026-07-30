@@ -262,6 +262,13 @@ generation:
   ollama_base_url: http://localhost:11434
   default_model: llama3.2:3b
 
+  # Hugging Face GPU backbone.
+  transformers_model: Qwen/Qwen3-8B
+  transformers_load_in_4bit: true
+  transformers_compute_dtype: bfloat16
+  transformers_enable_thinking: false
+  transformers_adapter_path: null
+
 logging:
   save_route_scores: true
   save_retrieved_ids: true
