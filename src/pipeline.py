@@ -514,6 +514,25 @@ def _build_full_candidate_score_trace(
     return output
 
 
+def _conflicts_for_selected(
+    conflicts,
+    selected,
+):
+    """Keep only conflicts relevant to final selected evidence."""
+    selected_ids = {
+        candidate.memory_id
+        for candidate in selected
+    }
+
+    return [
+        conflict
+        for conflict in conflicts
+        if selected_ids.intersection(
+            conflict.candidate_ids
+        )
+    ]
+
+
 class C3Pipeline:
     def __init__(
         self,
@@ -732,6 +751,10 @@ class C3Pipeline:
             self.selector.last_requirement_status
         )
 
+        decision_conflicts = _conflicts_for_selected(
+            conflicts,
+            selected,
+        )
         coverage = self.coverage.compute(
             features.information_needs,
             selected,
@@ -741,7 +764,7 @@ class C3Pipeline:
             self.confidence.evaluate(
                 selected=selected,
                 route=route,
-                conflicts=conflicts,
+                conflicts=decision_conflicts,
                 coverage=coverage,
             )
         )
@@ -750,7 +773,7 @@ class C3Pipeline:
             query=state.query,
             features=features,
             selected=selected,
-            conflicts=conflicts,
+            conflicts=decision_conflicts,
             decision=(
                 confidence.decision
             ),

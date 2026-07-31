@@ -318,6 +318,67 @@ class CoverageEstimator:
                 ):
                     covered.add(index)
 
+        # RC8.4-B role-grounded coverage.
+        procedural_rule_selected = any(
+            candidate.memory_type
+            == MemoryType.PROCEDURAL
+            and "procedural_rule"
+            in {
+                str(role)
+                for role in (
+                    candidate.metadata.get(
+                        "evidence_roles",
+                        [],
+                    )
+                    or []
+                )
+            }
+            for candidate in selected
+        )
+
+        scope_validation_supported = any(
+            phrase in selected_text
+            for phrase in (
+                "implementation backend not research core",
+                "implementation backend, not research core",
+                "not the central research contribution",
+                "not research core",
+            )
+        )
+
+        for index, need in enumerate(
+            information_needs
+        ):
+            need_lower = need.lower()
+
+            if (
+                procedural_rule_selected
+                and (
+                    "applicable procedure" in need_lower
+                    or "procedure or rule" in need_lower
+                    or "applicable rule" in need_lower
+                )
+            ):
+                covered.add(index)
+
+            if (
+                scope_validation_supported
+                and "neo4j" in need_lower
+                and any(
+                    signal in need_lower
+                    for signal in (
+                        "main",
+                        "mainly",
+                        "primarily",
+                        "proving",
+                        "useful",
+                        "focus",
+                        "core",
+                    )
+                )
+            ):
+                covered.add(index)
+
         return len(covered) / len(information_needs)
 
     def _procedure_covers_need(

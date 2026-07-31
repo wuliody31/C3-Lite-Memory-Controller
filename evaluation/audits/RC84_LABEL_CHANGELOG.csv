@@ -1,0 +1,2 @@
+question_id,old_expected_memory_types,new_expected_memory_types,change_type,rationale
+q_user01_003,episodic;semantic;procedural,episodic;semantic,annotation_correction,"Descriptive current-state comparison does not request a procedure or policy."

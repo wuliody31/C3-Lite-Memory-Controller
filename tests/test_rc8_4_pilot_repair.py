@@ -149,3 +149,91 @@ def test_scope_backend_evidence_covers_scope_validation() -> None:
     )
 
     assert coverage == pytest.approx(1.0)
+
+
+def test_selected_procedural_role_covers_generic_rule_need() -> None:
+    estimator = CoverageEstimator(config())
+
+    evidence = candidate(
+        "p_selected_rule",
+        (
+            "When no evidence is stored for a claim, "
+            "state that the evidence is insufficient."
+        ),
+        memory_type=MemoryType.PROCEDURAL,
+        metadata={
+            "evidence_roles": [
+                "answer_target",
+                "procedural_rule",
+            ],
+        },
+    )
+
+    coverage = estimator.compute(
+        [
+            "should say if there no stored evidence project claim",
+            "applicable procedure or rule",
+        ],
+        [evidence],
+    )
+
+    assert coverage == pytest.approx(1.0)
+
+
+def test_structured_neo4j_scope_negation_has_coverage() -> None:
+    estimator = CoverageEstimator(config())
+
+    evidence = candidate(
+        "s_neo4j_scope",
+        (
+            "Neo4j role is implementation backend "
+            "not research core."
+        ),
+        memory_type=MemoryType.SEMANTIC,
+    )
+    evidence.subject = "Neo4j"
+    evidence.predicate = "role"
+    evidence.object_value = (
+        "implementation_backend_not_research_core"
+    )
+
+    coverage = estimator.compute(
+        ["project mainly about proving neo4j useful"],
+        [evidence],
+    )
+
+    assert coverage == pytest.approx(1.0)
+
+
+def test_irrelevant_conflict_is_excluded_from_decision() -> None:
+    from types import SimpleNamespace
+
+    from src.pipeline import (
+        _conflicts_for_selected,
+    )
+
+    selected = [
+        candidate(
+            "s_selected",
+            "Selected relevant fact.",
+            memory_type=MemoryType.SEMANTIC,
+        )
+    ]
+
+    irrelevant = SimpleNamespace(
+        candidate_ids=[
+            "s_other_1",
+            "s_other_2",
+        ]
+    )
+    relevant = SimpleNamespace(
+        candidate_ids=[
+            "s_selected",
+            "s_alternative",
+        ]
+    )
+
+    assert _conflicts_for_selected(
+        [irrelevant, relevant],
+        selected,
+    ) == [relevant]
