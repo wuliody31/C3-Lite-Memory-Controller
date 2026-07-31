@@ -41,9 +41,9 @@ def analyzer() -> QueryAnalyzer:
             "What baselines have I selected for the project evaluation?",
             {
                 "procedure": False,
-                "historical": True,
-                "current": True,
-                "mode": QueryMode.TIMELINE,
+                "historical": False,
+                "current": False,
+                "mode": QueryMode.ATEMPORAL,
             },
         ),
         (

@@ -166,6 +166,21 @@ class QueryAnalyzer:
         r"\bwhich\b.+\bhave\s+i\s+(?:selected|chosen|adopted)\b",
     )
 
+    # Questions asking for the members of a selected set are not
+    # timeline questions. "Have I selected" describes the requested
+    # set, rather than an earlier-to-current state transition.
+    SELECTION_SET_PATTERNS = (
+        r"\b(?:what|which)\s+"
+        r"(?:baselines?|methods?|models?|tools?|datasets?|"
+        r"metrics?|options?|components?)\s+"
+        r"(?:have\s+i|did\s+i)\s+"
+        r"(?:selected|select|chosen|choose|adopted|adopt)\b",
+        r"\b(?:what|which)\s+"
+        r"(?:baselines?|methods?|models?|tools?|datasets?|"
+        r"metrics?|options?|components?)\s+"
+        r"(?:are|were)\s+(?:selected|chosen|adopted)\b",
+    )
+
     ALTERNATIVE_PATTERNS = (
         r"\b(?:is|are|was|were|should|did|do|does|can|could|would)\b.+\bor\b.+",
         r"\b(?:prioritise|prioritize|choose|select|prefer)\b.+\bor\b.+",
@@ -298,6 +313,16 @@ class QueryAnalyzer:
                 self.TEMPORAL_CONTINUITY_PATTERNS,
             )
         )
+
+        selection_set_query = self._matches_any(
+            normalised,
+            self.SELECTION_SET_PATTERNS,
+        )
+
+        if selection_set_query:
+            asks_current = False
+            asks_historical = False
+            asks_timeline = False
 
         asks_procedure = self._detect_procedural_intent(normalised)
         asks_explanation = self._detect_explanation_intent(normalised)
