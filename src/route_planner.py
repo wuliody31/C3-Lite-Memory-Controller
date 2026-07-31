@@ -544,6 +544,7 @@ class RoutePlanner:
         if (
             features.asks_conflict
             and features.asks_current_state
+            and features.asks_procedure
             and " or "
             in f" {features.normalised_query} "
         ):

@@ -21,7 +21,9 @@ class CoverageEstimator:
         "previous",
         "previously",
         "initial",
+        "initially",
         "original",
+        "originally",
         "past",
         "before",
         "旧",
@@ -274,6 +276,48 @@ class CoverageEstimator:
                 ):
                     covered.add(index)
 
+        selected_text = " ".join(
+            " ".join(
+                str(value)
+                for value in [
+                    candidate.text,
+                    candidate.subject,
+                    candidate.predicate,
+                    candidate.object_value,
+                ]
+                if value not in (None, "")
+            )
+            for candidate in selected
+        ).lower().replace("_", " ")
+
+        memory_definition_supported = all(
+            label in selected_text
+            for label in (
+                "episodic memory",
+                "semantic memory",
+                "procedural memory",
+            )
+        )
+
+        if memory_definition_supported:
+            for index, need in enumerate(
+                information_needs
+            ):
+                need_lower = need.lower()
+
+                if any(
+                    signal in need_lower
+                    for signal in (
+                        "memory",
+                        "type",
+                        "types",
+                        "each",
+                        "record",
+                        "records",
+                    )
+                ):
+                    covered.add(index)
+
         return len(covered) / len(information_needs)
 
     def _procedure_covers_need(
@@ -320,6 +364,27 @@ class CoverageEstimator:
     def _is_applicable_procedure(
         candidate: MemoryCandidate,
     ) -> bool:
+        preliminary_score = float(
+            candidate.metadata.get(
+                "preliminary_procedural_score",
+                0.0,
+            )
+            or 0.0
+        )
+        task_match = float(
+            candidate.metadata.get(
+                "task_match",
+                0.0,
+            )
+            or 0.0
+        )
+
+        if (
+            preliminary_score >= 0.50
+            or task_match >= 0.80
+        ):
+            return True
+
         task_match = float(
             candidate.metadata.get("task_match", 0.0)
         )
@@ -358,11 +423,26 @@ class CoverageEstimator:
         self,
         candidate: MemoryCandidate,
     ) -> bool:
+        content = " ".join(
+            str(value)
+            for value in [
+                candidate.text,
+                candidate.subject,
+                candidate.predicate,
+                candidate.object_value,
+            ]
+            if value not in (None, "")
+        ).lower()
+
         return (
             candidate.status.lower()
             in self.HISTORICAL_STATUSES
             or (candidate.resolution_action or "").lower()
             in self.HISTORICAL_ACTIONS
+            or any(
+                signal in content
+                for signal in self.EARLIER_SIGNALS
+            )
         )
 
     def _is_current_endpoint(

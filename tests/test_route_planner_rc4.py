@@ -46,7 +46,7 @@ def components() -> tuple[QueryAnalyzer, RoutePlanner]:
     [
         (
             "Is my project currently a large multi-agent system or a smaller C3-Lite controller prototype?",
-            {"episodic", "semantic", "procedural"},
+            {"episodic", "semantic"},
         ),
         (
             "When discussing my dissertation with my supervisor, how should the answer style be?",
