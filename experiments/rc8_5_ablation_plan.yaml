@@ -1,0 +1,69 @@
+experiment: RC8.5 component ablation study
+
+frozen_reference:
+  git_commit: f6a2a2e8a5e9e229f091126eb95a9dfc2ba4a5cb
+  full_c3_job: 36131
+  dataset: final_v01_rc84/eval_questions_c3.csv
+  model: Qwen/Qwen3-8B
+  quantization: 4-bit NF4
+  adapter: none
+  questions: 60
+
+principle:
+  design: one-component-at-a-time
+  controller_tuning_after_full60: prohibited
+  dataset_label_changes: prohibited
+  generation_parameter_changes: prohibited
+
+variants:
+  - name: no_route_planner
+    change: route all three memory types for every memory-dependent query
+    preserved:
+      - shared ranker
+      - evidence selector
+      - conflict handling
+      - coverage and confidence gate
+
+  - name: no_conflict_handling
+    change: disable conflict detection and decision-level conflict arbitration
+    preserved:
+      - route planner
+      - shared ranker
+      - evidence selector
+      - coverage and confidence gate
+
+  - name: no_coverage_confidence_gate
+    change: disable coverage and confidence based abstention or caveat control
+    preserved:
+      - route planner
+      - shared ranker
+      - evidence selector
+      - conflict handling
+
+  - name: no_evidence_selector
+    change: replace structured evidence selection with top-K shared-ranked evidence
+    preserved:
+      - route planner
+      - shared ranker
+      - conflict handling
+      - coverage and confidence gate
+
+primary_metrics:
+  - answer_token_f1
+  - evidence_f1
+
+secondary_metrics:
+  - route_f1
+  - evidence_precision
+  - evidence_recall
+  - abstention_correctness
+  - coverage
+  - num_used
+  - latency_ms
+
+statistics:
+  comparison_direction: full_c3_minus_ablation
+  resamples: 50000
+  confidence_interval: 95_percentile_paired_bootstrap
+  multiple_testing: Holm-Bonferroni_across_8_primary_comparisons
+  seed: 20260801

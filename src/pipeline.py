@@ -6,6 +6,12 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from .ablation import (
+    AblationSettings,
+    bypass_coverage_confidence_gate,
+    force_all_memory_route,
+    select_ranked_top_k,
+)
 from .backbones import Backbone
 from .candidate_budget import (
     BoundaryAwareCandidateBudget,
@@ -544,6 +550,9 @@ class C3Pipeline:
         prompt_template: str | Path,
     ) -> None:
         self.config = config
+        self.ablation = AblationSettings.from_config(
+            config
+        )
         self.memory_store = memory_store
         self.procedure_store = (
             procedure_store
@@ -597,6 +606,9 @@ class C3Pipeline:
         route = self.router.plan(
             features
         )
+
+        if self.ablation.disable_route_planner:
+            route = force_all_memory_route()
 
         include_archived = (
             features.query_mode.value
@@ -720,41 +732,52 @@ class C3Pipeline:
             )
         )
 
-        conflicts = self.detector.detect(
-            ranked_candidates
-        )
+        if self.ablation.disable_conflict_handling:
+            conflicts = []
+            resolved_candidates = ranked_candidates
+        else:
+            conflicts = self.detector.detect(
+                ranked_candidates
+            )
 
-        (
-            resolved_candidates,
-            conflicts,
-        ) = self.resolver.resolve(
-            candidates=ranked_candidates,
-            conflicts=conflicts,
-            features=features,
-        )
+            (
+                resolved_candidates,
+                conflicts,
+            ) = self.resolver.resolve(
+                candidates=ranked_candidates,
+                conflicts=conflicts,
+                features=features,
+            )
 
-        selected = self.selector.select(
-            candidates=(
-                resolved_candidates
-            ),
-            features=features,
-            route=route,
-            conflicts=conflicts,
-        )
+        if self.ablation.disable_evidence_selector:
+            selected = select_ranked_top_k(
+                candidates=resolved_candidates,
+                config=self.config,
+            )
+            evidence_requirement_plan = {}
+            evidence_requirement_status = {}
+        else:
+            selected = self.selector.select(
+                candidates=resolved_candidates,
+                features=features,
+                route=route,
+                conflicts=conflicts,
+            )
 
-        evidence_requirement_plan = (
-            self.selector.last_plan.to_dict()
-            if self.selector.last_plan is not None
-            else {}
-        )
-        evidence_requirement_status = dict(
-            self.selector.last_requirement_status
-        )
+            evidence_requirement_plan = (
+                self.selector.last_plan.to_dict()
+                if self.selector.last_plan is not None
+                else {}
+            )
+            evidence_requirement_status = dict(
+                self.selector.last_requirement_status
+            )
 
         decision_conflicts = _conflicts_for_selected(
             conflicts,
             selected,
         )
+
         coverage = self.coverage.compute(
             features.information_needs,
             selected,
@@ -768,6 +791,17 @@ class C3Pipeline:
                 coverage=coverage,
             )
         )
+
+        if (
+            self.ablation
+            .disable_coverage_confidence_gate
+        ):
+            confidence = (
+                bypass_coverage_confidence_gate(
+                    confidence=confidence,
+                    selected=selected,
+                )
+            )
 
         prompt = self.prompt_builder.build(
             query=state.query,
@@ -916,6 +950,26 @@ class C3Pipeline:
                 ranked_candidate_ids
             ),
             debug={
+                "ablation_variant": (
+                    self.ablation.variant
+                ),
+                "ablation_settings": (
+                    self.ablation.to_dict()
+                ),
+                "selection_mode": (
+                    "ranked_top_k"
+                    if self.ablation
+                    .disable_evidence_selector
+                    else "structured_requirement_mmr"
+                ),
+                "conflict_handling_enabled": (
+                    not self.ablation
+                    .disable_conflict_handling
+                ),
+                "confidence_gate_enabled": (
+                    not self.ablation
+                    .disable_coverage_confidence_gate
+                ),
                 "route_reasons": (
                     route.reasons
                 ),
