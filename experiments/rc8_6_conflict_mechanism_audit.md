@@ -29,3 +29,21 @@ Conflict handling did not produce a measurable aggregate improvement on Dataset 
 | q_user02_017 | 0 | False | False | False |
 | q_user03_003 | 0 | False | False | False |
 | q_user03_019 | 0 | False | False | False |
+
+## Final interpretation
+
+Only one of the seven conflict-labelled questions activated the
+conflict detector. That question produced two unresolved conflict
+groups, but disabling conflict handling did not change the selected
+evidence, answer or decision.
+
+The aggregate null ablation result therefore primarily reflects sparse
+detector activation and limited conflict-mechanism coverage in Dataset A.
+It should not be interpreted as evidence that conflict handling is
+unnecessary. Six conflict-labelled questions represented semantic
+alternatives at the question level but did not retrieve candidate pairs
+that satisfied the detector's explicit-relation or implicit-slot
+conditions.
+
+No controller parameters or Dataset A labels were modified after this
+audit.
