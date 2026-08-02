@@ -255,3 +255,88 @@ def test_strict_mode_rejects_missing_gold_id(
             seed=20260801,
             strict=True,
         )
+
+
+def test_composite_and_zero_padded_evidence_ids(
+    tmp_path: Path,
+) -> None:
+    source = (
+        tmp_path
+        / "source"
+        / "locomo.json"
+    )
+
+    output = tmp_path / "output"
+
+    sample = minimal_sample()
+
+    sample["qa"] = [
+        {
+            "question": (
+                "What do Alice and Bob drink?"
+            ),
+            "answer": "Tea and coffee",
+            "evidence": [
+                "D1:01; D1:2"
+            ],
+            "category": 1,
+        },
+        {
+            "question": (
+                "Which drinks were mentioned?"
+            ),
+            "answer": "Tea and coffee",
+            "evidence": [
+                "D1:1 D1:02"
+            ],
+            "category": 2,
+        },
+    ]
+
+    write_source(
+        source,
+        [sample],
+    )
+
+    manifest = prepare(
+        source=source,
+        output_dir=output,
+        include_observations=True,
+        smoke_size=0,
+        pilot_size=0,
+        seed=20260801,
+        strict=True,
+    )
+
+    questions = read_csv(
+        output
+        / "eval_questions_locomo_all.csv"
+    )
+
+    expected = (
+        "e_locomo_conv_test_d1_1;"
+        "e_locomo_conv_test_d1_2"
+    )
+
+    assert len(questions) == 2
+
+    assert (
+        questions[0][
+            "supporting_memory_ids"
+        ]
+        == expected
+    )
+
+    assert (
+        questions[1][
+            "supporting_memory_ids"
+        ]
+        == expected
+    )
+
+    assert (
+        manifest[
+            "unresolved_gold_evidence"
+        ]
+        == []
+    )

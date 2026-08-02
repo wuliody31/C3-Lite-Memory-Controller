@@ -60,24 +60,92 @@ def normalise_answer(value: Any) -> str:
     )
 
 
-def normalise_references(value: Any) -> list[str]:
-    if value in (None, ""):
+DIALOGUE_ID_PATTERN = re.compile(
+    r"(?<![A-Za-z0-9])"
+    r"D0*(\d+):0*(\d+)"
+    r"(?!\d)",
+    flags=re.IGNORECASE,
+)
+
+
+def canonical_dialogue_id(
+    session_number: str,
+    turn_number: str,
+) -> str:
+    return (
+        f"D{int(session_number)}:"
+        f"{int(turn_number)}"
+    )
+
+
+def normalise_references(
+    value: Any,
+) -> list[str]:
+    """Extract and canonicalise LoCoMo dialogue IDs.
+
+    The official data contains several evidence encodings:
+
+    - ["D1:3", "D2:4"]
+    - ["D1:3; D2:4"]
+    - ["D1:3 D2:4"]
+    - ["D30:05"]
+
+    This function maps all valid variants to canonical IDs such as
+    D1:3, D2:4 and D30:5.
+    """
+    if value is None:
         return []
 
-    if isinstance(value, str):
-        return [value.strip()] if value.strip() else []
+    extracted: list[str] = []
 
-    if isinstance(value, (list, tuple, set)):
-        output = []
-
+    if isinstance(
+        value,
+        (list, tuple, set),
+    ):
         for item in value:
-            output.extend(
+            extracted.extend(
                 normalise_references(item)
             )
 
-        return output
+    else:
+        text = str(value).strip()
 
-    return [str(value).strip()]
+        if not text:
+            return []
+
+        matches = (
+            DIALOGUE_ID_PATTERN.findall(
+                text
+            )
+        )
+
+        if matches:
+            extracted.extend(
+                canonical_dialogue_id(
+                    session_number,
+                    turn_number,
+                )
+                for (
+                    session_number,
+                    turn_number,
+                ) in matches
+            )
+        else:
+            # Preserve invalid non-empty references so that
+            # strict adapter validation can report them.
+            extracted.append(text)
+
+    unique: list[str] = []
+    seen: set[str] = set()
+
+    for reference in extracted:
+        if reference in seen:
+            continue
+
+        seen.add(reference)
+        unique.append(reference)
+
+    return unique
 
 
 def parse_timestamp(value: Any) -> str | None:
