@@ -19,9 +19,9 @@
 | Method | Answer F1 | Source Evidence Precision | Source Evidence Recall | Source Evidence F1 | Mean selected evidence |
 |---|---:|---:|---:|---:|---:|
 | No memory | 0.0276 | 0.0000 | 0.0000 | 0.0000 | 0.00 |
-| Simple retrieval | 0.1424 | 0.1421 | 0.5179 | 0.2162 | 5.00 |
-| All memory | 0.1354 | 0.0431 | 0.6001 | 0.0783 | 19.87 |
-| C3 | 0.1236 | 0.2179 | 0.3902 | 0.2716 | 2.03 |
+| Simple retrieval | 0.1424 | 0.1421 | 0.5177 | 0.2162 | 5.00 |
+| All memory | 0.1354 | 0.0431 | 0.6002 | 0.0783 | 19.87 |
+| C3 | 0.1236 | 0.2176 | 0.3899 | 0.2712 | 2.03 |
 
 ## Paired bootstrap analysis
 
@@ -50,18 +50,18 @@ efficiency families.
 ### Source-equivalent Evidence F1
 
 - C3 versus simple retrieval:
-  delta = +0.0554,
-  95% CI [+0.0450, +0.0657],
+  delta = +0.0551,
+  95% CI [+0.0448, +0.0652],
   Holm-adjusted p < .001.
 
 - C3 versus all memory:
-  delta = +0.1933,
-  95% CI [+0.1803, +0.2063],
+  delta = +0.1929,
+  95% CI [+0.1800, +0.2062],
   Holm-adjusted p < .001.
 
 - C3 versus no memory:
-  delta = +0.2716,
-  95% CI [+0.2572, +0.2857],
+  delta = +0.2712,
+  95% CI [+0.2570, +0.2852],
   Holm-adjusted p < .001.
 
 ### Memory budget
@@ -88,3 +88,14 @@ end-to-end superiority.
 The confidence gate also showed limited transfer to LoCoMo's
 unanswerable questions and should be treated as an external-validation
 limitation.
+
+## Gold evidence repair
+
+Six official QA records required composite-reference expansion or
+numeric identifier canonicalisation. Four records contained genuinely
+empty evidence lists, leaving 1,982 records for evidence-level
+evaluation.
+
+The repair changed only evaluation annotations and source-equivalence
+mappings. The frozen model predictions from Slurm Job 36180 were not
+regenerated.
