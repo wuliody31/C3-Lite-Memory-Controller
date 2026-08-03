@@ -1,0 +1,150 @@
+{
+  "experiment": "rc8_8b8_qwen3_route_upperbound",
+  "questions": 200,
+  "generations": 400,
+  "backbone": {
+    "class": "src.transformers_backbone.TransformersBackbone",
+    "signature": "(*, model: 'str', load_in_4bit: 'bool' = True, compute_dtype: 'str' = 'bfloat16', enable_thinking: 'bool' = False, adapter_path: 'str | None' = None) -> 'None'",
+    "constructor_kwargs": {
+      "model": "Qwen/Qwen3-8B",
+      "load_in_4bit": true,
+      "compute_dtype": "bfloat16",
+      "enable_thinking": false
+    },
+    "model": "Qwen/Qwen3-8B",
+    "temperature": 0.0,
+    "max_new_tokens": 256,
+    "construction_seconds": 18.530686649028212,
+    "smoke": {
+      "text": "BACKBONE_READY",
+      "input_tokens": 20,
+      "output_tokens": 5,
+      "latency_seconds": 0.8904982060194016
+    }
+  },
+  "variants": {
+    "base_hybrid": {
+      "questions": 200,
+      "answerable_questions": 160,
+      "unanswerable_questions": 40,
+      "answer_f1_all": 0.05670152027007524,
+      "answer_f1_answerable": 0.07087690033759406,
+      "answer_exact_match_all": 0.0,
+      "evidence_precision": 0.1975,
+      "evidence_recall": 0.30975,
+      "evidence_f1": 0.2301785714285713,
+      "evidence_hit_rate": 0.38,
+      "mean_selected": 2.015,
+      "mean_latency_ms": 3638.2378977630287,
+      "mean_input_tokens": 370.165,
+      "mean_output_tokens": 48.38,
+      "abstention_accuracy": 0.795,
+      "unanswerable_abstain_recall": 0.025,
+      "answerable_response_rate": 0.9875
+    },
+    "all_route_hybrid": {
+      "questions": 200,
+      "answerable_questions": 160,
+      "unanswerable_questions": 40,
+      "answer_f1_all": 0.06423608811059489,
+      "answer_f1_answerable": 0.08029511013824361,
+      "answer_exact_match_all": 0.0,
+      "evidence_precision": 0.2475,
+      "evidence_recall": 0.34458333333333335,
+      "evidence_f1": 0.2740833333333331,
+      "evidence_hit_rate": 0.41,
+      "mean_selected": 2.02,
+      "mean_latency_ms": 3760.0462880567648,
+      "mean_input_tokens": 373.915,
+      "mean_output_tokens": 49.915,
+      "abstention_accuracy": 0.8,
+      "unanswerable_abstain_recall": 0.025,
+      "answerable_response_rate": 0.99375
+    }
+  },
+  "paired_outcomes": {
+    "answer_f1_better": 40,
+    "answer_f1_worse": 30,
+    "answer_f1_tied": 130
+  },
+  "paired_statistics": {
+    "answer_f1": {
+      "mean_delta": 0.007534567840519657,
+      "ci_low": -0.0017667587739950551,
+      "ci_high": 0.017473168044982418,
+      "p_two_sided": 0.11764
+    },
+    "evidence_f1": {
+      "mean_delta": 0.04390476190476192,
+      "ci_low": 0.01533333333333334,
+      "ci_high": 0.07304761904761904,
+      "p_two_sided": 0.00284
+    }
+  },
+  "category_breakdown": {
+    "base_hybrid": {
+      "locomo_category_1": {
+        "questions": 40,
+        "answer_f1": 0.06059591910558164,
+        "evidence_f1": 0.15755952380952382,
+        "evidence_hit_rate": 0.375
+      },
+      "locomo_category_2": {
+        "questions": 40,
+        "answer_f1": 0.05128917217937005,
+        "evidence_f1": 0.30833333333333324,
+        "evidence_hit_rate": 0.45
+      },
+      "locomo_category_3": {
+        "questions": 40,
+        "answer_f1": 0.061807436006221586,
+        "evidence_f1": 0.15166666666666667,
+        "evidence_hit_rate": 0.275
+      },
+      "locomo_category_4": {
+        "questions": 40,
+        "answer_f1": 0.10981507405920296,
+        "evidence_f1": 0.3333333333333332,
+        "evidence_hit_rate": 0.5
+      },
+      "locomo_category_5": {
+        "questions": 40,
+        "answer_f1": 0.0,
+        "evidence_f1": 0.2,
+        "evidence_hit_rate": 0.3
+      }
+    },
+    "all_route_hybrid": {
+      "locomo_category_1": {
+        "questions": 40,
+        "answer_f1": 0.07367741756047604,
+        "evidence_f1": 0.17458333333333334,
+        "evidence_hit_rate": 0.35
+      },
+      "locomo_category_2": {
+        "questions": 40,
+        "answer_f1": 0.06835031607828526,
+        "evidence_f1": 0.37083333333333324,
+        "evidence_hit_rate": 0.5
+      },
+      "locomo_category_3": {
+        "questions": 40,
+        "answer_f1": 0.06801521449497971,
+        "evidence_f1": 0.17083333333333334,
+        "evidence_hit_rate": 0.3
+      },
+      "locomo_category_4": {
+        "questions": 40,
+        "answer_f1": 0.11113749241923354,
+        "evidence_f1": 0.4291666666666666,
+        "evidence_hit_rate": 0.575
+      },
+      "locomo_category_5": {
+        "questions": 40,
+        "answer_f1": 0.0,
+        "evidence_f1": 0.225,
+        "evidence_hit_rate": 0.325
+      }
+    }
+  }
+}
