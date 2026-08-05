@@ -1,0 +1,191 @@
+{
+  "experiment": "rc8_8b13_frozen_soft_probe1_heldout_controller_replay",
+  "dataset_role": "post-development held-out-from-pilot",
+  "questions": 1786,
+  "controller_runs": 3572,
+  "frozen_policy": {
+    "variant": "soft_probe_1",
+    "probe_budget": 1,
+    "route_scores_preserved": true,
+    "runtime_uses_gold": false
+  },
+  "variants": {
+    "hard_route": {
+      "questions": 1786,
+      "evidence_precision": 0.22101530421799176,
+      "evidence_recall": 0.40090526717213815,
+      "evidence_f1": 0.2774067560291351,
+      "evidence_hit_rate": 0.43896976483762595,
+      "mean_selected": 2.034154535274356,
+      "mean_ranked": 13.680291153415453,
+      "mean_raw": 41.141097424412095,
+      "mean_probe_raw": 0.0
+    },
+    "soft_probe_1": {
+      "questions": 1786,
+      "evidence_precision": 0.24661254199328095,
+      "evidence_recall": 0.41009712980745,
+      "evidence_f1": 0.29733956677941437,
+      "evidence_hit_rate": 0.4507278835386338,
+      "mean_selected": 2.032474804031355,
+      "mean_ranked": 14.478163493840986,
+      "mean_raw": 41.92721164613662,
+      "mean_probe_raw": 0.786114221724524
+    }
+  },
+  "paired_statistics": {
+    "evidence_precision": {
+      "mean_delta": 0.02559723777528929,
+      "ci_low": 0.0190929451287794,
+      "ci_high": 0.032269503546099296,
+      "p_two_sided": 0.0
+    },
+    "evidence_recall": {
+      "mean_delta": 0.009191862635311682,
+      "ci_low": 0.00046659201194475545,
+      "ci_high": 0.018010451661067562,
+      "p_two_sided": 0.0382
+    },
+    "evidence_f1": {
+      "mean_delta": 0.019932810750279945,
+      "ci_low": 0.013157894736842082,
+      "ci_high": 0.02668906308324001,
+      "p_two_sided": 0.0
+    },
+    "evidence_hit": {
+      "mean_delta": 0.011758118701007838,
+      "ci_low": 0.0022396416573348264,
+      "ci_high": 0.02127659574468085,
+      "p_two_sided": 0.01736
+    },
+    "selected_count": {
+      "mean_delta": -0.0016797312430011197,
+      "ci_low": -0.004479283314669653,
+      "ci_high": 0.0005599104143337066,
+      "p_two_sided": 0.24868
+    },
+    "raw_count": {
+      "mean_delta": 0.786114221724524,
+      "ci_low": 0.7670772676371781,
+      "ci_high": 0.8051511758118701,
+      "p_two_sided": 0.0
+    }
+  },
+  "paired_hits": {
+    "both_hit": 758,
+    "hard_only_hit": 26,
+    "soft_only_hit": 47,
+    "neither_hit": 955,
+    "net_rescues": 21
+  },
+  "route_behaviour": {
+    "expanded_questions": 1689,
+    "expansion_rate": 0.9456886898096305,
+    "added_type_counts": {
+      "episodic": 1674,
+      "semantic": 15
+    }
+  },
+  "category_breakdown": {
+    "hard_route": {
+      "locomo_category_1": {
+        "questions": 242,
+        "evidence_precision": 0.18801652892561987,
+        "evidence_recall": 0.1481410764577359,
+        "evidence_f1": 0.15907473270929964,
+        "evidence_hit_rate": 0.3512396694214876,
+        "mean_selected": 2.0165289256198347,
+        "mean_raw": 40.78512396694215
+      },
+      "locomo_category_2": {
+        "questions": 281,
+        "evidence_precision": 0.304270462633452,
+        "evidence_recall": 0.5720640569395017,
+        "evidence_f1": 0.3925944755126258,
+        "evidence_hit_rate": 0.5907473309608541,
+        "mean_selected": 2.0106761565836297,
+        "mean_raw": 39.29181494661922
+      },
+      "locomo_category_3": {
+        "questions": 56,
+        "evidence_precision": 0.11904761904761904,
+        "evidence_recall": 0.1443452380952381,
+        "evidence_f1": 0.1244047619047619,
+        "evidence_hit_rate": 0.21428571428571427,
+        "mean_selected": 2.0357142857142856,
+        "mean_raw": 46.589285714285715
+      },
+      "locomo_category_4": {
+        "questions": 801,
+        "evidence_precision": 0.23978360382854763,
+        "evidence_recall": 0.4748231377444861,
+        "evidence_f1": 0.3158967956720751,
+        "evidence_hit_rate": 0.48564294631710364,
+        "mean_selected": 2.044943820224719,
+        "mean_raw": 41.08489388264669
+      },
+      "locomo_category_5": {
+        "questions": 406,
+        "evidence_precision": 0.16009852216748768,
+        "evidence_recall": 0.3226600985221675,
+        "evidence_f1": 0.21338259441707733,
+        "evidence_hit_rate": 0.3251231527093596,
+        "mean_selected": 2.039408866995074,
+        "mean_raw": 41.99261083743843
+      }
+    },
+    "soft_probe_1": {
+      "locomo_category_1": {
+        "questions": 242,
+        "evidence_precision": 0.1900826446280992,
+        "evidence_recall": 0.14882978169189565,
+        "evidence_f1": 0.15976343794345943,
+        "evidence_hit_rate": 0.3512396694214876,
+        "mean_selected": 2.0165289256198347,
+        "mean_raw": 41.50826446280992
+      },
+      "locomo_category_2": {
+        "questions": 281,
+        "evidence_precision": 0.35765124555160144,
+        "evidence_recall": 0.5940094899169633,
+        "evidence_f1": 0.4345873580749034,
+        "evidence_hit_rate": 0.6192170818505338,
+        "mean_selected": 2.0106761565836297,
+        "mean_raw": 40.13879003558719
+      },
+      "locomo_category_3": {
+        "questions": 56,
+        "evidence_precision": 0.11607142857142856,
+        "evidence_recall": 0.1488095238095238,
+        "evidence_f1": 0.1255952380952381,
+        "evidence_hit_rate": 0.21428571428571427,
+        "mean_selected": 2.0357142857142856,
+        "mean_raw": 47.25
+      },
+      "locomo_category_4": {
+        "questions": 801,
+        "evidence_precision": 0.2758426966292135,
+        "evidence_recall": 0.4902205576362879,
+        "evidence_f1": 0.3451102788181432,
+        "evidence_hit_rate": 0.5043695380774033,
+        "mean_selected": 2.0436953807740323,
+        "mean_raw": 41.850187265917604
+      },
+      "locomo_category_5": {
+        "questions": 406,
+        "evidence_precision": 0.16379310344827586,
+        "evidence_recall": 0.31650246305418717,
+        "evidence_f1": 0.21379310344827604,
+        "evidence_hit_rate": 0.32019704433497537,
+        "mean_selected": 2.0344827586206895,
+        "mean_raw": 42.83251231527094
+      }
+    }
+  },
+  "qwen_gate": {
+    "evidence_f1_confirmed": true,
+    "hit_non_regressive": true,
+    "selected_context_stable": true,
+    "passed": true
+  }
+}
