@@ -1,0 +1,92 @@
+./scripts/analyze_rc8_requirements.py:49:def get_question_id(row: dict[str, Any]) -> str:
+./scripts/analyze_rc8_3_route_causality.py:93:    def add(token: Any) -> None:
+./scripts/finalise_route_labels.py:75:def update_file(path: Path) -> dict[str, int]:
+./scripts/mem0/mem0_raw_backend.py:71:        "vector_store": {
+./scripts/mem0/rescore_mem0_pilot200_source_equiv.py:60:def get_field(record: dict[str, Any], key: str, default: Any = None) -> Any:
+./scripts/mem0/analyze_c3_mem0_overlap.py:48:def get_field(record: dict[str, Any], key: str, default: Any = None) -> Any:
+./scripts/mem0/phase2a/mem0_lifecycle_smoke.py:292:        "vector_store": {
+./scripts/mem0/phase2a/mem0_lifecycle_smoke.py:327:        type(memory.vector_store).__name__,
+./scripts/mem0/run_locomo_mem0_heldout_query.py:54:def get_field(record: dict[str, Any], key: str, default: Any = None) -> Any:
+./scripts/mem0/run_locomo_mem0_pilot200.py:37:def get_field(record: dict[str, Any], key: str, default: Any = None) -> Any:
+./scripts/mem0/run_locomo_mem0_pilot200.py:87:def get_metadata(result: dict[str, Any]) -> dict[str, Any]:
+./scripts/add_expected_routes.py:127:def update_csv(
+./src/retrievers/__init__.py:2:from .neo4j_store import Neo4jMemoryStore
+./src/retrievers/__init__.py:5:__all__ = ["InMemoryMemoryStore", "Neo4jMemoryStore", "ProceduralJsonStore"]
+./src/retrievers/neo4j_store.py:7:    from neo4j import GraphDatabase
+./src/retrievers/neo4j_store.py:9:except ImportError:  # permits JSON smoke tests before Neo4j is installed
+./src/retrievers/neo4j_store.py:10:    GraphDatabase = None
+./src/retrievers/neo4j_store.py:17:class Neo4jMemoryStore:
+./src/retrievers/neo4j_store.py:20:        if GraphDatabase is None:
+./src/retrievers/neo4j_store.py:22:        self.driver = GraphDatabase.driver(uri, auth=(user, password))
+./src/route_planner.py:366:        def add(
+./src/evidence_selector.py:365:        def add(
+./src/evidence_requirements.py:148:        def add(
+./_archive/pilot_v1/scripts_pilot_v1/inspect_neo4j.py:3:from src.neo4j_adapter import Neo4jMemoryAdapter
+./_archive/pilot_v1/scripts_pilot_v1/inspect_neo4j.py:8:    adapter = Neo4jMemoryAdapter(config.neo4j_uri, config.neo4j_user, config.neo4j_password)
+./_archive/pilot_v1/src_pilot_v1/config.py:25:        parent / 'Dataset_A_v0_1_Neo4j_Episodic_Engineer',
+./_archive/pilot_v1/src_pilot_v1/config.py:27:        parent / 'Dataset_A_v0_2_Neo4j_Expanded',
+./_archive/pilot_v1/src_pilot_v1/config.py:46:def get_config(dataset_path_override: str | None = None) -> AppConfig:
+./_archive/pilot_v1/src_pilot_v1/experiment_runner.py:8:from src.neo4j_adapter import Neo4jMemoryAdapter
+./_archive/pilot_v1/src_pilot_v1/experiment_runner.py:44:    neo4j = Neo4jMemoryAdapter(config.neo4j_uri, config.neo4j_user, config.neo4j_password)
+./_archive/pilot_v1/src_pilot_v1/neo4j_adapter.py:3:from neo4j import GraphDatabase
+./_archive/pilot_v1/src_pilot_v1/neo4j_adapter.py:6:class Neo4jMemoryAdapter:
+./_archive/pilot_v1/src_pilot_v1/neo4j_adapter.py:10:        self.driver = GraphDatabase.driver(uri, auth=(user, password))
+./_archive/pilot_v1/src_pilot_v1/neo4j_adapter.py:32:    def search_episodic(self, user_id: str, keyword: str, limit: int = 8) -> list[dict[str, Any]]:
+./_archive/pilot_v1/src_pilot_v1/neo4j_adapter.py:45:    def search_semantic(self, user_id: str, keyword: str, limit: int = 8, active_only: bool = True) -> list[dict[str, Any]]:
+./_archive/pilot_v1/src_pilot_v1/neo4j_adapter.py:64:    def get_memory_by_id(self, memory_id: str) -> dict[str, Any] | None:
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/neo4j_adapter.py:3:from neo4j import GraphDatabase
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/neo4j_adapter.py:5:class Neo4jMemoryAdapter:
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/neo4j_adapter.py:8:        self.driver=GraphDatabase.driver(uri,auth=(user,password))
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/neo4j_adapter.py:16:    def get_episodic_candidates(self,user_id:str,limit:int=200):
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/neo4j_adapter.py:19:    def get_semantic_candidates(self,user_id:str,include_archived:bool=False,limit:int=300):
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/neo4j_adapter.py:23:    def search_episodic(self,user_id:str,keyword:str,limit:int=8):
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/neo4j_adapter.py:26:    def search_semantic(self,user_id:str,keyword:str,limit:int=8,active_only:bool=True):
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/neo4j_adapter.py:30:    def get_memory_by_id(self,memory_id:str):
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/neo4j_adapter.py:39:    def get_timeline(self,user_id:str,limit:int=20): return self.get_episodic_candidates(user_id,limit)
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/procedural_matcher.py:8:    def get_candidates(self,user_id:str):
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/query_analyzer.py:26:    def add(intent: str, weight: float, reason: str) -> None:
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/config.py:25:        parent / 'Dataset_A_v0_1_Neo4j_Episodic_Engineer',
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/config.py:27:        parent / 'Dataset_A_v0_2_Neo4j_Expanded',
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/config.py:46:def get_config(dataset_path_override: str | None = None) -> AppConfig:
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/experiment_runner.py:8:from src.neo4j_adapter import Neo4jMemoryAdapter
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/experiment_runner.py:40:    neo4j=Neo4jMemoryAdapter(config.neo4j_uri,config.neo4j_user,config.neo4j_password); procedural=ProceduralRuleMatcher(rules_path); retrieval=MemoryRetrievalEngine(neo4j,procedural); controller=C3LiteController(retrieval,neo4j,config.answer_mode,config.openai_model,config.openai_api_key); predictions=[]; scores=[]
+./_archive/algorithm_v2_1/scripts_algorithm_v2_backup/inspect_neo4j.py:3:from src.neo4j_adapter import Neo4jMemoryAdapter
+./_archive/algorithm_v2_1/scripts_algorithm_v2_backup/inspect_neo4j.py:8:    adapter = Neo4jMemoryAdapter(config.neo4j_uri, config.neo4j_user, config.neo4j_password)
+./_archive/old_system/scripts/inspect_neo4j_counts.py:2:from src.neo4j_adapter import Neo4jMemoryAdapter
+./_archive/old_system/scripts/inspect_neo4j_counts.py:8:    adapter = Neo4jMemoryAdapter(
+./_archive/old_system/scripts/build_locomo_one_conversation.py:437:    # Write Neo4j CSVs
+./_archive/old_system/scripts/import_locomo_neo4j.py:4:from neo4j import GraphDatabase
+./_archive/old_system/scripts/import_locomo_neo4j.py:45:    driver = GraphDatabase.driver(
+./_archive/old_system/scripts/add_dataset_a_labels.py:5:def add_labels(input_path: Path, output_path: Path) -> None:
+./_archive/old_system/scripts/inspect_neo4j.py:3:from src.neo4j_adapter import Neo4jMemoryAdapter
+./_archive/old_system/scripts/inspect_neo4j.py:8:    adapter = Neo4jMemoryAdapter(config.neo4j_uri, config.neo4j_user, config.neo4j_password)
+./_archive/old_system/src/config.py:25:        parent / 'Dataset_A_v0_1_Neo4j_Episodic_Engineer',
+./_archive/old_system/src/config.py:27:        parent / 'Dataset_A_v0_2_Neo4j_Expanded',
+./_archive/old_system/src/config.py:46:def get_config(dataset_path_override: str | None = None) -> AppConfig:
+./_archive/old_system/src/experiment_runner_before_conflict_metrics.py:17:from src.neo4j_adapter import Neo4jMemoryAdapter
+./_archive/old_system/src/experiment_runner_before_conflict_metrics.py:189:    neo4j = Neo4jMemoryAdapter(
+./_archive/old_system/src/experiment_runner.py:17:from src.neo4j_adapter import Neo4jMemoryAdapter
+./_archive/old_system/src/experiment_runner.py:209:    neo4j = Neo4jMemoryAdapter(
+./_archive/old_system/src/neo4j_adapter.py:5:from neo4j import GraphDatabase
+./_archive/old_system/src/neo4j_adapter.py:8:class Neo4jMemoryAdapter:
+./_archive/old_system/src/neo4j_adapter.py:20:        self.driver = GraphDatabase.driver(
+./_archive/old_system/src/neo4j_adapter.py:53:    def get_episodic_candidates(
+./_archive/old_system/src/neo4j_adapter.py:84:    def get_semantic_candidates(
+./_archive/old_system/src/neo4j_adapter.py:126:    def get_memory_by_id(
+./_archive/old_system/src/neo4j_adapter.py:252:    def get_timeline(
+./_archive/old_system/src/procedural_matcher.py:8:    def get_candidates(self,user_id:str):
+./_archive/old_system/src/query_analyzer.py:26:    def add(intent: str, weight: float, reason: str) -> None:
+./tests/test_route_planner_rc4.py:56:            "Please explain why my dataset should not be centred on Neo4j.",
+./tests/test_route_planner_rc4.py:76:            "Is the project mainly about proving Neo4j is useful?",
+./tests/test_structured_selector_rc8.py:448:            "semantic memory implementation backend is Neo4j",
+./tests/test_rc8_3b_procedural_retrieval.py:191:            "on Neo4j."
+./tests/test_rc8_3a_regression_compatibility.py:67:            "Is the project mainly about proving Neo4j is useful?",
+./tests/test_query_analyzer_rc4.py:81:            "Please explain why my dataset should not be centred on Neo4j.",
+./tests/test_rc8_4_pilot_repair.py:142:        "Neo4j role is implementation backend not research core.",
+./tests/test_rc8_4_pilot_repair.py:189:            "Neo4j role is implementation backend "
+./tests/test_rc8_4_pilot_repair.py:194:    evidence.subject = "Neo4j"
+./tests/test_conflicts.py:14:    new = MemoryCandidate("s_new", MemoryType.SEMANTIC, "Project uses Neo4j.", "user01", datetime(2026,6,20), "project", "uses", "Neo4j", "current", 1.0, authority="supervisor_confirmed")
+./run_query.py:10:from src.retrievers import InMemoryMemoryStore, Neo4jMemoryStore, ProceduralJsonStore
+./run_query.py:29:        memory = Neo4jMemoryStore(uri=os.environ["NEO4J_URI"], user=os.environ["NEO4J_USER"], password=os.environ["NEO4J_PASSWORD"], config=config)
+./run_experiment.py:14:    Neo4jMemoryStore,
+./run_experiment.py:87:        return Neo4jMemoryStore(

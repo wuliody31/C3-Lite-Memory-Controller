@@ -1,0 +1,20 @@
+===== REPOSITORY STATE =====
+Date: 2026-08-06T21:25:22+01:00
+Host: jarvis.cs.nott.ac.uk
+Python: /home/alyjw80/projects/c3_gpu/.venv/bin/python
+Python 3.11.13
+
+Branch: c3-v3-phase2b-lifecycle
+979543b (HEAD -> c3-v3-phase2b-lifecycle, tag: phase2a-mem0-additive-path-audited, c3-v3-phase2a-mem0-lifecycle) Audit Mem0 additive-only automatic ingestion path
+ea017b7 (tag: phase2a-mem0-infer-true-smoke-passed) Validate local Mem0 infer-true memory formation smoke
+d711b99 (tag: rc8-8b14-qwen-heldout-validation-passed, rc8-8b14-qwen-heldout-validation) Validate Soft Probe-1 with frozen Qwen3 on held-out LoCoMo
+8a6bbff (tag: rc8-8b13-soft-probe1-heldout-evidence-passed, rc8-8b13-heldout-soft-probe-validation) Validate frozen Soft Probe-1 on held-out LoCoMo
+cbc9bdb (tag: rc8-8b12-soft-probe1-dev-selected, rc8-8b12-qwen-soft-probe-validation) Validate soft route probes with frozen Qwen3
+
+Worktree:
+?? experiments/phase2b_repo_contract_audit_v01/
+?? scripts/analyze_answer_metrics.py
+?? scripts/analyze_gpu_pilot20.py
+?? scripts/diagnose_pilot20_stage.py
+?? scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix
+?? scripts/mem0/slurm/qwen_soft_probe_pilot200.sbatch

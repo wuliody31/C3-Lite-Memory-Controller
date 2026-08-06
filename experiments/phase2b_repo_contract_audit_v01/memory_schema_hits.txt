@@ -1,0 +1,1360 @@
+./scripts/diagnose_pilot20_stage.py:55:    print(row.get("expected_memory_types"))
+./scripts/diagnose_pilot20_stage.py:58:    print(row.get("selected_memory_types"))
+./scripts/diagnose_pilot20_stage.py:149:            "memory_type": trace.get("memory_type"),
+./scripts/prepare_dataset_a_v01.py:160:        "superseded": "superseded",
+./scripts/prepare_dataset_a_v01.py:187:def convert_episodic(
+./scripts/prepare_dataset_a_v01.py:220:                "memory_type": "episodic",
+./scripts/prepare_dataset_a_v01.py:256:def convert_semantic(
+./scripts/prepare_dataset_a_v01.py:299:                "memory_type": "semantic",
+./scripts/prepare_dataset_a_v01.py:427:            or data.get("procedural_memories")
+./scripts/prepare_dataset_a_v01.py:437:            "procedural_memory.json must contain a list, or an object "
+./scripts/prepare_dataset_a_v01.py:438:            "with procedures/rules/procedural_memories/items/data."
+./scripts/prepare_dataset_a_v01.py:681:    episodic_source = (
+./scripts/prepare_dataset_a_v01.py:684:        / "episodic_memory_source.jsonl"
+./scripts/prepare_dataset_a_v01.py:686:    semantic_source = (
+./scripts/prepare_dataset_a_v01.py:689:        / "semantic_triples_source.csv"
+./scripts/prepare_dataset_a_v01.py:691:    procedural_source = (
+./scripts/prepare_dataset_a_v01.py:694:        / "procedural_memory.json"
+./scripts/prepare_dataset_a_v01.py:699:        episodic_source,
+./scripts/prepare_dataset_a_v01.py:700:        semantic_source,
+./scripts/prepare_dataset_a_v01.py:701:        procedural_source,
+./scripts/prepare_dataset_a_v01.py:719:    episodic_records = read_jsonl(episodic_source)
+./scripts/prepare_dataset_a_v01.py:720:    semantic_fields, semantic_rows = read_csv_rows(
+./scripts/prepare_dataset_a_v01.py:721:        semantic_source
+./scripts/prepare_dataset_a_v01.py:723:    del semantic_fields
+./scripts/prepare_dataset_a_v01.py:725:    episodic_memories = convert_episodic(episodic_records)
+./scripts/prepare_dataset_a_v01.py:726:    semantic_memories = convert_semantic(semantic_rows)
+./scripts/prepare_dataset_a_v01.py:728:        procedural_source
+./scripts/prepare_dataset_a_v01.py:734:            *episodic_memories,
+./scripts/prepare_dataset_a_v01.py:735:            *semantic_memories,
+./scripts/prepare_dataset_a_v01.py:771:                    *episodic_memories,
+./scripts/prepare_dataset_a_v01.py:772:                    *semantic_memories,
+./scripts/prepare_dataset_a_v01.py:804:            "episodic": str(episodic_source),
+./scripts/prepare_dataset_a_v01.py:805:            "semantic": str(semantic_source),
+./scripts/prepare_dataset_a_v01.py:806:            "procedural": str(procedural_source),
+./scripts/prepare_dataset_a_v01.py:819:            "episodic_memories": len(episodic_memories),
+./scripts/prepare_dataset_a_v01.py:820:            "semantic_memories": len(semantic_memories),
+./scripts/prepare_dataset_a_v01.py:821:            "procedural_rules": len(procedures),
+./scripts/prepare_dataset_a_v01.py:842:        "semantic_statuses": dict(
+./scripts/prepare_dataset_a_v01.py:846:                    for item in semantic_memories
+./scripts/prepare_dataset_a_v01.py:870:    print(f"Episodic memories:    {len(episodic_memories)}")
+./scripts/prepare_dataset_a_v01.py:871:    print(f"Semantic memories:    {len(semantic_memories)}")
+./scripts/analyze_rc8_selector_losses.py:101:        "semantic_id",
+./scripts/analyze_rc8_selector_losses.py:228:        "selected_memory_types": row.get(
+./scripts/analyze_rc8_selector_losses.py:229:            "selected_memory_types",
+./scripts/analyze_rc8_selector_losses.py:422:            "memory_type": (
+./scripts/analyze_rc8_selector_losses.py:423:                candidate.get("memory_type")
+./scripts/analyze_rc8_selector_losses.py:424:                or gold.get("memory_type", "")
+./scripts/analyze_rc8_selector_losses.py:496:            row["memory_type"]
+./scripts/analyze_rc8_selector_losses.py:508:                "lost_memory_type_counts": json.dumps(
+./scripts/analyze_rc8_selector_losses.py:526:            row["memory_type"],
+./scripts/analyze_rc4_trace.py:132:                expected = set(as_list(r.get("expected_memory_types")))
+./scripts/analyze_rc4_trace.py:133:                predicted = set(as_list(r.get("selected_memory_types")))
+./scripts/analyze_rc4_trace.py:143:                        "expected_memory_types": ";".join(sorted(expected)),
+./scripts/analyze_rc4_trace.py:144:                        "predicted_memory_types": ";".join(sorted(predicted)),
+./scripts/analyze_rc4_trace.py:145:                        "missing_memory_types": ";".join(sorted(expected - predicted)),
+./scripts/analyze_rc4_trace.py:146:                        "extra_memory_types": ";".join(sorted(predicted - expected)),
+./scripts/analyze_rc5_candidate_trace.py:166:                        "memory_type": "",
+./scripts/analyze_rc5_candidate_trace.py:196:                        "memory_type": item.get("memory_type", ""),
+./scripts/analyze_rc5_candidate_trace.py:231:        "memory_type",
+./scripts/prepare_locomo_dataset.py:25:    "expected_memory_types",
+./scripts/prepare_locomo_dataset.py:26:    "summary_expected_memory_types",
+./scripts/prepare_locomo_dataset.py:207:def episodic_id(
+./scripts/prepare_locomo_dataset.py:451:    episodic_count = 0
+./scripts/prepare_locomo_dataset.py:452:    semantic_count = 0
+./scripts/prepare_locomo_dataset.py:518:                memory_id = episodic_id(
+./scripts/prepare_locomo_dataset.py:543:                    "memory_type": "episodic",
+./scripts/prepare_locomo_dataset.py:577:                episodic_count += 1
+./scripts/prepare_locomo_dataset.py:580:        sample_semantic = 0
+./scripts/prepare_locomo_dataset.py:690:                                "Duplicate semantic ID: "
+./scripts/prepare_locomo_dataset.py:700:                            "memory_type": (
+./scripts/prepare_locomo_dataset.py:701:                                "semantic"
+./scripts/prepare_locomo_dataset.py:738:                        semantic_count += 1
+./scripts/prepare_locomo_dataset.py:739:                        sample_semantic += 1
+./scripts/prepare_locomo_dataset.py:814:                "expected_memory_types": "",
+./scripts/prepare_locomo_dataset.py:815:                "summary_expected_memory_types": "",
+./scripts/prepare_locomo_dataset.py:837:            "semantic_observations": (
+./scripts/prepare_locomo_dataset.py:838:                sample_semantic
+./scripts/prepare_locomo_dataset.py:1027:            "episodic_memories": (
+./scripts/prepare_locomo_dataset.py:1028:                episodic_count
+./scripts/prepare_locomo_dataset.py:1030:            "semantic_memories": (
+./scripts/prepare_locomo_dataset.py:1031:                semantic_count
+./scripts/prepare_locomo_dataset.py:1033:            "procedural_memories": 0,
+./scripts/prepare_locomo_dataset.py:1112:        episodic_count,
+./scripts/prepare_locomo_dataset.py:1116:        semantic_count,
+./scripts/analyze_gpu_pilot20.py:91:            row["expected_memory_types"],
+./scripts/analyze_gpu_pilot20.py:95:            row["selected_memory_types"],
+./scripts/analyze_rc8_3_route_causality.py:12:    "e_": "episodic",
+./scripts/analyze_rc8_3_route_causality.py:13:    "s_": "semantic",
+./scripts/analyze_rc8_3_route_causality.py:14:    "p_": "procedural",
+./scripts/analyze_rc8_3_route_causality.py:18:    "selected_memory_types",
+./scripts/analyze_rc8_3_route_causality.py:19:    "predicted_memory_types",
+./scripts/analyze_rc8_3_route_causality.py:20:    "memory_types",
+./scripts/analyze_rc8_3_route_causality.py:23:    "required_memory_types",
+./scripts/analyze_rc8_3_route_causality.py:81:def infer_memory_type(memory_id: str) -> str:
+./scripts/analyze_rc8_3_route_causality.py:83:    for prefix, memory_type in MEMORY_TYPE_BY_PREFIX.items():
+./scripts/analyze_rc8_3_route_causality.py:85:            return memory_type
+./scripts/analyze_rc8_3_route_causality.py:89:def normalise_memory_types(value: Any) -> list[str]:
+./scripts/analyze_rc8_3_route_causality.py:90:    valid = {"episodic", "semantic", "procedural"}
+./scripts/analyze_rc8_3_route_causality.py:141:        for memory_type in normalise_memory_types(value):
+./scripts/analyze_rc8_3_route_causality.py:142:            if memory_type not in result:
+./scripts/analyze_rc8_3_route_causality.py:143:                result.append(memory_type)
+./scripts/analyze_rc8_3_route_causality.py:149:                if key_lower in {"episodic", "semantic", "procedural"}:
+./scripts/analyze_rc8_3_route_causality.py:193:            memory_type = first_present(
+./scripts/analyze_rc8_3_route_causality.py:195:                ("memory_type", "type", "kind"),
+./scripts/analyze_rc8_3_route_causality.py:197:            if memory_type not in {"episodic", "semantic", "procedural"}:
+./scripts/analyze_rc8_3_route_causality.py:198:                memory_type = infer_memory_type(memory_id)
+./scripts/analyze_rc8_3_route_causality.py:201:                "memory_type": memory_type,
+./scripts/analyze_rc8_3_route_causality.py:267:            row.get("memory_type", "").strip().lower()
+./scripts/analyze_rc8_3_route_causality.py:268:            or memory_record.get("memory_type", "")
+./scripts/analyze_rc8_3_route_causality.py:269:            or infer_memory_type(gold_id)
+./scripts/analyze_rc8_3_route_causality.py:311:                "gold_memory_type": gold_type,
+./scripts/analyze_rc8_3_route_causality.py:312:                "predicted_memory_types": ";".join(route_types),
+./scripts/analyze_rc8_3_route_causality.py:331:        "gold_memory_type_counts": dict(type_counts),
+./scripts/finalise_route_labels.py:18:TYPE_ORDER = ["episodic", "semantic", "procedural"]
+./scripts/finalise_route_labels.py:45:        memory_type
+./scripts/finalise_route_labels.py:46:        for memory_type in TYPE_ORDER
+./scripts/finalise_route_labels.py:47:        if memory_type in selected
+./scripts/finalise_route_labels.py:58:            inferred.add("episodic")
+./scripts/finalise_route_labels.py:60:            inferred.add("semantic")
+./scripts/finalise_route_labels.py:62:            inferred.add("procedural")
+./scripts/finalise_route_labels.py:69:        memory_type
+./scripts/finalise_route_labels.py:70:        for memory_type in TYPE_ORDER
+./scripts/finalise_route_labels.py:71:        if memory_type in inferred
+./scripts/finalise_route_labels.py:92:        "expected_memory_types",
+./scripts/finalise_route_labels.py:118:                row.get("expected_memory_types", "")
+./scripts/finalise_route_labels.py:127:        row["summary_expected_memory_types"] = ";".join(
+./scripts/finalise_route_labels.py:132:            row["expected_memory_types"] = ";".join(gold_types)
+./scripts/finalise_route_labels.py:149:            row["expected_memory_types"] = ""
+./scripts/finalise_route_labels.py:161:            row["expected_memory_types"] = ""
+./scripts/finalise_route_labels.py:171:        "summary_expected_memory_types",
+./scripts/evaluate_locomo_external.py:124:        memory_type = str(
+./scripts/evaluate_locomo_external.py:126:                "memory_type",
+./scripts/evaluate_locomo_external.py:137:        if memory_type == "episodic":
+./scripts/evaluate_locomo_external.py:540:                    "selected_memory_types",
+./scripts/evaluate_locomo_external.py:651:            "against gold episodic IDs."
+./scripts/evaluate_locomo_external.py:655:            "themselves; semantic memories "
+./scripts/analyze_rc6_gate_ablation.py:32:    if row.get("memory_type") == "procedural":
+./scripts/analyze_rc6_gate_ablation.py:33:        reasons.append("procedural_safety_gate")
+./scripts/analyze_rc6_gate_ablation.py:41:        row.get("memory_type") in {"episodic", "semantic"}
+./scripts/mem0/rescore_mem0_pilot200_source_equiv.py:75:        memory_type = str(get_field(record, "memory_type", "")).strip()
+./scripts/mem0/rescore_mem0_pilot200_source_equiv.py:77:        canonical = source_ids if memory_type == "semantic" and source_ids else [memory_id]
+./scripts/mem0/run_confidence_aware_route_pilot200.py:16:from src.schemas import MemoryType, QueryFeatures, QueryMode, QueryState, RouteDecision
+./scripts/mem0/run_confidence_aware_route_pilot200.py:76:        self.allow_procedural_without_intent = bool(
+./scripts/mem0/run_confidence_aware_route_pilot200.py:77:            raw.get("allow_procedural_without_intent", False)
+./scripts/mem0/run_confidence_aware_route_pilot200.py:86:            memory_type: float(original.scores.get(memory_type.value, 0.0))
+./scripts/mem0/run_confidence_aware_route_pilot200.py:87:            for memory_type in MemoryType
+./scripts/mem0/run_confidence_aware_route_pilot200.py:89:        excluded = [item for item in MemoryType if item not in selected_set]
+./scripts/mem0/run_confidence_aware_route_pilot200.py:99:        preferred: list[MemoryType] = []
+./scripts/mem0/run_confidence_aware_route_pilot200.py:100:        if MemoryType.SEMANTIC in selected_set and MemoryType.EPISODIC in excluded:
+./scripts/mem0/run_confidence_aware_route_pilot200.py:101:            preferred.append(MemoryType.EPISODIC)
+./scripts/mem0/run_confidence_aware_route_pilot200.py:102:        if MemoryType.EPISODIC in selected_set and MemoryType.SEMANTIC in excluded:
+./scripts/mem0/run_confidence_aware_route_pilot200.py:103:            preferred.append(MemoryType.SEMANTIC)
+./scripts/mem0/run_confidence_aware_route_pilot200.py:104:        if MemoryType.PROCEDURAL in selected_set and MemoryType.SEMANTIC in excluded:
+./scripts/mem0/run_confidence_aware_route_pilot200.py:105:            preferred.append(MemoryType.SEMANTIC)
+./scripts/mem0/run_confidence_aware_route_pilot200.py:107:            MemoryType.PROCEDURAL in excluded
+./scripts/mem0/run_confidence_aware_route_pilot200.py:108:            and (features.asks_procedure or self.allow_procedural_without_intent)
+./scripts/mem0/run_confidence_aware_route_pilot200.py:110:            preferred.append(MemoryType.PROCEDURAL)
+./scripts/mem0/run_confidence_aware_route_pilot200.py:118:                    item != MemoryType.PROCEDURAL
+./scripts/mem0/run_confidence_aware_route_pilot200.py:120:                    or self.allow_procedural_without_intent
+./scripts/mem0/run_confidence_aware_route_pilot200.py:128:        chosen: MemoryType | None = None
+./scripts/mem0/run_confidence_aware_route_pilot200.py:148:                candidate == MemoryType.PROCEDURAL
+./scripts/mem0/run_confidence_aware_route_pilot200.py:152:                reasons.append("explicit_procedural_intent")
+./scripts/mem0/run_confidence_aware_route_pilot200.py:162:        expanded_types = [item for item in MemoryType if item in expanded_set]
+./scripts/mem0/run_confidence_aware_route_pilot200.py:175:            "added_memory_types": [item.value for item in added],
+./scripts/mem0/run_confidence_aware_route_pilot200.py:412:                        added_type_counts.update(trace.get("added_memory_types", []))
+./scripts/mem0/run_confidence_aware_route_pilot200.py:428:                        "selected_memory_types": result.selected_memory_types,
+./scripts/mem0/run_confidence_aware_route_pilot200.py:460:            "allow_procedural_without_intent": (
+./scripts/mem0/run_confidence_aware_route_pilot200.py:461:                adaptive_router.allow_procedural_without_intent
+./scripts/mem0/run_qwen_soft_probe_validation.py:525:                        "selected_memory_types": result.selected_memory_types,
+./scripts/mem0/diagnose_hybrid_candidate_drop.py:592:                        "memory_type": (
+./scripts/mem0/diagnose_hybrid_candidate_drop.py:595:                            ].memory_type.value
+./scripts/mem0/diagnose_hybrid_candidate_drop.py:711:                        result.selected_memory_types
+./scripts/mem0/run_soft_probe1_heldout_controller_replay.py:427:        for memory_type in row["route_trace"].get("added_memory_types", []):
+./scripts/mem0/run_soft_probe1_heldout_controller_replay.py:428:            added_counts[memory_type] = added_counts.get(memory_type, 0) + 1
+./scripts/mem0/run_hybrid_route_budget_ablation.py:94:        for memory_type, value in list(
+./scripts/mem0/run_hybrid_route_budget_ablation.py:97:            top_k[memory_type] = (
+./scripts/mem0/run_hybrid_route_budget_ablation.py:646:                        result.selected_memory_types
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:16:from src.schemas import MemoryCandidate, MemoryType, QueryFeatures, QueryState, RouteDecision
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:68:    """Add one non-procedural companion type while preserving route scores."""
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:79:        added: list[MemoryType] = []
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:83:            MemoryType.SEMANTIC in original_set
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:84:            and MemoryType.EPISODIC not in original_set
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:86:            added = [MemoryType.EPISODIC]
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:87:            reason = "semantic_to_episodic_companion"
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:89:            MemoryType.EPISODIC in original_set
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:90:            and MemoryType.SEMANTIC not in original_set
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:92:            added = [MemoryType.SEMANTIC]
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:93:            reason = "episodic_to_semantic_companion"
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:95:            MemoryType.PROCEDURAL in original_set
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:96:            and MemoryType.SEMANTIC not in original_set
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:98:            added = [MemoryType.SEMANTIC]
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:99:            reason = "procedural_to_semantic_companion"
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:103:            memory_type
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:104:            for memory_type in MemoryType
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:105:            if memory_type in expanded_set
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:109:        for memory_type in added:
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:110:            reasons.setdefault(memory_type.value, [])
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:112:            if tag not in reasons[memory_type.value]:
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:113:                reasons[memory_type.value].append(tag)
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:119:            "added_memory_types": [item.value for item in added],
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:143:        for memory_type in MemoryType:
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:144:            if memory_type not in original_types:
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:145:                reasons.setdefault(memory_type.value, [])
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:146:                reasons[memory_type.value].append(
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:153:            "expanded_route_types": [item.value for item in MemoryType],
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:154:            "added_memory_types": [
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:155:                item.value for item in MemoryType if item not in original_types
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:162:            selected_types=list(MemoryType),
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:192:        memory_type: MemoryType,
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:209:        is_original_type = memory_type in original_route.selected_types
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:222:            if template.memory_type != memory_type:
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:244:        self.retrieval_trace[(question_id, memory_type.value)] = {
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:245:            "memory_type": memory_type.value,
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:256:            memory_type.value: deepcopy(
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:257:                self.retrieval_trace[(question_id, memory_type.value)]
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:259:            for memory_type in MemoryType
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:260:            if (question_id, memory_type.value) in self.retrieval_trace
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:619:                        route_trace.get("added_memory_types", [])
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:650:                        "selected_memory_types": (
+./scripts/mem0/run_soft_route_probe_budget_pilot200.py:651:                            result.selected_memory_types
+./scripts/mem0/run_conv30_raw_retrieval.py:165:    episodic = [
+./scripts/mem0/run_conv30_raw_retrieval.py:171:            "memory_type"
+./scripts/mem0/run_conv30_raw_retrieval.py:173:        == "episodic"
+./scripts/mem0/run_conv30_raw_retrieval.py:176:    episodic.sort(
+./scripts/mem0/run_conv30_raw_retrieval.py:193:    if not episodic:
+./scripts/mem0/run_conv30_raw_retrieval.py:195:            "No episodic memories found "
+./scripts/mem0/run_conv30_raw_retrieval.py:216:        episodic,
+./scripts/mem0/run_conv30_raw_retrieval.py:239:                "memory_type": (
+./scripts/mem0/run_conv30_raw_retrieval.py:240:                    "episodic"
+./scripts/mem0/run_conv30_raw_retrieval.py:264:            or index == len(episodic)
+./scripts/mem0/run_conv30_raw_retrieval.py:268:                f"{index}/{len(episodic)}"
+./scripts/mem0/run_conv30_raw_retrieval.py:294:        "memory_type": "episodic",
+./scripts/mem0/run_conv30_raw_retrieval.py:296:            episodic
+./scripts/mem0/run_conv30_raw_retrieval.py:314:            "Duplicate episodic source IDs."
+./scripts/mem0/run_route_score_deconfounding_pilot200.py:16:from src.schemas import MemoryType, QueryFeatures, QueryState, RouteDecision
+./scripts/mem0/run_route_score_deconfounding_pilot200.py:105:        expanded_types = list(MemoryType)
+./scripts/mem0/run_route_score_deconfounding_pilot200.py:108:        for memory_type in MemoryType:
+./scripts/mem0/run_route_score_deconfounding_pilot200.py:109:            if memory_type not in original_types:
+./scripts/mem0/run_route_score_deconfounding_pilot200.py:110:                reasons.setdefault(memory_type.value, [])
+./scripts/mem0/run_route_score_deconfounding_pilot200.py:111:                reasons[memory_type.value].append(
+./scripts/mem0/run_route_score_deconfounding_pilot200.py:122:            "added_memory_types": [
+./scripts/mem0/run_route_score_deconfounding_pilot200.py:165:        for memory_type_name in trace.get(
+./scripts/mem0/run_route_score_deconfounding_pilot200.py:166:            "added_memory_types",
+./scripts/mem0/run_route_score_deconfounding_pilot200.py:169:            scores[memory_type_name] = round(
+./scripts/mem0/run_route_score_deconfounding_pilot200.py:171:                    float(scores.get(memory_type_name, 0.0)),
+./scripts/mem0/run_route_score_deconfounding_pilot200.py:172:                    float(self.thresholds[memory_type_name]),
+./scripts/mem0/run_route_score_deconfounding_pilot200.py:605:                        trace.get("added_memory_types", [])
+./scripts/mem0/run_route_score_deconfounding_pilot200.py:625:                        "selected_memory_types": (
+./scripts/mem0/run_route_score_deconfounding_pilot200.py:626:                            result.selected_memory_types
+./scripts/mem0/analyze_c3_mem0_overlap.py:82:        memory_type = str(get_field(memory, "memory_type", "")).strip()
+./scripts/mem0/analyze_c3_mem0_overlap.py:84:        if memory_type == "semantic" and source_ids:
+./scripts/mem0/run_locomo_mem0_heldout_query.py:74:        memory_type = str(get_field(record, "memory_type", "")).strip()
+./scripts/mem0/run_locomo_mem0_heldout_query.py:80:            if memory_type == "semantic" and source_ids
+./scripts/mem0/run_hybrid_controller_pilot200.py:18:    MemoryType,
+./scripts/mem0/run_hybrid_controller_pilot200.py:137:        memory_type = MemoryType(
+./scripts/mem0/run_hybrid_controller_pilot200.py:138:            str(field(record, "memory_type", "")).strip()
+./scripts/mem0/run_hybrid_controller_pilot200.py:147:            memory_type=memory_type,
+./scripts/mem0/run_hybrid_controller_pilot200.py:164:        if memory_type == MemoryType.SEMANTIC and source_ids:
+./scripts/mem0/run_hybrid_controller_pilot200.py:233:        memory_type: MemoryType,
+./scripts/mem0/run_hybrid_controller_pilot200.py:258:            if template.memory_type != memory_type:
+./scripts/mem0/run_hybrid_controller_pilot200.py:655:                        "selected_memory_types",
+./scripts/mem0/run_hybrid_controller_pilot200.py:659:                        replay_result.selected_memory_types
+./scripts/mem0/run_hybrid_controller_pilot200.py:662:                        hybrid_result.selected_memory_types
+./scripts/mem0/run_qwen_soft_probe1_heldout_validation.py:508:                        "selected_memory_types": result.selected_memory_types,
+./scripts/mem0/run_qwen_hybrid_route_upperbound.py:1390:                        "selected_memory_types": (
+./scripts/mem0/run_qwen_hybrid_route_upperbound.py:1391:                            result.selected_memory_types
+./scripts/mem0/run_locomo_mem0_pilot200.py:20:ALLOWED_MEMORY_TYPES = {"episodic", "semantic"}
+./scripts/mem0/run_locomo_mem0_pilot200.py:100:    memory_type = str(metadata.get("memory_type", "")).strip()
+./scripts/mem0/run_locomo_mem0_pilot200.py:102:    if memory_type == "semantic" and source_ids:
+./scripts/mem0/run_locomo_mem0_pilot200.py:119:        "memory_type": str(get_field(record, "memory_type", "")).strip(),
+./scripts/mem0/run_locomo_mem0_pilot200.py:135:        memory_type = str(get_field(record, "memory_type", "")).strip()
+./scripts/mem0/run_locomo_mem0_pilot200.py:136:        if user_id in pilot_users and memory_type in ALLOWED_MEMORY_TYPES:
+./scripts/mem0/run_locomo_mem0_pilot200.py:151:                str(get_field(record, "memory_type", "")),
+./scripts/mem0/run_locomo_mem0_pilot200.py:163:        episodic_count = 0
+./scripts/mem0/run_locomo_mem0_pilot200.py:164:        semantic_count = 0
+./scripts/mem0/run_locomo_mem0_pilot200.py:169:            memory_type = str(get_field(record, "memory_type", "")).strip()
+./scripts/mem0/run_locomo_mem0_pilot200.py:186:            episodic_count += int(memory_type == "episodic")
+./scripts/mem0/run_locomo_mem0_pilot200.py:187:            semantic_count += int(memory_type == "semantic")
+./scripts/mem0/run_locomo_mem0_pilot200.py:197:            "episodic_memories": episodic_count,
+./scripts/mem0/run_locomo_mem0_pilot200.py:198:            "semantic_memories": semantic_count,
+./scripts/mem0/run_locomo_mem0_pilot200.py:211:        "total_episodic_memories": sum(x["episodic_memories"] for x in per_conversation),
+./scripts/mem0/run_locomo_mem0_pilot200.py:212:        "total_semantic_memories": sum(x["semantic_memories"] for x in per_conversation),
+./scripts/audit_locomo_smoke50_pipeline.py:286:                "memory_type",
+./scripts/audit_locomo_smoke50_pipeline.py:294:                "selected_memory_types"
+./scripts/audit_locomo_smoke50_pipeline.py:297:                "selected_memory_types"
+./scripts/add_expected_routes.py:33:    """Convert values such as ['episodic', 'semantic'] into clean labels."""
+./scripts/add_expected_routes.py:61:            "neo4j_episodic_graph": "episodic",
+./scripts/add_expected_routes.py:62:            "episodic_memory": "episodic",
+./scripts/add_expected_routes.py:63:            "episodic": "episodic",
+./scripts/add_expected_routes.py:65:            "neo4j_semantic_graph": "semantic",
+./scripts/add_expected_routes.py:66:            "semantic_memory": "semantic",
+./scripts/add_expected_routes.py:67:            "semantic": "semantic",
+./scripts/add_expected_routes.py:69:            "procedural_json": "procedural",
+./scripts/add_expected_routes.py:70:            "procedural_memory": "procedural",
+./scripts/add_expected_routes.py:71:            "procedural": "procedural",
+./scripts/add_expected_routes.py:163:            row["expected_memory_types"] = ""
+./scripts/add_expected_routes.py:165:            row["expected_memory_types"] = ";".join(
+./scripts/add_expected_routes.py:171:    if "expected_memory_types" not in output_fields:
+./scripts/add_expected_routes.py:173:            "expected_memory_types"
+./scripts/audit_expected_routes.py:24:    "episodic",
+./scripts/audit_expected_routes.py:25:    "semantic",
+./scripts/audit_expected_routes.py:26:    "procedural",
+./scripts/audit_expected_routes.py:46:        memory_type
+./scripts/audit_expected_routes.py:47:        for memory_type in TYPE_ORDER
+./scripts/audit_expected_routes.py:48:        if memory_type in cleaned
+./scripts/audit_expected_routes.py:63:            inferred.add("episodic")
+./scripts/audit_expected_routes.py:66:            inferred.add("semantic")
+./scripts/audit_expected_routes.py:69:            inferred.add("procedural")
+./scripts/audit_expected_routes.py:78:        memory_type
+./scripts/audit_expected_routes.py:79:        for memory_type in TYPE_ORDER
+./scripts/audit_expected_routes.py:80:        if memory_type in inferred
+./scripts/audit_expected_routes.py:130:                row.get("expected_memory_types") or ""
+./src/shared_ranker.py:10:    MemoryType,
+./src/shared_ranker.py:133:        1. procedural memories retain a safety gate;
+./src/shared_ranker.py:329:                        candidate.memory_type.value,
+./src/shared_ranker.py:423:            candidate.memory_type
+./src/shared_ranker.py:424:            == MemoryType.PROCEDURAL
+./src/shared_ranker.py:427:                "procedural_safety_gate"
+./src/shared_ranker.py:467:            and candidate.memory_type
+./src/shared_ranker.py:469:                MemoryType.EPISODIC,
+./src/shared_ranker.py:470:                MemoryType.SEMANTIC,
+./src/shared_ranker.py:486:            and candidate.memory_type
+./src/shared_ranker.py:488:                MemoryType.EPISODIC,
+./src/shared_ranker.py:489:                MemoryType.SEMANTIC,
+./src/shared_ranker.py:592:            candidate.memory_type
+./src/shared_ranker.py:593:            == MemoryType.PROCEDURAL
+./src/shared_ranker.py:631:                if candidate.memory_type
+./src/shared_ranker.py:632:                == MemoryType.EPISODIC
+./src/shared_ranker.py:688:            candidate.memory_type
+./src/shared_ranker.py:689:            == MemoryType.EPISODIC
+./src/retrievers/procedural_json.py:8:    MemoryType,
+./src/retrievers/procedural_json.py:16:    """Retrieve applicable procedural rules from JSON.
+./src/retrievers/procedural_json.py:172:        memory_type: MemoryType,
+./src/retrievers/procedural_json.py:180:        if memory_type != MemoryType.PROCEDURAL:
+./src/retrievers/procedural_json.py:447:                memory_type=MemoryType.PROCEDURAL,
+./src/retrievers/procedural_json.py:471:                    "preliminary_procedural_score": (
+./src/retrievers/__init__.py:3:from .procedural_json import ProceduralJsonStore
+./src/retrievers/in_memory.py:6:from ..schemas import MemoryCandidate, MemoryType, QueryFeatures, QueryState
+./src/retrievers/in_memory.py:21:class InMemoryMemoryStore:
+./src/retrievers/in_memory.py:38:    def retrieve(self, *, memory_type: MemoryType, state: QueryState, features: QueryFeatures, top_k: int, include_archived: bool = False) -> list[MemoryCandidate]:
+./src/retrievers/in_memory.py:40:        outdated = {"outdated", "superseded", "archived", "invalid"}
+./src/retrievers/in_memory.py:43:            if item.user_id != state.user_id or item.memory_type != memory_type:
+./src/retrievers/in_memory.py:61:            memory_type=MemoryType(str(x["memory_type"]).lower()),
+./src/retrievers/base.py:4:from ..schemas import MemoryCandidate, MemoryType, QueryFeatures, QueryState
+./src/retrievers/base.py:7:class MemoryStore(Protocol):
+./src/retrievers/base.py:8:    def retrieve(self, *, memory_type: MemoryType, state: QueryState, features: QueryFeatures, top_k: int, include_archived: bool = False) -> list[MemoryCandidate]: ...
+./src/retrievers/neo4j_store.py:14:from ..schemas import MemoryCandidate, MemoryType, QueryFeatures, QueryState
+./src/retrievers/neo4j_store.py:17:class Neo4jMemoryStore:
+./src/retrievers/neo4j_store.py:25:        self.semantic_index = neo.get("semantic_fulltext_index", "semantic_fact_text")
+./src/retrievers/neo4j_store.py:27:    def retrieve(self, *, memory_type: MemoryType, state: QueryState, features: QueryFeatures, top_k: int, include_archived: bool = False) -> list[MemoryCandidate]:
+./src/retrievers/neo4j_store.py:28:        if memory_type == MemoryType.EPISODIC:
+./src/retrievers/neo4j_store.py:30:        if memory_type == MemoryType.SEMANTIC:
+./src/retrievers/neo4j_store.py:31:            return self._semantic(state, features, top_k, include_archived)
+./src/retrievers/neo4j_store.py:49:            memory_type=MemoryType.EPISODIC, text=str(dict(r["node"]).get("text", "")), user_id=state.user_id,
+./src/retrievers/neo4j_store.py:56:    def _semantic(self, state: QueryState, features: QueryFeatures, top_k: int, include_archived: bool) -> list[MemoryCandidate]:
+./src/retrievers/neo4j_store.py:57:        statuses = ["current", "active", "valid", "outdated", "superseded", "archived", "invalid"] if include_archived else ["current", "active", "valid"]
+./src/retrievers/neo4j_store.py:64:                RETURN node, score, relations ORDER BY score DESC, node.valid_from DESC LIMIT $limit
+./src/retrievers/neo4j_store.py:65:            """, index=self.semantic_index, query=self._lucene(features.normalised_query), user_id=state.user_id, statuses=statuses, limit=top_k)
+./src/retrievers/neo4j_store.py:75:                RETURN node, score, relations ORDER BY node.valid_from DESC LIMIT $limit
+./src/retrievers/neo4j_store.py:82:                memory_id=str(n.get("fact_id") or n.get("id")), memory_type=MemoryType.SEMANTIC, text=str(text), user_id=state.user_id,
+./src/retrievers/neo4j_store.py:83:                timestamp=self._date(n.get("valid_from")), subject=n.get("subject"), predicate=n.get("predicate"), object_value=n.get("object") or n.get("object_value"),
+./src/route_planner.py:7:    MemoryType,
+./src/route_planner.py:16:        MemoryType.EPISODIC: {
+./src/route_planner.py:40:        MemoryType.SEMANTIC: {
+./src/route_planner.py:57:        MemoryType.PROCEDURAL: {
+./src/route_planner.py:137:        raw: dict[MemoryType, float] = {}
+./src/route_planner.py:140:            memory_type.value: []
+./src/route_planner.py:141:            for memory_type in MemoryType
+./src/route_planner.py:144:        for memory_type in MemoryType:
+./src/route_planner.py:146:                memory_type,
+./src/route_planner.py:150:            raw[memory_type] = min(
+./src/route_planner.py:163:            reasons[memory_type.value].extend(
+./src/route_planner.py:173:            memory_type
+./src/route_planner.py:174:            for memory_type, score
+./src/route_planner.py:179:                    memory_type.value
+./src/route_planner.py:209:            memory_type
+./src/route_planner.py:210:            for memory_type in MemoryType
+./src/route_planner.py:211:            if memory_type in selected_set
+./src/route_planner.py:217:                memory_type.value: round(
+./src/route_planner.py:218:                    raw[memory_type],
+./src/route_planner.py:221:                for memory_type in MemoryType
+./src/route_planner.py:228:        memory_type: MemoryType,
+./src/route_planner.py:243:                memory_type
+./src/route_planner.py:252:        if memory_type == MemoryType.EPISODIC:
+./src/route_planner.py:285:                        memory_type.value
+./src/route_planner.py:290:        if memory_type == MemoryType.SEMANTIC:
+./src/route_planner.py:323:                        memory_type.value
+./src/route_planner.py:355:                    memory_type.value
+./src/route_planner.py:363:        selected: list[MemoryType],
+./src/route_planner.py:367:            memory_type: MemoryType,
+./src/route_planner.py:370:            if memory_type not in selected:
+./src/route_planner.py:371:                selected.append(memory_type)
+./src/route_planner.py:374:                memory_type.value
+./src/route_planner.py:377:                    memory_type.value
+./src/route_planner.py:391:                MemoryType.EPISODIC,
+./src/route_planner.py:395:                MemoryType.SEMANTIC,
+./src/route_planner.py:407:                MemoryType.EPISODIC,
+./src/route_planner.py:411:                MemoryType.SEMANTIC,
+./src/route_planner.py:417:                MemoryType.EPISODIC,
+./src/route_planner.py:422:                    "force_historical_semantic_companion",
+./src/route_planner.py:431:                    MemoryType.SEMANTIC,
+./src/route_planner.py:432:                    "historical_semantic_companion_gate",
+./src/route_planner.py:437:                MemoryType.SEMANTIC,
+./src/route_planner.py:443:                MemoryType.PROCEDURAL,
+./src/route_planner.py:444:                "procedural_gate",
+./src/route_planner.py:448:                    "force_procedural_semantic_companion",
+./src/route_planner.py:460:                    MemoryType.SEMANTIC,
+./src/route_planner.py:461:                    "procedural_semantic_companion_gate",
+./src/route_planner.py:470:                MemoryType.SEMANTIC,
+./src/route_planner.py:471:                "procedural_context_gate",
+./src/route_planner.py:476:                MemoryType.EPISODIC,
+./src/route_planner.py:480:                MemoryType.SEMANTIC,
+./src/route_planner.py:486:                MemoryType.EPISODIC,
+./src/route_planner.py:490:                MemoryType.SEMANTIC,
+./src/route_planner.py:496:                MemoryType.EPISODIC,
+./src/route_planner.py:500:                MemoryType.SEMANTIC,
+./src/route_planner.py:521:                    MemoryType.PROCEDURAL,
+./src/route_planner.py:536:                MemoryType.EPISODIC,
+./src/route_planner.py:540:                MemoryType.SEMANTIC,
+./src/route_planner.py:552:                MemoryType.PROCEDURAL,
+./src/route_planner.py:558:                memory_type
+./src/route_planner.py:559:                for memory_type in selected
+./src/route_planner.py:560:                if memory_type == MemoryType.PROCEDURAL
+./src/route_planner.py:563:                MemoryType.PROCEDURAL,
+./src/candidate_budget.py:8:    MemoryType,
+./src/candidate_budget.py:46:        self.max_extra_per_memory_type = int(
+./src/candidate_budget.py:48:                "max_extra_per_memory_type",
+./src/candidate_budget.py:63:        selected_types: Iterable[MemoryType],
+./src/candidate_budget.py:82:            MemoryType,
+./src/candidate_budget.py:88:                candidate.memory_type
+./src/candidate_budget.py:94:        for memory_type in selected_type_list:
+./src/candidate_budget.py:96:                memory_type,
+./src/candidate_budget.py:100:                top_k[memory_type.value]
+./src/candidate_budget.py:134:                    >= self.max_extra_per_memory_type
+./src/candidate_budget.py:178:        selected_types: Iterable[MemoryType],
+./src/candidate_budget.py:183:        for memory_type in selected_types:
+./src/candidate_budget.py:188:                    candidate.memory_type
+./src/candidate_budget.py:189:                    == memory_type
+./src/candidate_budget.py:196:                        memory_type.value
+./src/baselines.py:14:    MemoryType,
+./src/baselines.py:28:    - ``episodic_only``
+./src/baselines.py:29:    - ``semantic_only``
+./src/baselines.py:30:    - ``procedural_only``
+./src/baselines.py:40:        "episodic_only",
+./src/baselines.py:41:        "semantic_only",
+./src/baselines.py:42:        "procedural_only",
+./src/baselines.py:80:        selected_types = self._memory_types_for(method)
+./src/baselines.py:85:                memory_type.value: float(memory_type in selected_types)
+./src/baselines.py:86:                for memory_type in MemoryType
+./src/baselines.py:89:                memory_type.value: (
+./src/baselines.py:91:                    if memory_type in selected_types
+./src/baselines.py:94:                for memory_type in MemoryType
+./src/baselines.py:158:            selected_memory_types=[
+./src/baselines.py:159:                memory_type.value
+./src/baselines.py:160:                for memory_type in selected_types
+./src/baselines.py:188:    def _memory_types_for(
+./src/baselines.py:190:    ) -> list[MemoryType]:
+./src/baselines.py:193:            "episodic_only": [MemoryType.EPISODIC],
+./src/baselines.py:194:            "semantic_only": [MemoryType.SEMANTIC],
+./src/baselines.py:195:            "procedural_only": [MemoryType.PROCEDURAL],
+./src/baselines.py:197:        return mapping.get(method, list(MemoryType))
+./src/baselines.py:205:        selected_types: list[MemoryType],
+./src/baselines.py:210:        for memory_type in selected_types:
+./src/baselines.py:211:            if memory_type == MemoryType.PROCEDURAL:
+./src/baselines.py:220:                    memory_type=memory_type,
+./src/baselines.py:223:                    top_k=int(top_k[memory_type.value]),
+./src/pipeline.py:31:    MemoryType,
+./src/pipeline.py:45:        "memory_type": candidate.memory_type.value,
+./src/pipeline.py:234:    for memory_type in MemoryType:
+./src/pipeline.py:238:            if candidate.memory_type
+./src/pipeline.py:239:            == memory_type
+./src/pipeline.py:330:                    candidate.memory_type.value
+./src/pipeline.py:377:        memory_type.value
+./src/pipeline.py:378:        for memory_type in route.selected_types
+./src/pipeline.py:477:                candidate.memory_type.value
+./src/pipeline.py:642:        for memory_type in route.selected_types:
+./src/pipeline.py:646:                    memory_type
+./src/pipeline.py:647:                    == MemoryType.PROCEDURAL
+./src/pipeline.py:655:                    memory_type=memory_type,
+./src/pipeline.py:661:                                memory_type.value
+./src/pipeline.py:916:            selected_memory_types=[
+./src/pipeline.py:917:                memory_type.value
+./src/pipeline.py:918:                for memory_type
+./src/conflict_detector.py:7:from .schemas import ConflictGroup, MemoryCandidate, MemoryType
+./src/conflict_detector.py:13:    A semantic version conflict may be visible both through an explicit graph
+./src/conflict_detector.py:81:            if candidate.memory_type != MemoryType.SEMANTIC:
+./src/query_analyzer.py:16:    - procedural intent;
+./src/query_analyzer.py:21:    procedural-memory routing.
+./src/query_analyzer.py:56:    # Strong procedural phrases. Broad factual-selection requests such as
+./src/query_analyzer.py:58:    # automatically imply procedural-memory use.
+./src/query_analyzer.py:327:        asks_procedure = self._detect_procedural_intent(normalised)
+./src/query_analyzer.py:330:        procedural_policy_override = (
+./src/query_analyzer.py:331:            self._is_procedural_policy_query(normalised)
+./src/query_analyzer.py:344:            procedural_policy_override=procedural_policy_override,
+./src/query_analyzer.py:374:    def _detect_procedural_intent(self, text: str) -> bool:
+./src/query_analyzer.py:409:    def _is_procedural_policy_query(text: str) -> bool:
+./src/query_analyzer.py:456:        procedural_policy_override: bool = False,
+./src/query_analyzer.py:460:        if asks_procedure and procedural_policy_override:
+./src/prompt_builder.py:10:    MemoryType,
+./src/prompt_builder.py:49:            memory_type: [
+./src/prompt_builder.py:52:                if item.memory_type == memory_type
+./src/prompt_builder.py:54:            for memory_type in MemoryType
+./src/prompt_builder.py:83:            episodic_evidence=self._format_evidence(
+./src/prompt_builder.py:84:                grouped[MemoryType.EPISODIC]
+./src/prompt_builder.py:86:            semantic_evidence=self._format_evidence(
+./src/prompt_builder.py:87:                grouped[MemoryType.SEMANTIC]
+./src/prompt_builder.py:89:            procedural_evidence=self._format_evidence(
+./src/prompt_builder.py:90:                grouped[MemoryType.PROCEDURAL]
+./src/prompt_builder.py:149:        """Provide semantic resolution notes, not internal conflict metadata."""
+./src/schemas.py:9:class MemoryType(str, Enum):
+./src/schemas.py:10:    EPISODIC = "episodic"
+./src/schemas.py:11:    SEMANTIC = "semantic"
+./src/schemas.py:12:    PROCEDURAL = "procedural"
+./src/schemas.py:19:    PROCEDURAL = "procedural"
+./src/schemas.py:61:    selected_types: list[MemoryType]
+./src/schemas.py:70:            self.scores.get(memory_type.value, 0.0)
+./src/schemas.py:71:            for memory_type in self.selected_types
+./src/schemas.py:76:class MemoryCandidate:
+./src/schemas.py:78:    memory_type: MemoryType
+./src/schemas.py:105:        data["memory_type"] = self.memory_type.value
+./src/schemas.py:147:    selected_memory_types: list[str]
+./src/schemas.py:191:            "selected_memory_types": self.selected_memory_types,
+./src/evidence_selector.py:16:    MemoryType,
+./src/evidence_selector.py:35:       historical states, transition evidence, procedural rules, explicit
+./src/evidence_selector.py:45:        "superseded",
+./src/evidence_selector.py:177:        "episodic memory",
+./src/evidence_selector.py:178:        "semantic memory",
+./src/evidence_selector.py:179:        "procedural memory",
+./src/evidence_selector.py:217:        "procedural_rule": 0.05,
+./src/evidence_selector.py:346:        counts: Counter[MemoryType] = Counter()
+./src/evidence_selector.py:359:                and counts[item.memory_type]
+./src/evidence_selector.py:360:                < plan.max_per_memory_type
+./src/evidence_selector.py:376:            counts[item.memory_type] += 1
+./src/evidence_selector.py:628:        # Safety fallback for a routed procedural query when no procedure was
+./src/evidence_selector.py:632:                "guarantee_procedural_if_routed",
+./src/evidence_selector.py:635:            and MemoryType.PROCEDURAL in route.selected_types
+./src/evidence_selector.py:637:                item.memory_type == MemoryType.PROCEDURAL
+./src/evidence_selector.py:644:                if item.memory_type == MemoryType.PROCEDURAL
+./src/evidence_selector.py:658:                    reason="procedural_safety_fallback",
+./src/evidence_selector.py:659:                    matched_roles={"procedural_rule"},
+./src/evidence_selector.py:1136:            # lower lexical overlap than an ordinary semantic fact.
+./src/evidence_selector.py:1139:                and item.memory_type == MemoryType.PROCEDURAL
+./src/evidence_selector.py:1142:                procedural_topical = max(
+./src/evidence_selector.py:1148:                    or procedural_topical >= threshold
+./src/evidence_selector.py:1153:                        + 0.40 * procedural_topical,
+./src/evidence_selector.py:1189:            # A semantic record can still carry status=current while its text
+./src/evidence_selector.py:1237:                    if item.memory_type
+./src/evidence_selector.py:1238:                    == MemoryType.EPISODIC
+./src/evidence_selector.py:1249:        if role == "procedural_rule":
+./src/evidence_selector.py:1250:            if item.memory_type != MemoryType.PROCEDURAL:
+./src/evidence_selector.py:1331:            if item.memory_type == MemoryType.EPISODIC:
+./src/evidence_selector.py:1460:        memory_type_bonus = 0.0
+./src/evidence_selector.py:1471:                memory_type_bonus = 0.35
+./src/evidence_selector.py:1476:            memory_type_bonus,
+./src/evidence_selector.py:1550:        memory_type_query = (
+./src/evidence_selector.py:1556:        if memory_type_query:
+./src/evidence_selector.py:1658:            item.memory_type == MemoryType.SEMANTIC
+./src/evidence_selector.py:1679:                "preliminary_procedural_score",
+./src/coverage_estimator.py:5:from .schemas import MemoryCandidate, MemoryType
+./src/coverage_estimator.py:94:        "superseded",
+./src/coverage_estimator.py:152:                candidate.memory_type == MemoryType.PROCEDURAL
+./src/coverage_estimator.py:164:            # Base lexical/semantic-slot proxy coverage.
+./src/coverage_estimator.py:296:                "episodic memory",
+./src/coverage_estimator.py:297:                "semantic memory",
+./src/coverage_estimator.py:298:                "procedural memory",
+./src/coverage_estimator.py:322:        procedural_rule_selected = any(
+./src/coverage_estimator.py:323:            candidate.memory_type
+./src/coverage_estimator.py:324:            == MemoryType.PROCEDURAL
+./src/coverage_estimator.py:325:            and "procedural_rule"
+./src/coverage_estimator.py:355:                procedural_rule_selected
+./src/coverage_estimator.py:415:        procedural_need = self._need_matches(
+./src/coverage_estimator.py:422:        return trigger_match or lexical_match or procedural_need
+./src/coverage_estimator.py:430:                "preliminary_procedural_score",
+./src/coverage_estimator.py:454:                "preliminary_procedural_score",
+./src/coverage_estimator.py:520:            candidate.memory_type == MemoryType.SEMANTIC
+./src/ablation.py:11:    MemoryType,
+./src/ablation.py:135:        selected_types=list(MemoryType),
+./src/ablation.py:137:            memory_type.value: 1.0
+./src/ablation.py:138:            for memory_type in MemoryType
+./src/ablation.py:141:            memory_type.value: [
+./src/ablation.py:144:            for memory_type in MemoryType
+./src/ablation.py:206:    max_per_memory_type = int(
+./src/ablation.py:208:            "max_per_memory_type",
+./src/ablation.py:220:    counts: Counter[MemoryType] = Counter()
+./src/ablation.py:228:            counts[candidate.memory_type]
+./src/ablation.py:229:            >= max_per_memory_type
+./src/ablation.py:252:        counts[candidate.memory_type] += 1
+./src/evidence_requirements.py:9:    MemoryType,
+./src/evidence_requirements.py:36:    max_per_memory_type: int
+./src/evidence_requirements.py:48:            "max_per_memory_type": self.max_per_memory_type,
+./src/evidence_requirements.py:246:        procedural_intent = (
+./src/evidence_requirements.py:251:        routed_procedural_only = (
+./src/evidence_requirements.py:252:            MemoryType.PROCEDURAL in route.selected_types
+./src/evidence_requirements.py:253:            and not procedural_intent
+./src/evidence_requirements.py:256:        if procedural_intent:
+./src/evidence_requirements.py:258:                "procedural_rule",
+./src/evidence_requirements.py:260:                    self.settings.get("procedural_min_rules", 1)
+./src/evidence_requirements.py:265:            reasons.append("explicit_procedural_intent")
+./src/evidence_requirements.py:266:        elif routed_procedural_only:
+./src/evidence_requirements.py:268:                "procedural_rule",
+./src/evidence_requirements.py:273:            reasons.append("soft_procedural_route")
+./src/evidence_requirements.py:304:                    description="Optional conflicting or superseded state.",
+./src/evidence_requirements.py:355:        if procedural_intent:
+./src/evidence_requirements.py:358:                int(self.settings.get("procedural_preferred_evidence", 5)),
+./src/evidence_requirements.py:379:            max_per_memory_type=int(
+./src/evidence_requirements.py:381:                    "max_per_memory_type",
+./src/evidence_requirements.py:382:                    self.selection.get("max_per_memory_type", 3),
+./run_query_gpu.py:162:            "route": result.selected_memory_types,
+./_archive/pilot_v1/scripts_pilot_v1/inspect_neo4j.py:12:        print('\nSample episodic memories:')
+./_archive/pilot_v1/scripts_pilot_v1/inspect_neo4j.py:13:        for r in adapter.search_episodic('user01', 'project', limit=5):
+./_archive/pilot_v1/scripts_pilot_v1/inspect_neo4j.py:15:        print('\nSample semantic facts:')
+./_archive/pilot_v1/scripts_pilot_v1/inspect_neo4j.py:16:        for r in adapter.search_semantic('user01', 'project', limit=5):
+./_archive/pilot_v1/src_pilot_v1/config.py:29:        parent / 'dataset_A_v0_2_neo4j_episodic',
+./_archive/pilot_v1/src_pilot_v1/baselines.py:15:        memories.extend(neo4j_adapter.search_episodic(user_id, kw, limit=4))
+./_archive/pilot_v1/src_pilot_v1/baselines.py:16:        memories.extend(neo4j_adapter.search_semantic(user_id, kw, limit=4, active_only=False))
+./_archive/pilot_v1/src_pilot_v1/baselines.py:23:    return {'question': question, 'query_type': 'simple_retrieval', 'predicted_route': ['neo4j_episodic_graph','neo4j_semantic_graph'], 'keywords': keywords, 'retrieved_memory_ids': [m['id'] for m in memories], 'used_memory_ids': [m['id'] for m in memories], 'outdated_memory_ids': [], 'newer_memory_ids': [], 'conflict_notes': [], 'answer': answer}
+./_archive/pilot_v1/src_pilot_v1/baselines.py:26:def all_memory_baseline(neo4j_adapter, procedural_matcher, user_id: str, question: str, answer_mode: str = 'mock', openai_model: str = 'gpt-4o-mini', openai_api_key: str | None = None) -> dict[str, Any]:
+./_archive/pilot_v1/src_pilot_v1/baselines.py:30:        memories.extend(neo4j_adapter.search_episodic(user_id, kw, limit=5))
+./_archive/pilot_v1/src_pilot_v1/baselines.py:31:        memories.extend(neo4j_adapter.search_semantic(user_id, kw, limit=5, active_only=False))
+./_archive/pilot_v1/src_pilot_v1/baselines.py:36:    rules = procedural_matcher.match(user_id, question, limit=5)
+./_archive/pilot_v1/src_pilot_v1/baselines.py:39:    return {'question': question, 'query_type': 'all_memory', 'predicted_route': ['neo4j_episodic_graph','neo4j_semantic_graph','json_procedural_rules'], 'keywords': keywords, 'retrieved_memory_ids': [m['id'] for m in memories] + [r['id'] for r in rules], 'used_memory_ids': [m['id'] for m in memories] + [r['id'] for r in rules], 'outdated_memory_ids': [], 'newer_memory_ids': [], 'conflict_notes': [], 'answer': answer}
+./_archive/pilot_v1/src_pilot_v1/query_classifier.py:10:    if any(x in q for x in [' or ',' rather than ','instead of','which is more current','conflict','supersede','到底','还是','冲突']):
+./_archive/pilot_v1/src_pilot_v1/query_classifier.py:15:        return 'procedural_following'
+./_archive/pilot_v1/src_pilot_v1/query_classifier.py:17:        return 'episodic_recall'
+./_archive/pilot_v1/src_pilot_v1/answer_generator.py:6:def format_evidence(selected_memories: list[dict[str, Any]], procedural_rules: list[dict[str, Any]]) -> str:
+./_archive/pilot_v1/src_pilot_v1/answer_generator.py:9:        lines.append(f"[{m.get('id')}] [{m.get('memory_type')}] {m.get('text')}")
+./_archive/pilot_v1/src_pilot_v1/answer_generator.py:10:    for r in procedural_rules:
+./_archive/pilot_v1/src_pilot_v1/answer_generator.py:11:        lines.append(f"[{r.get('id')}] [procedural] {r.get('text')}")
+./_archive/pilot_v1/src_pilot_v1/answer_generator.py:15:def generate_mock_answer(question: str, selected_memories: list[dict[str, Any]], conflict_result: dict[str, Any], procedural_rules: list[dict[str, Any]], query_type: str | None = None) -> str:
+./_archive/pilot_v1/src_pilot_v1/answer_generator.py:16:    if not selected_memories and not procedural_rules:
+./_archive/pilot_v1/src_pilot_v1/answer_generator.py:24:            lines.append(f"- [{m.get('id')}] [{m.get('memory_type')}] {m.get('text')}")
+./_archive/pilot_v1/src_pilot_v1/answer_generator.py:25:    if procedural_rules:
+./_archive/pilot_v1/src_pilot_v1/answer_generator.py:26:        lines.append('\nRelevant procedural rules:')
+./_archive/pilot_v1/src_pilot_v1/answer_generator.py:27:        for r in procedural_rules[:3]:
+./_archive/pilot_v1/src_pilot_v1/answer_generator.py:33:    lines.append('\nMemory explanation: the answer was generated from the selected episodic, semantic, and/or procedural evidence above.')
+./_archive/pilot_v1/src_pilot_v1/answer_generator.py:37:def generate_openai_answer(question: str, selected_memories: list[dict[str, Any]], conflict_result: dict[str, Any], procedural_rules: list[dict[str, Any]], model: str, api_key: str | None) -> str:
+./_archive/pilot_v1/src_pilot_v1/answer_generator.py:42:    evidence_text = format_evidence(selected_memories, procedural_rules)
+./_archive/pilot_v1/src_pilot_v1/answer_generator.py:66:def generate_answer(mode: str, question: str, selected_memories: list[dict[str, Any]], conflict_result: dict[str, Any], procedural_rules: list[dict[str, Any]], query_type: str | None = None, openai_model: str = 'gpt-4o-mini', openai_api_key: str | None = None) -> str:
+./_archive/pilot_v1/src_pilot_v1/answer_generator.py:68:        return generate_mock_answer(question, selected_memories, conflict_result, procedural_rules, query_type)
+./_archive/pilot_v1/src_pilot_v1/answer_generator.py:70:        return generate_openai_answer(question, selected_memories, conflict_result, procedural_rules, openai_model, openai_api_key)
+./_archive/pilot_v1/src_pilot_v1/experiment_runner.py:7:from src.io_utils import read_jsonl, write_jsonl, write_json, find_eval_questions_path, find_procedural_rules_path
+./_archive/pilot_v1/src_pilot_v1/experiment_runner.py:9:from src.procedural_matcher import ProceduralRuleMatcher
+./_archive/pilot_v1/src_pilot_v1/experiment_runner.py:39:    rules_path = find_procedural_rules_path(config.dataset_path)
+./_archive/pilot_v1/src_pilot_v1/experiment_runner.py:45:    procedural = ProceduralRuleMatcher(rules_path)
+./_archive/pilot_v1/src_pilot_v1/experiment_runner.py:46:    controller = C3LiteController(neo4j, procedural, config.answer_mode, config.openai_model, config.openai_api_key)
+./_archive/pilot_v1/src_pilot_v1/experiment_runner.py:59:                    pred = all_memory_baseline(neo4j, procedural, user_id, question, config.answer_mode, config.openai_model, config.openai_api_key)
+./_archive/pilot_v1/src_pilot_v1/experiment_runner.py:75:        run_info = {'dataset_path': str(config.dataset_path), 'eval_questions_path': str(eval_path), 'procedural_rules_path': str(rules_path), 'answer_mode': config.answer_mode, 'methods': run_methods, 'num_questions': len(selected_questions), 'num_predictions': len(predictions), 'neo4j_counts': counts, 'output_dir': str(output_dir)}
+./_archive/pilot_v1/src_pilot_v1/memory_router.py:4:    'current_fact': ['neo4j_semantic_graph'],
+./_archive/pilot_v1/src_pilot_v1/memory_router.py:5:    'episodic_recall': ['neo4j_episodic_graph'],
+./_archive/pilot_v1/src_pilot_v1/memory_router.py:6:    'temporal_update': ['neo4j_episodic_graph', 'neo4j_semantic_graph'],
+./_archive/pilot_v1/src_pilot_v1/memory_router.py:7:    'conflict_resolution': ['neo4j_episodic_graph', 'neo4j_semantic_graph', 'json_procedural_rules'],
+./_archive/pilot_v1/src_pilot_v1/memory_router.py:8:    'procedural_following': ['json_procedural_rules', 'neo4j_semantic_graph'],
+./_archive/pilot_v1/src_pilot_v1/memory_router.py:9:    'abstention': ['neo4j_episodic_graph', 'neo4j_semantic_graph'],
+./_archive/pilot_v1/src_pilot_v1/memory_router.py:10:    'explainability': ['neo4j_episodic_graph', 'neo4j_semantic_graph', 'json_procedural_rules'],
+./_archive/pilot_v1/src_pilot_v1/memory_router.py:11:    'general': ['neo4j_semantic_graph'],
+./_archive/pilot_v1/src_pilot_v1/memory_router.py:16:    return ROUTE_MAP.get(query_type, ['neo4j_semantic_graph'])
+./_archive/pilot_v1/src_pilot_v1/procedural_matcher.py:25:                matched.append({'id': rule['rule_id'], 'memory_type': 'procedural', 'text': f"{rule['condition']} -> {rule['action']}", 'name': rule['name'], 'priority': int(rule.get('priority',0)), 'score': score, 'matched_terms': lexical_hits})
+./_archive/pilot_v1/src_pilot_v1/io_utils.py:41:def find_procedural_rules_path(dataset_path: Path) -> Path:
+./_archive/pilot_v1/src_pilot_v1/io_utils.py:42:    for p in [dataset_path/'data_raw'/'procedural_memory.json', dataset_path/'procedural_memory.json']:
+./_archive/pilot_v1/src_pilot_v1/io_utils.py:45:    raise FileNotFoundError(f'Cannot find procedural_memory.json under {dataset_path}')
+./_archive/pilot_v1/src_pilot_v1/keyword_extractor.py:5:DOMAIN_TERMS = ['c3','lite','controller','scope','evaluation','baseline','dataset','episodic','semantic','procedural','conflict','temporal','abstention','explainability','supervisor','neo4j','rag','cv','interview','analyst','agent','hotel','travel','price','ticket','york']
+./_archive/pilot_v1/src_pilot_v1/controller.py:11:    def __init__(self, neo4j_adapter, procedural_matcher, answer_mode: str = 'mock', openai_model: str = 'gpt-4o-mini', openai_api_key: str | None = None):
+./_archive/pilot_v1/src_pilot_v1/controller.py:13:        self.procedural = procedural_matcher
+./_archive/pilot_v1/src_pilot_v1/controller.py:22:        retrieved, procedural_rules = [], []
+./_archive/pilot_v1/src_pilot_v1/controller.py:24:            if 'neo4j_episodic_graph' in routes:
+./_archive/pilot_v1/src_pilot_v1/controller.py:25:                retrieved.extend(self.neo4j.search_episodic(user_id, keyword, limit=6))
+./_archive/pilot_v1/src_pilot_v1/controller.py:26:            if 'neo4j_semantic_graph' in routes:
+./_archive/pilot_v1/src_pilot_v1/controller.py:27:                retrieved.extend(self.neo4j.search_semantic(user_id, keyword, limit=6, active_only=True))
+./_archive/pilot_v1/src_pilot_v1/controller.py:28:        if 'json_procedural_rules' in routes:
+./_archive/pilot_v1/src_pilot_v1/controller.py:29:            procedural_rules = self.procedural.match(user_id, question, limit=5)
+./_archive/pilot_v1/src_pilot_v1/controller.py:42:        answer = generate_answer(self.answer_mode, question, selected_memories, conflict_result, procedural_rules, query_type, self.openai_model, self.openai_api_key)
+./_archive/pilot_v1/src_pilot_v1/controller.py:43:        return {'question': question, 'query_type': query_type, 'predicted_route': routes, 'keywords': keywords, 'retrieved_memory_ids': [m['id'] for m in retrieved], 'used_memory_ids': [m['id'] for m in selected_memories] + [r['id'] for r in procedural_rules], 'outdated_memory_ids': conflict_result['outdated_memory_ids'], 'newer_memory_ids': conflict_result['newer_memory_ids'], 'conflict_notes': conflict_result['conflict_notes'], 'answer': answer}
+./_archive/pilot_v1/src_pilot_v1/conflict_checker.py:11:        superseding = adapter.find_superseding_memory(memory_id)
+./_archive/pilot_v1/src_pilot_v1/conflict_checker.py:12:        if superseding:
+./_archive/pilot_v1/src_pilot_v1/conflict_checker.py:14:            for item in superseding:
+./_archive/pilot_v1/src_pilot_v1/neo4j_adapter.py:6:class Neo4jMemoryAdapter:
+./_archive/pilot_v1/src_pilot_v1/neo4j_adapter.py:23:        MATCH (e:EpisodicEvent) WITH users, sessions, count(e) AS episodic
+./_archive/pilot_v1/src_pilot_v1/neo4j_adapter.py:24:        MATCH (f:SemanticFact) WITH users, sessions, episodic, count(f) AS semantic
+./_archive/pilot_v1/src_pilot_v1/neo4j_adapter.py:25:        MATCH (en:Entity) WITH users, sessions, episodic, semantic, count(en) AS entities
+./_archive/pilot_v1/src_pilot_v1/neo4j_adapter.py:26:        RETURN users, sessions, episodic, semantic, entities
+./_archive/pilot_v1/src_pilot_v1/neo4j_adapter.py:32:    def search_episodic(self, user_id: str, keyword: str, limit: int = 8) -> list[dict[str, Any]]:
+./_archive/pilot_v1/src_pilot_v1/neo4j_adapter.py:37:        RETURN e.memory_id AS id, 'episodic' AS memory_type, toString(e.date) AS date,
+./_archive/pilot_v1/src_pilot_v1/neo4j_adapter.py:45:    def search_semantic(self, user_id: str, keyword: str, limit: int = 8, active_only: bool = True) -> list[dict[str, Any]]:
+./_archive/pilot_v1/src_pilot_v1/neo4j_adapter.py:53:        RETURN f.triple_id AS id, 'semantic' AS memory_type,
+./_archive/pilot_v1/src_pilot_v1/neo4j_adapter.py:69:               CASE WHEN e IS NOT NULL THEN 'episodic' ELSE 'semantic' END AS memory_type,
+./_archive/pilot_v1/src_pilot_v1/neo4j_adapter.py:80:    def find_superseding_memory(self, memory_id: str) -> list[dict[str, Any]]:
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/answer_generator.py:6:def format_evidence(selected_memories: list[dict[str, Any]], procedural_rules: list[dict[str, Any]]) -> str:
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/answer_generator.py:9:        lines.append(f"[{m.get('id')}] [{m.get('memory_type')}] {m.get('text')}")
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/answer_generator.py:10:    for r in procedural_rules:
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/answer_generator.py:11:        lines.append(f"[{r.get('id')}] [procedural] {r.get('text')}")
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/answer_generator.py:15:def generate_mock_answer(question: str, selected_memories: list[dict[str, Any]], conflict_result: dict[str, Any], procedural_rules: list[dict[str, Any]], query_type: str | None = None) -> str:
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/answer_generator.py:16:    if not selected_memories and not procedural_rules:
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/answer_generator.py:24:            lines.append(f"- [{m.get('id')}] [{m.get('memory_type')}] {m.get('text')}")
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/answer_generator.py:25:    if procedural_rules:
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/answer_generator.py:26:        lines.append('\nRelevant procedural rules:')
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/answer_generator.py:27:        for r in procedural_rules[:3]:
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/answer_generator.py:33:    lines.append('\nMemory explanation: the answer was generated from the selected episodic, semantic, and/or procedural evidence above.')
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/answer_generator.py:37:def generate_openai_answer(question: str, selected_memories: list[dict[str, Any]], conflict_result: dict[str, Any], procedural_rules: list[dict[str, Any]], model: str, api_key: str | None) -> str:
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/answer_generator.py:42:    evidence_text = format_evidence(selected_memories, procedural_rules)
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/answer_generator.py:66:def generate_answer(mode: str, question: str, selected_memories: list[dict[str, Any]], conflict_result: dict[str, Any], procedural_rules: list[dict[str, Any]], query_type: str | None = None, openai_model: str = 'gpt-4o-mini', openai_api_key: str | None = None) -> str:
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/answer_generator.py:68:        return generate_mock_answer(question, selected_memories, conflict_result, procedural_rules, query_type)
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/answer_generator.py:70:        return generate_openai_answer(question, selected_memories, conflict_result, procedural_rules, openai_model, openai_api_key)
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/query_classifier.py:10:    if any(x in q for x in [' or ',' rather than ','instead of','which is more current','conflict','supersede','到底','还是','冲突']):
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/query_classifier.py:15:        return 'procedural_following'
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/query_classifier.py:17:        return 'episodic_recall'
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/neo4j_adapter.py:5:class Neo4jMemoryAdapter:
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/neo4j_adapter.py:13:        q='''MATCH (u:User) WITH count(u) AS users MATCH (s:Session) WITH users,count(s) AS sessions MATCH (e:EpisodicEvent) WITH users,sessions,count(e) AS episodic MATCH (f:SemanticFact) WITH users,sessions,episodic,count(f) AS semantic MATCH (en:Entity) WITH users,sessions,episodic,semantic,count(en) AS entities RETURN users,sessions,episodic,semantic,entities'''
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/neo4j_adapter.py:16:    def get_episodic_candidates(self,user_id:str,limit:int=200):
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/neo4j_adapter.py:17:        q='''MATCH (:User {user_id:$user_id})-[:HAS_EPISODIC_MEMORY]->(e:EpisodicEvent) RETURN e.memory_id AS id,'episodic' AS memory_type,toString(e.date) AS date,e.event AS text,e.importance AS importance,e.source_session AS source,e.entities AS entities ORDER BY e.date DESC,e.importance DESC LIMIT $limit'''
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/neo4j_adapter.py:19:    def get_semantic_candidates(self,user_id:str,include_archived:bool=False,limit:int=300):
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/neo4j_adapter.py:21:        q=f'''MATCH (:User {{user_id:$user_id}})-[:HAS_SEMANTIC_FACT]->(f:SemanticFact) {filt} RETURN f.triple_id AS id,'semantic' AS memory_type,f.subject+' --'+f.relation+'--> '+f.object AS text,f.subject AS subject,f.relation AS relation,f.object AS object,f.status AS status,f.confidence AS confidence,toString(f.last_updated) AS last_updated,f.source AS source ORDER BY f.last_updated DESC,f.confidence DESC LIMIT $limit'''
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/neo4j_adapter.py:23:    def search_episodic(self,user_id:str,keyword:str,limit:int=8):
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/neo4j_adapter.py:24:        q='''MATCH (:User {user_id:$user_id})-[:HAS_EPISODIC_MEMORY]->(e:EpisodicEvent) WHERE toLower(e.event) CONTAINS toLower($keyword) OR toLower(coalesce(e.entities,'')) CONTAINS toLower($keyword) RETURN e.memory_id AS id,'episodic' AS memory_type,toString(e.date) AS date,e.event AS text,e.importance AS importance,e.source_session AS source ORDER BY e.date DESC,e.importance DESC LIMIT $limit'''
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/neo4j_adapter.py:26:    def search_semantic(self,user_id:str,keyword:str,limit:int=8,active_only:bool=True):
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/neo4j_adapter.py:28:        q=f'''MATCH (:User {{user_id:$user_id}})-[:HAS_SEMANTIC_FACT]->(f:SemanticFact) WHERE (toLower(f.subject) CONTAINS toLower($keyword) OR toLower(f.relation) CONTAINS toLower($keyword) OR toLower(f.object) CONTAINS toLower($keyword)) {filt} RETURN f.triple_id AS id,'semantic' AS memory_type,f.subject+' --'+f.relation+'--> '+f.object AS text,f.subject AS subject,f.relation AS relation,f.object AS object,f.status AS status,f.confidence AS confidence,toString(f.last_updated) AS last_updated,f.source AS source ORDER BY f.confidence DESC,f.last_updated DESC LIMIT $limit'''
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/neo4j_adapter.py:31:        q='''OPTIONAL MATCH (e:EpisodicEvent {memory_id:$memory_id}) OPTIONAL MATCH (f:SemanticFact {triple_id:$memory_id}) RETURN CASE WHEN e IS NOT NULL THEN e.memory_id ELSE f.triple_id END AS id,CASE WHEN e IS NOT NULL THEN 'episodic' ELSE 'semantic' END AS memory_type,CASE WHEN e IS NOT NULL THEN e.event ELSE f.subject+' --'+f.relation+'--> '+f.object END AS text,CASE WHEN e IS NOT NULL THEN toString(e.date) ELSE toString(f.last_updated) END AS date,CASE WHEN f IS NOT NULL THEN f.status ELSE null END AS status,CASE WHEN e IS NOT NULL THEN e.importance ELSE null END AS importance,CASE WHEN f IS NOT NULL THEN f.confidence ELSE null END AS confidence,CASE WHEN f IS NOT NULL THEN f.subject ELSE null END AS subject,CASE WHEN f IS NOT NULL THEN f.relation ELSE null END AS relation,CASE WHEN f IS NOT NULL THEN f.object ELSE null END AS object,CASE WHEN f IS NOT NULL THEN toString(f.last_updated) ELSE null END AS last_updated'''
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/neo4j_adapter.py:38:    def find_superseding_memory(self,memory_id:str): return self.find_memory_relations([memory_id])
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/neo4j_adapter.py:39:    def get_timeline(self,user_id:str,limit:int=20): return self.get_episodic_candidates(user_id,limit)
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/ranking.py:58:def rank_candidates(question: str, candidates: list[dict[str,Any]], memory_type: str, limit: int) -> list[dict[str,Any]]:
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/ranking.py:65:        if memory_type=='episodic': score=.68*lex+.17*(float(item.get('importance') or 0)/5)+.15*rec[item['id']]
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/ranking.py:66:        elif memory_type=='semantic': score=.68*lex+.14*float(item.get('confidence') or 0)+.10*(1.0 if item.get('status')=='active' else .25)+.08*rec[item['id']]
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/ranking.py:67:        elif memory_type=='procedural': score=.82*lex+.18*(float(item.get('priority') or 0)/5)
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/procedural_matcher.py:9:        return [{'id':r['rule_id'],'memory_type':'procedural','text':f"{r['condition']} -> {r['action']}",'name':r.get('name'),'condition':r.get('condition'),'action':r.get('action'),'priority':int(r.get('priority',0))} for r in self.rules if r.get('user_id')==user_id]
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/procedural_matcher.py:12:        return rank_candidates(question,self.get_candidates(user_id),'procedural',limit)
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/conflict_resolver.py:27:            if x.get('memory_type')=='semantic': groups[(str(x.get('subject')),str(x.get('relation')))].append(x)
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/conflict_resolver.py:36:                else: unresolved.append({'memory_ids':[preferred['id'],old['id']],'reason':f'Multiple active semantic facts disagree for {key}.'})
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/baselines.py:11:    routes=['neo4j_episodic_graph','neo4j_semantic_graph']; bundle=retrieval_engine.retrieve_routes(user_id,question,routes,True,8); memories=retrieval_engine.flatten(bundle)[:10]; res=_resolution(memories); answer=generate_answer(answer_mode,question,memories,res,[],'simple_retrieval',openai_model,openai_api_key)
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/baselines.py:15:    routes=['neo4j_episodic_graph','neo4j_semantic_graph','json_procedural_rules']; bundle=retrieval_engine.retrieve_routes(user_id,question,routes,True,10); memories=retrieval_engine.flatten(bundle)[:14]; res=_resolution(memories); rules=[x for x in memories if x.get('memory_type')=='procedural']; answer=generate_answer(answer_mode,question,memories,res,rules,'all_memory',openai_model,openai_api_key)
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/retrieval_engine.py:6:class MemoryRetrievalEngine:
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/retrieval_engine.py:8:    def __init__(self, neo4j_adapter, procedural_matcher):
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/retrieval_engine.py:9:        self.neo4j=neo4j_adapter; self.procedural=procedural_matcher
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/retrieval_engine.py:10:    def retrieve_episodic(self,user_id:str,question:str,limit:int=8):
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/retrieval_engine.py:11:        return rank_candidates(question,self.neo4j.get_episodic_candidates(user_id),'episodic',limit)
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/retrieval_engine.py:12:    def retrieve_semantic(self,user_id:str,question:str,limit:int=8,include_archived:bool=False):
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/retrieval_engine.py:13:        return rank_candidates(question,self.neo4j.get_semantic_candidates(user_id,include_archived),'semantic',limit)
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/retrieval_engine.py:14:    def retrieve_procedural(self,user_id:str,question:str,limit:int=4):
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/retrieval_engine.py:15:        return rank_candidates(question,self.procedural.get_candidates(user_id),'procedural',limit)
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/retrieval_engine.py:16:    def retrieve_routes(self,user_id:str,question:str,routes,include_archived_semantic:bool=False,per_route_limit:int=8):
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/retrieval_engine.py:18:        if E in routes: out[E]=self.retrieve_episodic(user_id,question,per_route_limit)
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/retrieval_engine.py:19:        if S in routes: out[S]=self.retrieve_semantic(user_id,question,per_route_limit,include_archived_semantic)
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/retrieval_engine.py:20:        if P in routes: out[P]=self.retrieve_procedural(user_id,question,min(5,per_route_limit))
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/query_analyzer.py:5:INTENTS = ('episodic_recall','current_fact','temporal_update','conflict_resolution','procedural_following','abstention','explainability','general')
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/query_analyzer.py:33:        'conflict_resolution': (0.42, ['which is more current','conflict','supersede','outdated','rather than',' or ','mainly about proving','completely removed']),
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/query_analyzer.py:35:        'procedural_following': (0.52, ['how should','what should you do','should the system','how should the system','what should i say','answer in ','style','format','answer structure','rewrite','should you','should the itinerary','how should my cv wording']),
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/query_analyzer.py:36:        'episodic_recall': (0.45, ['originally','previously','before','past','did i ask','what happened','at york']),
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/query_analyzer.py:47:        add('episodic_recall', 0.50, 'past-only recall')
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/query_analyzer.py:54:        add('procedural_following', 0.65, 'general memory-handling policy')
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/controller.py:15:        usable=resolved['usable_memories']; selected={}; route_type={'neo4j_episodic_graph':'episodic','neo4j_semantic_graph':'semantic','json_procedural_rules':'procedural'}
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/controller.py:17:            c=[x for x in usable if x.get('memory_type')==route_type[route]]
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/controller.py:26:        bundle=self.retrieval.retrieve_routes(user_id,question,plan.routes,plan.include_archived_semantic,8); retrieved=self.retrieval.flatten(bundle)
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/controller.py:31:            answer=generate_answer(self.answer_mode,question,selected,resolution, [x for x in selected if x.get('memory_type')=='procedural'],profile.primary_intent,self.openai_model,self.openai_api_key)
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/keyword_extractor.py:5:DOMAIN_TERMS = ['c3','lite','controller','scope','evaluation','baseline','dataset','episodic','semantic','procedural','conflict','temporal','abstention','explainability','supervisor','neo4j','rag','cv','interview','analyst','agent','hotel','travel','price','ticket','york']
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/route_planner.py:6:E = 'neo4j_episodic_graph'
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/route_planner.py:7:S = 'neo4j_semantic_graph'
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/route_planner.py:8:P = 'json_procedural_rules'
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/route_planner.py:15:    include_archived_semantic: bool
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/route_planner.py:18:        return {'routes': list(self.routes), 'route_scores': self.route_scores, 'confidence': self.confidence, 'include_archived_semantic': self.include_archived_semantic, 'reasons': list(self.reasons)}
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/route_planner.py:23:        E: round(min(1.0, 0.90*s['episodic_recall'] + 0.85*s['temporal_update'] + 0.72*s['conflict_resolution'] + 0.38*s['explainability'] + 0.42*s['abstention']), 6),
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/route_planner.py:24:        S: round(min(1.0, 0.90*s['current_fact'] + 0.88*s['conflict_resolution'] + 0.80*s['temporal_update'] + 0.62*s['procedural_following'] + 0.62*s['explainability'] + 0.72*s['abstention']), 6),
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/route_planner.py:25:        P: round(min(1.0, 0.96*s['procedural_following'] + 0.42*s['conflict_resolution'] + 0.24*s['explainability']), 6),
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/route_planner.py:37:    elif 'temporal_comparison' in f and s['procedural_following'] < 0.45:
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/route_planner.py:41:    elif 'domain_policy' in f and s['procedural_following'] >= 0.35:
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/route_planner.py:50:            routes, conf = (S,), 0.85; reasons.append('design rationale is primarily semantic')
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/route_planner.py:53:    elif s['procedural_following'] >= 0.45:
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/route_planner.py:54:        routes, conf = (P,S), 0.88; reasons.append('normative task needs procedural policy and current facts')
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/route_planner.py:59:    elif s['episodic_recall'] >= 0.47 and s['temporal_update'] < 0.38:
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/io_utils.py:41:def find_procedural_rules_path(dataset_path: Path) -> Path:
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/io_utils.py:42:    for p in [dataset_path/'data_raw'/'procedural_memory.json', dataset_path/'procedural_memory.json']:
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/io_utils.py:45:    raise FileNotFoundError(f'Cannot find procedural_memory.json under {dataset_path}')
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/memory_router.py:4:    'current_fact': ['neo4j_semantic_graph'],
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/memory_router.py:5:    'episodic_recall': ['neo4j_episodic_graph'],
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/memory_router.py:6:    'temporal_update': ['neo4j_episodic_graph', 'neo4j_semantic_graph'],
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/memory_router.py:7:    'conflict_resolution': ['neo4j_episodic_graph', 'neo4j_semantic_graph', 'json_procedural_rules'],
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/memory_router.py:8:    'procedural_following': ['json_procedural_rules', 'neo4j_semantic_graph'],
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/memory_router.py:9:    'abstention': ['neo4j_episodic_graph', 'neo4j_semantic_graph'],
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/memory_router.py:10:    'explainability': ['neo4j_episodic_graph', 'neo4j_semantic_graph', 'json_procedural_rules'],
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/memory_router.py:11:    'general': ['neo4j_semantic_graph'],
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/memory_router.py:16:    return ROUTE_MAP.get(query_type, ['neo4j_semantic_graph'])
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/config.py:29:        parent / 'dataset_A_v0_2_neo4j_episodic',
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/experiment_runner.py:7:from src.io_utils import read_jsonl,write_jsonl,write_json,find_eval_questions_path,find_procedural_rules_path
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/experiment_runner.py:9:from src.procedural_matcher import ProceduralRuleMatcher
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/experiment_runner.py:39:    config=get_config(dataset_path_override); eval_path=find_eval_questions_path(config.dataset_path); rules_path=find_procedural_rules_path(config.dataset_path); questions=select_questions(read_jsonl(eval_path),limit,balanced); run_methods=methods or METHODS; output_dir.mkdir(parents=True,exist_ok=True)
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/experiment_runner.py:40:    neo4j=Neo4jMemoryAdapter(config.neo4j_uri,config.neo4j_user,config.neo4j_password); procedural=ProceduralRuleMatcher(rules_path); retrieval=MemoryRetrievalEngine(neo4j,procedural); controller=C3LiteController(retrieval,neo4j,config.answer_mode,config.openai_model,config.openai_api_key); predictions=[]; scores=[]
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/experiment_runner.py:54:        info={'algorithm_version':'C3-Lite Algorithm v2','dataset_path':str(config.dataset_path),'eval_questions_path':str(eval_path),'procedural_rules_path':str(rules_path),'answer_mode':config.answer_mode,'methods':run_methods,'num_questions':len(questions),'num_predictions':len(predictions),'neo4j_counts':counts,'output_dir':str(output_dir)}; write_json(output_dir/'run_info.json',info); return info
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/conflict_checker.py:11:        superseding = adapter.find_superseding_memory(memory_id)
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/conflict_checker.py:12:        if superseding:
+./_archive/algorithm_v2_1/src_algorithm_v2_backup/conflict_checker.py:14:            for item in superseding:
+./_archive/algorithm_v2_1/scripts_algorithm_v2_backup/inspect_neo4j.py:12:        print('\nSample episodic memories:')
+./_archive/algorithm_v2_1/scripts_algorithm_v2_backup/inspect_neo4j.py:13:        for r in adapter.search_episodic('user01', 'project', limit=5):
+./_archive/algorithm_v2_1/scripts_algorithm_v2_backup/inspect_neo4j.py:15:        print('\nSample semantic facts:')
+./_archive/algorithm_v2_1/scripts_algorithm_v2_backup/inspect_neo4j.py:16:        for r in adapter.search_semantic('user01', 'project', limit=5):
+./_archive/old_system/scripts/patch_locomo_supporting_ids.py:10:backup_path = Path("../LoCoMo_C3/data_eval/eval_questions_before_semantic_gold_patch.jsonl")
+./_archive/old_system/scripts/patch_locomo_supporting_ids.py:34:# target episodic memory ID -> semantic observation IDs derived from it.
+./_archive/old_system/scripts/patch_locomo_supporting_ids.py:35:episodic_to_semantic = defaultdict(list)
+./_archive/old_system/scripts/patch_locomo_supporting_ids.py:46:            episodic_to_semantic[target_id].append(source_id)
+./_archive/old_system/scripts/patch_locomo_supporting_ids.py:58:        for semantic_id in episodic_to_semantic.get(memory_id, []):
+./_archive/old_system/scripts/patch_locomo_supporting_ids.py:59:            if semantic_id not in expanded_supporting:
+./_archive/old_system/scripts/patch_locomo_supporting_ids.py:60:                expanded_supporting.append(semantic_id)
+./_archive/old_system/scripts/make_v02_heldout.py:55:src_rules = Path("../Dataset_A_v0_2/data_raw/procedural_memory.json")
+./_archive/old_system/scripts/make_v02_heldout.py:56:dst_rules = heldout_raw_dir / "procedural_memory.json"
+./_archive/old_system/scripts/rescore_predictions_v21_labels.py:91:        "Rescored with v2.1 abstention semantics: explicit should_abstain "
+./_archive/old_system/scripts/inspect_c3_csv_headers.py:10:    "nodes_episodic_events.csv",
+./_archive/old_system/scripts/inspect_c3_csv_headers.py:11:    "nodes_semantic_facts.csv",
+./_archive/old_system/scripts/inspect_c3_csv_headers.py:16:    "rel_user_has_semantic_fact.csv",
+./_archive/old_system/scripts/inspect_c3_csv_headers.py:18:    "rel_semantic_edges.csv",
+./_archive/old_system/scripts/build_locomo_one_conversation.py:106:                "Converted from LoCoMo. Dialogue turns are episodic "
+./_archive/old_system/scripts/build_locomo_one_conversation.py:107:                "memories; observations are semantic memories."
+./_archive/old_system/scripts/build_locomo_one_conversation.py:113:    # Sessions and episodic memories
+./_archive/old_system/scripts/build_locomo_one_conversation.py:116:    episodic_events = []
+./_archive/old_system/scripts/build_locomo_one_conversation.py:129:    # to equivalent semantic observation memories.
+./_archive/old_system/scripts/build_locomo_one_conversation.py:130:    dia_to_semantic_ids = defaultdict(list)
+./_archive/old_system/scripts/build_locomo_one_conversation.py:175:            episodic_events.append({
+./_archive/old_system/scripts/build_locomo_one_conversation.py:183:                "memory_type": "episodic",
+./_archive/old_system/scripts/build_locomo_one_conversation.py:216:    semantic_facts = []
+./_archive/old_system/scripts/build_locomo_one_conversation.py:217:    rel_user_has_semantic_fact = []
+./_archive/old_system/scripts/build_locomo_one_conversation.py:218:    rel_semantic_edges = []
+./_archive/old_system/scripts/build_locomo_one_conversation.py:262:                semantic_facts.append({
+./_archive/old_system/scripts/build_locomo_one_conversation.py:272:                    "memory_type": "semantic",
+./_archive/old_system/scripts/build_locomo_one_conversation.py:275:                rel_user_has_semantic_fact.append({
+./_archive/old_system/scripts/build_locomo_one_conversation.py:281:                rel_semantic_edges.append({
+./_archive/old_system/scripts/build_locomo_one_conversation.py:295:                # Link each semantic observation to its source dialogue turn.
+./_archive/old_system/scripts/build_locomo_one_conversation.py:297:                # dialogue-turn evidence and derived semantic evidence as equivalent.
+./_archive/old_system/scripts/build_locomo_one_conversation.py:302:                        dia_to_semantic_ids[evidence_dia_id].append(triple_id)
+./_archive/old_system/scripts/build_locomo_one_conversation.py:331:            # 1. Add original dialogue-turn episodic evidence.
+./_archive/old_system/scripts/build_locomo_one_conversation.py:332:            episodic_id = dia_to_memory_id.get(dia_id)
+./_archive/old_system/scripts/build_locomo_one_conversation.py:334:            if episodic_id and episodic_id not in supporting_memory_ids:
+./_archive/old_system/scripts/build_locomo_one_conversation.py:335:                supporting_memory_ids.append(episodic_id)
+./_archive/old_system/scripts/build_locomo_one_conversation.py:337:            # 2. Add semantic observations derived from this dialogue turn.
+./_archive/old_system/scripts/build_locomo_one_conversation.py:338:            for semantic_id in dia_to_semantic_ids.get(dia_id, []):
+./_archive/old_system/scripts/build_locomo_one_conversation.py:339:                if semantic_id not in supporting_memory_ids:
+./_archive/old_system/scripts/build_locomo_one_conversation.py:340:                    supporting_memory_ids.append(semantic_id)
+./_archive/old_system/scripts/build_locomo_one_conversation.py:357:                "neo4j_episodic_graph",
+./_archive/old_system/scripts/build_locomo_one_conversation.py:358:                "neo4j_semantic_graph",
+./_archive/old_system/scripts/build_locomo_one_conversation.py:361:                "neo4j_episodic_graph",
+./_archive/old_system/scripts/build_locomo_one_conversation.py:362:                "neo4j_semantic_graph",
+./_archive/old_system/scripts/build_locomo_one_conversation.py:392:    # The procedural matcher expects condition/action fields.
+./_archive/old_system/scripts/build_locomo_one_conversation.py:395:    procedural_rules = [
+./_archive/old_system/scripts/build_locomo_one_conversation.py:409:            "memory_type": "procedural",
+./_archive/old_system/scripts/build_locomo_one_conversation.py:423:            "memory_type": "procedural",
+./_archive/old_system/scripts/build_locomo_one_conversation.py:427:    procedural_path = OUT_RAW / "procedural_memory.json"
+./_archive/old_system/scripts/build_locomo_one_conversation.py:429:    procedural_path.write_text(
+./_archive/old_system/scripts/build_locomo_one_conversation.py:430:        json.dumps(procedural_rules, ensure_ascii=False, indent=2),
+./_archive/old_system/scripts/build_locomo_one_conversation.py:434:    print("Saved:", procedural_path)
+./_archive/old_system/scripts/build_locomo_one_conversation.py:452:        OUT_IMPORT / "nodes_episodic_events.csv",
+./_archive/old_system/scripts/build_locomo_one_conversation.py:461:            "memory_type",
+./_archive/old_system/scripts/build_locomo_one_conversation.py:463:        episodic_events,
+./_archive/old_system/scripts/build_locomo_one_conversation.py:467:        OUT_IMPORT / "nodes_semantic_facts.csv",
+./_archive/old_system/scripts/build_locomo_one_conversation.py:478:            "memory_type",
+./_archive/old_system/scripts/build_locomo_one_conversation.py:480:        semantic_facts,
+./_archive/old_system/scripts/build_locomo_one_conversation.py:508:        OUT_IMPORT / "rel_user_has_semantic_fact.csv",
+./_archive/old_system/scripts/build_locomo_one_conversation.py:510:        rel_user_has_semantic_fact,
+./_archive/old_system/scripts/build_locomo_one_conversation.py:520:        OUT_IMPORT / "rel_semantic_edges.csv",
+./_archive/old_system/scripts/build_locomo_one_conversation.py:534:        rel_semantic_edges,
+./_archive/old_system/scripts/build_locomo_one_conversation.py:556:    print("Episodic memories:", len(episodic_events))
+./_archive/old_system/scripts/build_locomo_one_conversation.py:557:    print("Semantic facts:", len(semantic_facts))
+./_archive/old_system/scripts/import_locomo_neo4j.py:74:            CREATE CONSTRAINT episodic_event_id_unique IF NOT EXISTS
+./_archive/old_system/scripts/import_locomo_neo4j.py:81:            CREATE CONSTRAINT semantic_fact_id_unique IF NOT EXISTS
+./_archive/old_system/scripts/import_locomo_neo4j.py:99:        episodic = read_csv("nodes_episodic_events.csv")
+./_archive/old_system/scripts/import_locomo_neo4j.py:100:        semantic = read_csv("nodes_semantic_facts.csv")
+./_archive/old_system/scripts/import_locomo_neo4j.py:132:        print("Importing episodic memories:", len(episodic))
+./_archive/old_system/scripts/import_locomo_neo4j.py:133:        for row in episodic:
+./_archive/old_system/scripts/import_locomo_neo4j.py:147:                e.memory_type = row.memory_type
+./_archive/old_system/scripts/import_locomo_neo4j.py:149:            episodic,
+./_archive/old_system/scripts/import_locomo_neo4j.py:152:        print("Importing semantic facts:", len(semantic))
+./_archive/old_system/scripts/import_locomo_neo4j.py:153:        for row in semantic:
+./_archive/old_system/scripts/import_locomo_neo4j.py:169:                f.memory_type = row.memory_type
+./_archive/old_system/scripts/import_locomo_neo4j.py:171:            semantic,
+./_archive/old_system/scripts/import_locomo_neo4j.py:192:        rel_user_has_semantic_fact = read_csv("rel_user_has_semantic_fact.csv")
+./_archive/old_system/scripts/import_locomo_neo4j.py:194:        rel_semantic_edges = read_csv("rel_semantic_edges.csv")
+./_archive/old_system/scripts/import_locomo_neo4j.py:233:        print("Importing HAS_SEMANTIC_FACT:", len(rel_user_has_semantic_fact))
+./_archive/old_system/scripts/import_locomo_neo4j.py:242:            rel_user_has_semantic_fact,
+./_archive/old_system/scripts/import_locomo_neo4j.py:258:        print("Importing semantic edges:", len(rel_semantic_edges))
+./_archive/old_system/scripts/import_locomo_neo4j.py:259:        for row in rel_semantic_edges:
+./_archive/old_system/scripts/import_locomo_neo4j.py:277:            rel_semantic_edges,
+./_archive/old_system/scripts/import_locomo_neo4j.py:306:              count { MATCH (:EpisodicEvent) } AS episodic,
+./_archive/old_system/scripts/import_locomo_neo4j.py:307:              count { MATCH (:SemanticFact) } AS semantic,
+./_archive/old_system/scripts/locomo_equivalence_diagnostic.py:26:def read_semantic_sources():
+./_archive/old_system/scripts/locomo_equivalence_diagnostic.py:28:    semantic observation id -> source episodic memory id
+./_archive/old_system/scripts/locomo_equivalence_diagnostic.py:42:def source_of(memory_id: str, semantic_sources: dict):
+./_archive/old_system/scripts/locomo_equivalence_diagnostic.py:44:    If semantic memory, map it back to its source dialogue memory.
+./_archive/old_system/scripts/locomo_equivalence_diagnostic.py:45:    If episodic memory, keep itself.
+./_archive/old_system/scripts/locomo_equivalence_diagnostic.py:47:    return semantic_sources.get(memory_id, memory_id)
+./_archive/old_system/scripts/locomo_equivalence_diagnostic.py:72:    semantic_sources = read_semantic_sources()
+./_archive/old_system/scripts/locomo_equivalence_diagnostic.py:103:        gold_sources = [source_of(mid, semantic_sources) for mid in gold_ids]
+./_archive/old_system/scripts/locomo_equivalence_diagnostic.py:104:        used_sources = [source_of(mid, semantic_sources) for mid in used_ids]
+./_archive/old_system/scripts/patch_dataset_a_gold_labels.py:8:        "conflict_type": "supersedes",
+./_archive/old_system/scripts/patch_dataset_a_gold_labels.py:12:        "conflict_type": "supersedes",
+./_archive/old_system/scripts/inspect_locomo_evidence_texts.py:9:episodic_path = import_dir / "nodes_episodic_events.csv"
+./_archive/old_system/scripts/inspect_locomo_evidence_texts.py:10:semantic_path = import_dir / "nodes_semantic_facts.csv"
+./_archive/old_system/scripts/inspect_locomo_evidence_texts.py:26:episodic = read_csv_map(episodic_path, "memory_id")
+./_archive/old_system/scripts/inspect_locomo_evidence_texts.py:27:semantic = read_csv_map(semantic_path, "triple_id")
+./_archive/old_system/scripts/inspect_locomo_evidence_texts.py:29:semantic_to_source = {}
+./_archive/old_system/scripts/inspect_locomo_evidence_texts.py:36:            semantic_to_source[row["source_id"]] = row["target_id"]
+./_archive/old_system/scripts/inspect_locomo_evidence_texts.py:52:    if memory_id in episodic:
+./_archive/old_system/scripts/inspect_locomo_evidence_texts.py:53:        row = episodic[memory_id]
+./_archive/old_system/scripts/inspect_locomo_evidence_texts.py:56:            "type": "episodic",
+./_archive/old_system/scripts/inspect_locomo_evidence_texts.py:61:    if memory_id in semantic:
+./_archive/old_system/scripts/inspect_locomo_evidence_texts.py:62:        row = semantic[memory_id]
+./_archive/old_system/scripts/inspect_locomo_evidence_texts.py:65:            "type": "semantic",
+./_archive/old_system/scripts/inspect_locomo_evidence_texts.py:66:            "source_dialogue_memory": semantic_to_source.get(memory_id, ""),
+./_archive/old_system/scripts/inspect_neo4j.py:12:        print('\nSample episodic memories:')
+./_archive/old_system/scripts/inspect_neo4j.py:13:        for r in adapter.search_episodic('user01', 'project', limit=5):
+./_archive/old_system/scripts/inspect_neo4j.py:15:        print('\nSample semantic facts:')
+./_archive/old_system/scripts/inspect_neo4j.py:16:        for r in adapter.search_semantic('user01', 'project', limit=5):
+./_archive/old_system/src/route_planner.py:6:E = 'neo4j_episodic_graph'
+./_archive/old_system/src/route_planner.py:7:S = 'neo4j_semantic_graph'
+./_archive/old_system/src/route_planner.py:8:P = 'json_procedural_rules'
+./_archive/old_system/src/route_planner.py:15:    include_archived_semantic: bool
+./_archive/old_system/src/route_planner.py:18:        return {'routes': list(self.routes), 'route_scores': self.route_scores, 'confidence': self.confidence, 'include_archived_semantic': self.include_archived_semantic, 'reasons': list(self.reasons)}
+./_archive/old_system/src/route_planner.py:23:        E: round(min(1.0, 0.90*s['episodic_recall'] + 0.85*s['temporal_update'] + 0.72*s['conflict_resolution'] + 0.38*s['explainability'] + 0.42*s['abstention']), 6),
+./_archive/old_system/src/route_planner.py:24:        S: round(min(1.0, 0.90*s['current_fact'] + 0.88*s['conflict_resolution'] + 0.80*s['temporal_update'] + 0.62*s['procedural_following'] + 0.62*s['explainability'] + 0.72*s['abstention']), 6),
+./_archive/old_system/src/route_planner.py:25:        P: round(min(1.0, 0.96*s['procedural_following'] + 0.42*s['conflict_resolution'] + 0.24*s['explainability']), 6),
+./_archive/old_system/src/route_planner.py:37:    elif 'temporal_comparison' in f and s['procedural_following'] < 0.45:
+./_archive/old_system/src/route_planner.py:41:    elif 'domain_policy' in f and s['procedural_following'] >= 0.35:
+./_archive/old_system/src/route_planner.py:50:            routes, conf = (S,), 0.85; reasons.append('design rationale is primarily semantic')
+./_archive/old_system/src/route_planner.py:53:    elif s['procedural_following'] >= 0.45:
+./_archive/old_system/src/route_planner.py:54:        routes, conf = (P,S), 0.88; reasons.append('normative task needs procedural policy and current facts')
+./_archive/old_system/src/route_planner.py:59:    elif s['episodic_recall'] >= 0.47 and s['temporal_update'] < 0.38:
+./_archive/old_system/src/conflict_checker.py:11:        superseding = adapter.find_superseding_memory(memory_id)
+./_archive/old_system/src/conflict_checker.py:12:        if superseding:
+./_archive/old_system/src/conflict_checker.py:14:            for item in superseding:
+./_archive/old_system/src/io_utils.py:41:def find_procedural_rules_path(dataset_path: Path) -> Path:
+./_archive/old_system/src/io_utils.py:42:    for p in [dataset_path/'data_raw'/'procedural_memory.json', dataset_path/'procedural_memory.json']:
+./_archive/old_system/src/io_utils.py:45:    raise FileNotFoundError(f'Cannot find procedural_memory.json under {dataset_path}')
+./_archive/old_system/src/config.py:29:        parent / 'dataset_A_v0_2_neo4j_episodic',
+./_archive/old_system/src/confidence_calibrator.py:87:    memory_types = {
+./_archive/old_system/src/confidence_calibrator.py:88:        memory.get("memory_type")
+./_archive/old_system/src/confidence_calibrator.py:115:        and len(memory_types) >= 2
+./_archive/old_system/src/confidence_calibrator.py:120:        query_type == "procedural_following"
+./_archive/old_system/src/confidence_calibrator.py:121:        and "procedural" in memory_types
+./_archive/old_system/src/experiment_runner_before_conflict_metrics.py:15:    find_procedural_rules_path,
+./_archive/old_system/src/experiment_runner_before_conflict_metrics.py:18:from src.procedural_matcher import ProceduralRuleMatcher
+./_archive/old_system/src/experiment_runner_before_conflict_metrics.py:171:        find_procedural_rules_path(
+./_archive/old_system/src/experiment_runner_before_conflict_metrics.py:195:    procedural = ProceduralRuleMatcher(
+./_archive/old_system/src/experiment_runner_before_conflict_metrics.py:201:        procedural,
+./_archive/old_system/src/experiment_runner_before_conflict_metrics.py:429:            "procedural_rules_path": str(
+./_archive/old_system/src/experiment_runner.py:15:    find_procedural_rules_path,
+./_archive/old_system/src/experiment_runner.py:18:from src.procedural_matcher import ProceduralRuleMatcher
+./_archive/old_system/src/experiment_runner.py:191:        find_procedural_rules_path(
+./_archive/old_system/src/experiment_runner.py:215:    procedural = ProceduralRuleMatcher(
+./_archive/old_system/src/experiment_runner.py:221:        procedural,
+./_archive/old_system/src/experiment_runner.py:460:            "procedural_rules_path": str(
+./_archive/old_system/src/baselines.py:11:    routes=['neo4j_episodic_graph','neo4j_semantic_graph']; bundle=retrieval_engine.retrieve_routes(user_id,question,routes,True,8); memories=retrieval_engine.flatten(bundle)[:10]; res=_resolution(memories); answer=generate_answer(answer_mode,question,memories,res,[],'simple_retrieval',openai_model,openai_api_key)
+./_archive/old_system/src/baselines.py:15:    routes=['neo4j_episodic_graph','neo4j_semantic_graph','json_procedural_rules']; bundle=retrieval_engine.retrieve_routes(user_id,question,routes,True,10); memories=retrieval_engine.flatten(bundle)[:14]; res=_resolution(memories); rules=[x for x in memories if x.get('memory_type')=='procedural']; answer=generate_answer(answer_mode,question,memories,res,rules,'all_memory',openai_model,openai_api_key)
+./_archive/old_system/src/controller.py:21:        relation-semantic checking and bidirectional graph expansion.
+./_archive/old_system/src/controller.py:61:            include_archived_semantic=(
+./_archive/old_system/src/controller.py:63:                .include_archived_semantic
+./_archive/old_system/src/controller.py:112:                        memory.get("memory_type")
+./_archive/old_system/src/controller.py:113:                        == "procedural"
+./_archive/old_system/src/neo4j_adapter.py:8:class Neo4jMemoryAdapter:
+./_archive/old_system/src/neo4j_adapter.py:41:        WITH users, sessions, count(e) AS episodic
+./_archive/old_system/src/neo4j_adapter.py:43:        WITH users, sessions, episodic, count(f) AS semantic
+./_archive/old_system/src/neo4j_adapter.py:45:        WITH users, sessions, episodic, semantic, count(en) AS entities
+./_archive/old_system/src/neo4j_adapter.py:46:        RETURN users, sessions, episodic, semantic, entities
+./_archive/old_system/src/neo4j_adapter.py:53:    def get_episodic_candidates(
+./_archive/old_system/src/neo4j_adapter.py:64:            'episodic' AS memory_type,
+./_archive/old_system/src/neo4j_adapter.py:84:    def get_semantic_candidates(
+./_archive/old_system/src/neo4j_adapter.py:103:            'semantic' AS memory_type,
+./_archive/old_system/src/neo4j_adapter.py:143:                WHEN e IS NOT NULL THEN 'episodic'
+./_archive/old_system/src/neo4j_adapter.py:144:                ELSE 'semantic'
+./_archive/old_system/src/neo4j_adapter.py:145:            END AS memory_type,
+./_archive/old_system/src/neo4j_adapter.py:244:    def find_superseding_memory(
+./_archive/old_system/src/neo4j_adapter.py:257:        return self.get_episodic_candidates(
+./_archive/old_system/src/conflict_resolver.py:21:    "episodic_recall",
+./_archive/old_system/src/conflict_resolver.py:169:        # Detect implicit version conflicts in semantic memory.
+./_archive/old_system/src/conflict_resolver.py:176:            if item.get("memory_type") == "semantic":
+./_archive/old_system/src/conflict_resolver.py:244:                            "Multiple active semantic facts "
+./_archive/old_system/src/procedural_matcher.py:9:        return [{'id':r['rule_id'],'memory_type':'procedural','text':f"{r['condition']} -> {r['action']}",'name':r.get('name'),'condition':r.get('condition'),'action':r.get('action'),'priority':int(r.get('priority',0))} for r in self.rules if r.get('user_id')==user_id]
+./_archive/old_system/src/procedural_matcher.py:12:        return rank_candidates(question,self.get_candidates(user_id),'procedural',limit)
+./_archive/old_system/src/ranking.py:356:    memory_type: str,
+./_archive/old_system/src/ranking.py:365:    - temporal orientation for episodic memory;
+./_archive/old_system/src/ranking.py:405:        if memory_type == "episodic":
+./_archive/old_system/src/ranking.py:426:        elif memory_type == "semantic":
+./_archive/old_system/src/ranking.py:443:        elif memory_type == "procedural":
+./_archive/old_system/src/keyword_extractor.py:5:DOMAIN_TERMS = ['c3','lite','controller','scope','evaluation','baseline','dataset','episodic','semantic','procedural','conflict','temporal','abstention','explainability','supervisor','neo4j','rag','cv','interview','analyst','agent','hotel','travel','price','ticket','york']
+./_archive/old_system/src/retrieval_engine.py:6:EPISODIC_ROUTE = 'neo4j_episodic_graph'
+./_archive/old_system/src/retrieval_engine.py:7:SEMANTIC_ROUTE = 'neo4j_semantic_graph'
+./_archive/old_system/src/retrieval_engine.py:8:PROCEDURAL_ROUTE = 'json_procedural_rules'
+./_archive/old_system/src/retrieval_engine.py:11:class MemoryRetrievalEngine:
+./_archive/old_system/src/retrieval_engine.py:16:    def __init__(self, neo4j_adapter, procedural_matcher):
+./_archive/old_system/src/retrieval_engine.py:18:        self.procedural = procedural_matcher
+./_archive/old_system/src/retrieval_engine.py:20:    def retrieve_episodic(
+./_archive/old_system/src/retrieval_engine.py:28:            self.neo4j.get_episodic_candidates(user_id),
+./_archive/old_system/src/retrieval_engine.py:29:            "episodic",
+./_archive/old_system/src/retrieval_engine.py:33:    def retrieve_semantic(
+./_archive/old_system/src/retrieval_engine.py:42:            self.neo4j.get_semantic_candidates(
+./_archive/old_system/src/retrieval_engine.py:46:            "semantic",
+./_archive/old_system/src/retrieval_engine.py:50:    def retrieve_procedural(
+./_archive/old_system/src/retrieval_engine.py:58:            self.procedural.get_candidates(user_id),
+./_archive/old_system/src/retrieval_engine.py:59:            "procedural",
+./_archive/old_system/src/retrieval_engine.py:68:        include_archived_semantic: bool = False,
+./_archive/old_system/src/retrieval_engine.py:74:            result[EPISODIC_ROUTE] = self.retrieve_episodic(
+./_archive/old_system/src/retrieval_engine.py:81:            result[SEMANTIC_ROUTE] = self.retrieve_semantic(
+./_archive/old_system/src/retrieval_engine.py:85:                include_archived=include_archived_semantic,
+./_archive/old_system/src/retrieval_engine.py:89:            result[PROCEDURAL_ROUTE] = self.retrieve_procedural(
+./_archive/old_system/src/evidence_selector.py:9:    "neo4j_episodic_graph": "episodic",
+./_archive/old_system/src/evidence_selector.py:10:    "neo4j_semantic_graph": "semantic",
+./_archive/old_system/src/evidence_selector.py:11:    "json_procedural_rules": "procedural",
+./_archive/old_system/src/evidence_selector.py:15:    "episodic_recall",
+./_archive/old_system/src/evidence_selector.py:94:        memory_type = ROUTE_TO_MEMORY_TYPE[
+./_archive/old_system/src/evidence_selector.py:102:                memory.get("memory_type")
+./_archive/old_system/src/evidence_selector.py:103:                == memory_type
+./_archive/old_system/src/answer_generator.py:6:def format_evidence(selected_memories: list[dict[str, Any]], procedural_rules: list[dict[str, Any]]) -> str:
+./_archive/old_system/src/answer_generator.py:9:        lines.append(f"[{m.get('id')}] [{m.get('memory_type')}] {m.get('text')}")
+./_archive/old_system/src/answer_generator.py:10:    for r in procedural_rules:
+./_archive/old_system/src/answer_generator.py:11:        lines.append(f"[{r.get('id')}] [procedural] {r.get('text')}")
+./_archive/old_system/src/answer_generator.py:15:def generate_mock_answer(question: str, selected_memories: list[dict[str, Any]], conflict_result: dict[str, Any], procedural_rules: list[dict[str, Any]], query_type: str | None = None) -> str:
+./_archive/old_system/src/answer_generator.py:16:    if not selected_memories and not procedural_rules:
+./_archive/old_system/src/answer_generator.py:24:            lines.append(f"- [{m.get('id')}] [{m.get('memory_type')}] {m.get('text')}")
+./_archive/old_system/src/answer_generator.py:25:    if procedural_rules:
+./_archive/old_system/src/answer_generator.py:26:        lines.append('\nRelevant procedural rules:')
+./_archive/old_system/src/answer_generator.py:27:        for r in procedural_rules[:3]:
+./_archive/old_system/src/answer_generator.py:33:    lines.append('\nMemory explanation: the answer was generated from the selected episodic, semantic, and/or procedural evidence above.')
+./_archive/old_system/src/answer_generator.py:37:def generate_openai_answer(question: str, selected_memories: list[dict[str, Any]], conflict_result: dict[str, Any], procedural_rules: list[dict[str, Any]], model: str, api_key: str | None) -> str:
+./_archive/old_system/src/answer_generator.py:42:    evidence_text = format_evidence(selected_memories, procedural_rules)
+./_archive/old_system/src/answer_generator.py:66:def generate_answer(mode: str, question: str, selected_memories: list[dict[str, Any]], conflict_result: dict[str, Any], procedural_rules: list[dict[str, Any]], query_type: str | None = None, openai_model: str = 'gpt-4o-mini', openai_api_key: str | None = None) -> str:
+./_archive/old_system/src/answer_generator.py:68:        return generate_mock_answer(question, selected_memories, conflict_result, procedural_rules, query_type)
+./_archive/old_system/src/answer_generator.py:70:        return generate_openai_answer(question, selected_memories, conflict_result, procedural_rules, openai_model, openai_api_key)
+./_archive/old_system/src/answerability.py:118:        memory.get("memory_type")
+./_archive/old_system/src/answerability.py:119:        == "procedural"
+./_archive/old_system/src/query_analyzer.py:5:INTENTS = ('episodic_recall','current_fact','temporal_update','conflict_resolution','procedural_following','abstention','explainability','general')
+./_archive/old_system/src/query_analyzer.py:33:        'conflict_resolution': (0.42, ['which is more current','conflict','supersede','outdated','rather than',' or ','mainly about proving','completely removed']),
+./_archive/old_system/src/query_analyzer.py:35:        'procedural_following': (0.52, ['how should','what should you do','should the system','how should the system','what should i say','answer in ','style','format','answer structure','rewrite','should you','should the itinerary','how should my cv wording']),
+./_archive/old_system/src/query_analyzer.py:36:        'episodic_recall': (0.45, ['originally','previously','before','past','did i ask','what happened','at york']),
+./_archive/old_system/src/query_analyzer.py:47:        add('episodic_recall', 0.50, 'past-only recall')
+./_archive/old_system/src/query_analyzer.py:54:        add('procedural_following', 0.65, 'general memory-handling policy')
+./_archive/old_system/src/query_classifier.py:10:    if any(x in q for x in [' or ',' rather than ','instead of','which is more current','conflict','supersede','到底','还是','冲突']):
+./_archive/old_system/src/query_classifier.py:15:        return 'procedural_following'
+./_archive/old_system/src/query_classifier.py:17:        return 'episodic_recall'
+./_archive/old_system/src/memory_router.py:4:    'current_fact': ['neo4j_semantic_graph'],
+./_archive/old_system/src/memory_router.py:5:    'episodic_recall': ['neo4j_episodic_graph'],
+./_archive/old_system/src/memory_router.py:6:    'temporal_update': ['neo4j_episodic_graph', 'neo4j_semantic_graph'],
+./_archive/old_system/src/memory_router.py:7:    'conflict_resolution': ['neo4j_episodic_graph', 'neo4j_semantic_graph', 'json_procedural_rules'],
+./_archive/old_system/src/memory_router.py:8:    'procedural_following': ['json_procedural_rules', 'neo4j_semantic_graph'],
+./_archive/old_system/src/memory_router.py:9:    'abstention': ['neo4j_episodic_graph', 'neo4j_semantic_graph'],
+./_archive/old_system/src/memory_router.py:10:    'explainability': ['neo4j_episodic_graph', 'neo4j_semantic_graph', 'json_procedural_rules'],
+./_archive/old_system/src/memory_router.py:11:    'general': ['neo4j_semantic_graph'],
+./_archive/old_system/src/memory_router.py:16:    return ROUTE_MAP.get(query_type, ['neo4j_semantic_graph'])
+./_archive/dataset_converter_v1/prepare_dataset_a_v01.py:160:        "superseded": "superseded",
+./_archive/dataset_converter_v1/prepare_dataset_a_v01.py:187:def convert_episodic(
+./_archive/dataset_converter_v1/prepare_dataset_a_v01.py:220:                "memory_type": "episodic",
+./_archive/dataset_converter_v1/prepare_dataset_a_v01.py:256:def convert_semantic(
+./_archive/dataset_converter_v1/prepare_dataset_a_v01.py:299:                "memory_type": "semantic",
+./_archive/dataset_converter_v1/prepare_dataset_a_v01.py:427:            or data.get("procedural_memories")
+./_archive/dataset_converter_v1/prepare_dataset_a_v01.py:437:            "procedural_memory.json must contain a list, or an object "
+./_archive/dataset_converter_v1/prepare_dataset_a_v01.py:438:            "with procedures/rules/procedural_memories/items/data."
+./_archive/dataset_converter_v1/prepare_dataset_a_v01.py:681:    episodic_source = (
+./_archive/dataset_converter_v1/prepare_dataset_a_v01.py:684:        / "episodic_memory_source.jsonl"
+./_archive/dataset_converter_v1/prepare_dataset_a_v01.py:686:    semantic_source = (
+./_archive/dataset_converter_v1/prepare_dataset_a_v01.py:689:        / "semantic_triples_source.csv"
+./_archive/dataset_converter_v1/prepare_dataset_a_v01.py:691:    procedural_source = (
+./_archive/dataset_converter_v1/prepare_dataset_a_v01.py:694:        / "procedural_memory.json"
+./_archive/dataset_converter_v1/prepare_dataset_a_v01.py:699:        episodic_source,
+./_archive/dataset_converter_v1/prepare_dataset_a_v01.py:700:        semantic_source,
+./_archive/dataset_converter_v1/prepare_dataset_a_v01.py:701:        procedural_source,
+./_archive/dataset_converter_v1/prepare_dataset_a_v01.py:719:    episodic_records = read_jsonl(episodic_source)
+./_archive/dataset_converter_v1/prepare_dataset_a_v01.py:720:    semantic_fields, semantic_rows = read_csv_rows(
+./_archive/dataset_converter_v1/prepare_dataset_a_v01.py:721:        semantic_source
+./_archive/dataset_converter_v1/prepare_dataset_a_v01.py:723:    del semantic_fields
+./_archive/dataset_converter_v1/prepare_dataset_a_v01.py:725:    episodic_memories = convert_episodic(episodic_records)
+./_archive/dataset_converter_v1/prepare_dataset_a_v01.py:726:    semantic_memories = convert_semantic(semantic_rows)
+./_archive/dataset_converter_v1/prepare_dataset_a_v01.py:728:        procedural_source
+./_archive/dataset_converter_v1/prepare_dataset_a_v01.py:734:            *episodic_memories,
+./_archive/dataset_converter_v1/prepare_dataset_a_v01.py:735:            *semantic_memories,
+./_archive/dataset_converter_v1/prepare_dataset_a_v01.py:771:                    *episodic_memories,
+./_archive/dataset_converter_v1/prepare_dataset_a_v01.py:772:                    *semantic_memories,
+./_archive/dataset_converter_v1/prepare_dataset_a_v01.py:804:            "episodic": str(episodic_source),
+./_archive/dataset_converter_v1/prepare_dataset_a_v01.py:805:            "semantic": str(semantic_source),
+./_archive/dataset_converter_v1/prepare_dataset_a_v01.py:806:            "procedural": str(procedural_source),
+./_archive/dataset_converter_v1/prepare_dataset_a_v01.py:819:            "episodic_memories": len(episodic_memories),
+./_archive/dataset_converter_v1/prepare_dataset_a_v01.py:820:            "semantic_memories": len(semantic_memories),
+./_archive/dataset_converter_v1/prepare_dataset_a_v01.py:821:            "procedural_rules": len(procedures),
+./_archive/dataset_converter_v1/prepare_dataset_a_v01.py:842:        "semantic_statuses": dict(
+./_archive/dataset_converter_v1/prepare_dataset_a_v01.py:846:                    for item in semantic_memories
+./_archive/dataset_converter_v1/prepare_dataset_a_v01.py:870:    print(f"Episodic memories:    {len(episodic_memories)}")
+./_archive/dataset_converter_v1/prepare_dataset_a_v01.py:871:    print(f"Semantic memories:    {len(semantic_memories)}")
+./tests/test_route_planner_rc4.py:18:                "episodic": 0.50,
+./tests/test_route_planner_rc4.py:19:                "semantic": 0.50,
+./tests/test_route_planner_rc4.py:20:                "procedural": 0.50,
+./tests/test_route_planner_rc4.py:30:                "episodic": 0.35,
+./tests/test_route_planner_rc4.py:31:                "semantic": 0.65,
+./tests/test_route_planner_rc4.py:32:                "procedural": 0.25,
+./tests/test_route_planner_rc4.py:49:            {"episodic", "semantic"},
+./tests/test_route_planner_rc4.py:53:            {"semantic", "procedural"},
+./tests/test_route_planner_rc4.py:57:            {"episodic", "semantic", "procedural"},
+./tests/test_route_planner_rc4.py:61:            {"episodic", "semantic", "procedural"},
+./tests/test_route_planner_rc4.py:65:            {"procedural"},
+./tests/test_route_planner_rc4.py:69:            {"episodic", "semantic"},
+./tests/test_route_planner_rc4.py:73:            {"semantic"},
+./tests/test_route_planner_rc4.py:77:            {"episodic", "semantic"},
+./tests/test_route_planner_rc4.py:81:            {"procedural"},
+./tests/test_route_planner_rc4.py:85:            {"semantic", "procedural"},
+./tests/test_route_planner_rc4.py:89:            {"episodic", "semantic", "procedural"},
+./tests/test_route_planner_rc4.py:93:            {"episodic", "semantic"},
+./tests/test_route_planner_rc4.py:97:            {"episodic", "semantic", "procedural"},
+./tests/test_route_planner_rc4.py:111:    actual = {memory_type.value for memory_type in selected}
+./tests/test_rc8_5_ablation.py:21:    MemoryType,
+./tests/test_rc8_5_ablation.py:123:def test_no_route_planner_forces_all_memory_types() -> None:
+./tests/test_rc8_5_ablation.py:127:        MemoryType
+./tests/test_rc8_5_ablation.py:130:        route.scores[memory_type.value]
+./tests/test_rc8_5_ablation.py:132:        for memory_type in MemoryType
+./tests/test_rc8_5_ablation.py:144:            memory_type=MemoryType.SEMANTIC,
+./tests/test_rc8_5_ablation.py:196:        result.selected_memory_types
+./tests/test_rc8_5_ablation.py:198:        "episodic",
+./tests/test_rc8_5_ablation.py:199:        "semantic",
+./tests/test_rc8_5_ablation.py:200:        "procedural",
+./tests/test_structured_selector_rc8.py:10:    MemoryType,
+./tests/test_structured_selector_rc8.py:51:            "max_per_memory_type": 4,
+./tests/test_structured_selector_rc8.py:60:            "guarantee_procedural_if_routed": True,
+./tests/test_structured_selector_rc8.py:66:            "max_per_memory_type": 4,
+./tests/test_structured_selector_rc8.py:72:            "procedural_min_rules": 1,
+./tests/test_structured_selector_rc8.py:73:            "procedural_preferred_evidence": 6,
+./tests/test_structured_selector_rc8.py:87:                "procedural_rule": 0.05,
+./tests/test_structured_selector_rc8.py:123:def route(*types: MemoryType) -> RouteDecision:
+./tests/test_structured_selector_rc8.py:135:    memory_type: MemoryType = MemoryType.SEMANTIC,
+./tests/test_structured_selector_rc8.py:144:        memory_type=memory_type,
+./tests/test_structured_selector_rc8.py:181:        route=route(MemoryType.SEMANTIC),
+./tests/test_structured_selector_rc8.py:195:def test_selector_preserves_three_memory_type_facts() -> None:
+./tests/test_structured_selector_rc8.py:216:            "episodic memory records what happened and when",
+./tests/test_structured_selector_rc8.py:221:            "semantic memory records currently believed facts",
+./tests/test_structured_selector_rc8.py:226:            "procedural memory records rules and response policies",
+./tests/test_structured_selector_rc8.py:234:        route=route(MemoryType.SEMANTIC),
+./tests/test_structured_selector_rc8.py:274:        memory_type=MemoryType.EPISODIC,
+./tests/test_structured_selector_rc8.py:283:            MemoryType.SEMANTIC,
+./tests/test_structured_selector_rc8.py:284:            MemoryType.EPISODIC,
+./tests/test_structured_selector_rc8.py:327:            memory_type=MemoryType.EPISODIC,
+./tests/test_structured_selector_rc8.py:342:            MemoryType.SEMANTIC,
+./tests/test_structured_selector_rc8.py:343:            MemoryType.EPISODIC,
+./tests/test_structured_selector_rc8.py:360:def test_procedural_comparison_keeps_rule_and_resolution() -> None:
+./tests/test_structured_selector_rc8.py:381:            memory_type=MemoryType.PROCEDURAL,
+./tests/test_structured_selector_rc8.py:402:            memory_type=MemoryType.EPISODIC,
+./tests/test_structured_selector_rc8.py:416:            MemoryType.PROCEDURAL,
+./tests/test_structured_selector_rc8.py:417:            MemoryType.SEMANTIC,
+./tests/test_structured_selector_rc8.py:418:            MemoryType.EPISODIC,
+./tests/test_structured_selector_rc8.py:432:def test_memory_type_cardinality_rejects_backend_mentions() -> None:
+./tests/test_structured_selector_rc8.py:448:            "semantic memory implementation backend is Neo4j",
+./tests/test_structured_selector_rc8.py:453:            "episodic memory records what happened and when",
+./tests/test_structured_selector_rc8.py:458:            "semantic memory records currently believed facts",
+./tests/test_structured_selector_rc8.py:463:            "procedural memory records rules and response policies",
+./tests/test_structured_selector_rc8.py:471:        route=route(MemoryType.SEMANTIC),
+./tests/test_structured_selector_rc8.py:515:        route=route(MemoryType.SEMANTIC),
+./tests/test_structured_selector_rc8.py:543:        memory_type=MemoryType.EPISODIC,
+./tests/test_structured_selector_rc8.py:559:            MemoryType.SEMANTIC,
+./tests/test_structured_selector_rc8.py:560:            MemoryType.EPISODIC,
+./tests/test_structured_selector_rc8.py:616:        route=route(MemoryType.SEMANTIC),
+./tests/test_rc8_2_planner_calibration.py:10:    MemoryType,
+./tests/test_rc8_2_planner_calibration.py:30:            "max_per_memory_type": 4,
+./tests/test_rc8_2_planner_calibration.py:39:            "guarantee_procedural_if_routed": True,
+./tests/test_rc8_2_planner_calibration.py:44:            "max_per_memory_type": 4,
+./tests/test_rc8_2_planner_calibration.py:51:            "procedural_min_rules": 1,
+./tests/test_rc8_2_planner_calibration.py:52:            "procedural_preferred_evidence": 5,
+./tests/test_rc8_2_planner_calibration.py:65:                "procedural_rule": 0.05,
+./tests/test_rc8_2_planner_calibration.py:100:def route(*types: MemoryType) -> RouteDecision:
+./tests/test_rc8_2_planner_calibration.py:122:    memory_type: MemoryType,
+./tests/test_rc8_2_planner_calibration.py:130:        memory_type=memory_type,
+./tests/test_rc8_2_planner_calibration.py:149:        route=route(MemoryType.SEMANTIC),
+./tests/test_rc8_2_planner_calibration.py:165:        route=route(MemoryType.EPISODIC, MemoryType.SEMANTIC),
+./tests/test_rc8_2_planner_calibration.py:182:        route=route(MemoryType.SEMANTIC, MemoryType.PROCEDURAL),
+./tests/test_rc8_2_planner_calibration.py:185:    procedural = next(
+./tests/test_rc8_2_planner_calibration.py:187:        if item.role == "procedural_rule"
+./tests/test_rc8_2_planner_calibration.py:189:    assert procedural.hard is False
+./tests/test_rc8_2_planner_calibration.py:192:def test_hypothetical_conflict_policy_is_procedural_mode() -> None:
+./tests/test_rc8_2_planner_calibration.py:202:def test_should_you_is_detected_as_procedural() -> None:
+./tests/test_rc8_2_planner_calibration.py:211:def test_procedural_rule_can_be_answer_target() -> None:
+./tests/test_rc8_2_planner_calibration.py:217:        MemoryType.PROCEDURAL,
+./tests/test_rc8_2_planner_calibration.py:231:        route=route(MemoryType.PROCEDURAL),
+./tests/test_rc8_2_planner_calibration.py:236:    assert selector.last_requirement_status["procedural_rule"]["complete"]
+./tests/test_rc8_2_planner_calibration.py:249:        route=route(MemoryType.PROCEDURAL),
+./tests/test_rc8_2_planner_calibration.py:266:        MemoryType.SEMANTIC,
+./tests/test_rc8_2_planner_calibration.py:274:        route=route(MemoryType.SEMANTIC),
+./tests/test_rc8_3b_procedural_retrieval.py:5:from src.retrievers.procedural_json import ProceduralJsonStore
+./tests/test_rc8_3b_procedural_retrieval.py:6:from src.schemas import MemoryType
+./tests/test_rc8_3b_procedural_retrieval.py:154:        memory_type=MemoryType.PROCEDURAL,
+./tests/test_rc8_3b_procedural_retrieval.py:294:        memory_type=MemoryType.PROCEDURAL,
+./tests/test_rc8_3b_procedural_retrieval.py:311:    assert item.metadata["preliminary_procedural_score"] > 0.0
+./tests/test_rc8_4c_baseline_set.py:8:from src.schemas import MemoryType
+./tests/test_rc8_4c_baseline_set.py:30:        MemoryType.EPISODIC,
+./tests/test_rc8_4c_baseline_set.py:31:        MemoryType.SEMANTIC,
+./tests/test_route_metrics.py:13:    selected_memory_types: list[str],
+./tests/test_route_metrics.py:14:    expected_memory_types: list[str],
+./tests/test_route_metrics.py:18:        selected_memory_types=selected_memory_types,
+./tests/test_route_metrics.py:19:        expected_memory_types=expected_memory_types,
+./tests/test_route_metrics.py:32:        selected_memory_types=["episodic"],
+./tests/test_route_metrics.py:33:        expected_memory_types=["episodic"],
+./tests/test_route_metrics.py:46:        selected_memory_types=[
+./tests/test_route_metrics.py:47:            "semantic",
+./tests/test_route_metrics.py:48:            "episodic",
+./tests/test_route_metrics.py:50:        expected_memory_types=[
+./tests/test_route_metrics.py:51:            "episodic",
+./tests/test_route_metrics.py:52:            "semantic",
+./tests/test_route_metrics.py:53:            "procedural",
+./tests/test_route_metrics.py:70:        selected_memory_types=["procedural"],
+./tests/test_route_metrics.py:71:        expected_memory_types=[],
+./tests/test_route_metrics.py:84:        selected_memory_types=["semantic"],
+./tests/test_route_metrics.py:85:        expected_memory_types=[],
+./tests/test_route_metrics.py:95:        selected_memory_types=["episodic"],
+./tests/test_route_metrics.py:96:        expected_memory_types=["episodic"],
+./tests/test_route_metrics.py:100:        selected_memory_types=["procedural"],
+./tests/test_route_metrics.py:101:        expected_memory_types=[],
+./tests/test_rc2_regressions.py:57:    assert result.selected_memory_types == ["episodic", "semantic"]
+./tests/test_rc2_regressions.py:88:def test_current_state_selects_only_current_semantic_fact() -> None:
+./tests/test_rc2_regressions.py:101:    assert result.selected_memory_types == ["semantic"]
+./tests/test_rc2_regressions.py:109:def test_procedural_rule_is_sufficient_and_mock_reads_rc3_header() -> None:
+./tests/test_rc2_regressions.py:124:    assert result.query_mode.value == "procedural"
+./tests/test_rc2_regressions.py:125:    assert result.selected_memory_types == [
+./tests/test_rc2_regressions.py:126:        "semantic",
+./tests/test_rc2_regressions.py:127:        "procedural",
+./tests/test_rc2_regressions.py:216:        "memory_type",
+./tests/test_controller.py:17:    assert "episodic" in result.selected_memory_types
+./tests/test_controller.py:18:    assert "semantic" in result.selected_memory_types
+./tests/test_controller.py:21:def test_procedural_routing():
+./tests/test_controller.py:23:    assert "procedural" in result.selected_memory_types
+./tests/test_locomo_adapter.py:128:    episodic_id = (
+./tests/test_locomo_adapter.py:131:    semantic_id = (
+./tests/test_locomo_adapter.py:136:    assert episodic_id in memory_map
+./tests/test_locomo_adapter.py:137:    assert semantic_id in memory_map
+./tests/test_locomo_adapter.py:140:        memory_map[semantic_id]["source_ids"]
+./tests/test_locomo_adapter.py:141:        == [episodic_id]
+./tests/test_locomo_adapter.py:152:        == episodic_id
+./tests/test_locomo_adapter.py:165:            "episodic_memories"
+./tests/test_locomo_adapter.py:171:            "semantic_memories"
+./tests/test_rc8_3a_regression_compatibility.py:18:                "episodic": 0.50,
+./tests/test_rc8_3a_regression_compatibility.py:19:                "semantic": 0.50,
+./tests/test_rc8_3a_regression_compatibility.py:20:                "procedural": 0.50,
+./tests/test_rc8_3a_regression_compatibility.py:30:                "episodic": 0.35,
+./tests/test_rc8_3a_regression_compatibility.py:31:                "semantic": 0.65,
+./tests/test_rc8_3a_regression_compatibility.py:32:                "procedural": 0.25,
+./tests/test_rc8_3a_regression_compatibility.py:37:                "force_historical_semantic_companion": True,
+./tests/test_rc8_3a_regression_compatibility.py:38:                "force_procedural_semantic_companion": True,
+./tests/test_rc8_3a_regression_compatibility.py:53:            {"semantic", "procedural"},
+./tests/test_rc8_3a_regression_compatibility.py:58:            {"semantic", "procedural"},
+./tests/test_rc8_3a_regression_compatibility.py:63:            {"episodic", "semantic"},
+./tests/test_rc8_3a_regression_compatibility.py:68:            {"episodic", "semantic"},
+./tests/test_rc8_3a_regression_compatibility.py:73:            {"procedural"},
+./tests/test_rc8_3a_regression_compatibility.py:78:            {"semantic", "procedural"},
+./tests/test_rc8_3a_regression_compatibility.py:83:            {"semantic", "procedural"},
+./tests/test_rc8_3a_regression_compatibility.py:99:        memory_type.value
+./tests/test_rc8_3a_regression_compatibility.py:100:        for memory_type in decision.selected_types
+./tests/test_shared_ranker_rc6.py:6:from src.schemas import MemoryType, QueryMode
+./tests/test_shared_ranker_rc6.py:19:    memory_type: MemoryType = MemoryType.EPISODIC,
+./tests/test_shared_ranker_rc6.py:28:        memory_type=memory_type,
+./tests/test_shared_ranker_rc6.py:168:def test_rc6_procedural_safety_gate_is_preserved() -> None:
+./tests/test_shared_ranker_rc6.py:172:        memory_type=MemoryType.PROCEDURAL,
+./tests/test_shared_ranker_rc6.py:181:    assert "procedural_safety_gate" in reasons
+./tests/test_rc8_4_pilot_repair.py:11:from src.schemas import MemoryCandidate, MemoryType
+./tests/test_rc8_4_pilot_repair.py:27:    memory_type: MemoryType,
+./tests/test_rc8_4_pilot_repair.py:32:        memory_type=memory_type,
+./tests/test_rc8_4_pilot_repair.py:53:    assert MemoryType.EPISODIC in decision.selected_types
+./tests/test_rc8_4_pilot_repair.py:54:    assert MemoryType.SEMANTIC in decision.selected_types
+./tests/test_rc8_4_pilot_repair.py:55:    assert MemoryType.PROCEDURAL not in decision.selected_types
+./tests/test_rc8_4_pilot_repair.py:65:        memory_type=MemoryType.EPISODIC,
+./tests/test_rc8_4_pilot_repair.py:79:def test_preliminary_procedural_match_is_applicable() -> None:
+./tests/test_rc8_4_pilot_repair.py:86:        memory_type=MemoryType.PROCEDURAL,
+./tests/test_rc8_4_pilot_repair.py:88:            "preliminary_procedural_score": 0.75,
+./tests/test_rc8_4_pilot_repair.py:111:            "episodic memory records what happened and when",
+./tests/test_rc8_4_pilot_repair.py:112:            memory_type=MemoryType.SEMANTIC,
+./tests/test_rc8_4_pilot_repair.py:116:            "semantic memory records currently believed facts",
+./tests/test_rc8_4_pilot_repair.py:117:            memory_type=MemoryType.SEMANTIC,
+./tests/test_rc8_4_pilot_repair.py:121:            "procedural memory records rules and response policies",
+./tests/test_rc8_4_pilot_repair.py:122:            memory_type=MemoryType.SEMANTIC,
+./tests/test_rc8_4_pilot_repair.py:143:        memory_type=MemoryType.SEMANTIC,
+./tests/test_rc8_4_pilot_repair.py:154:def test_selected_procedural_role_covers_generic_rule_need() -> None:
+./tests/test_rc8_4_pilot_repair.py:163:        memory_type=MemoryType.PROCEDURAL,
+./tests/test_rc8_4_pilot_repair.py:167:                "procedural_rule",
+./tests/test_rc8_4_pilot_repair.py:192:        memory_type=MemoryType.SEMANTIC,
+./tests/test_rc8_4_pilot_repair.py:219:            memory_type=MemoryType.SEMANTIC,
+./tests/test_dataset_loader_route_labels.py:21:        "expected_memory_types",
+./tests/test_dataset_loader_route_labels.py:23:        "summary_expected_memory_types",
+./tests/test_dataset_loader_route_labels.py:39:            "expected_memory_types": (
+./tests/test_dataset_loader_route_labels.py:40:                "episodic;semantic;procedural"
+./tests/test_dataset_loader_route_labels.py:43:            "summary_expected_memory_types": (
+./tests/test_dataset_loader_route_labels.py:44:                "episodic;semantic"
+./tests/test_dataset_loader_route_labels.py:59:            "expected_memory_types": "",
+./tests/test_dataset_loader_route_labels.py:61:            "summary_expected_memory_types": "",
+./tests/test_dataset_loader_route_labels.py:85:    assert questions[0].expected_memory_types == [
+./tests/test_dataset_loader_route_labels.py:86:        "episodic",
+./tests/test_dataset_loader_route_labels.py:87:        "semantic",
+./tests/test_dataset_loader_route_labels.py:88:        "procedural",
+./tests/test_dataset_loader_route_labels.py:91:    assert questions[0].summary_expected_memory_types == [
+./tests/test_dataset_loader_route_labels.py:92:        "episodic",
+./tests/test_dataset_loader_route_labels.py:93:        "semantic",
+./tests/test_dataset_loader_route_labels.py:100:    assert questions[1].expected_memory_types == []
+./tests/test_dataset_loader_route_labels.py:134:    assert question.expected_memory_types == []
+./tests/test_dataset_loader_route_labels.py:136:    assert question.summary_expected_memory_types == []
+./tests/test_conflicts.py:7:from src.schemas import MemoryCandidate, MemoryType
+./tests/test_conflicts.py:11:def test_current_fact_supersedes_old_fact():
+./tests/test_conflicts.py:13:    old = MemoryCandidate("s_old", MemoryType.SEMANTIC, "Project uses NetworkX.", "user01", datetime(2026,6,1), "project", "uses", "NetworkX", "superseded", 0.9)
+./tests/test_conflicts.py:14:    new = MemoryCandidate("s_new", MemoryType.SEMANTIC, "Project uses Neo4j.", "user01", datetime(2026,6,20), "project", "uses", "Neo4j", "current", 1.0, authority="supervisor_confirmed")
+./tests/test_rc8_3_route_repair.py:46:    assert selected == ["episodic", "semantic"]
+./tests/test_rc8_3_route_repair.py:60:    assert selected == ["episodic", "semantic"]
+./tests/test_rc8_3_route_repair.py:74:    assert selected == ["episodic", "semantic"]
+./tests/test_rc8_3_route_repair.py:85:def test_historical_state_queries_keep_semantic_endpoint(
+./tests/test_rc8_3_route_repair.py:92:    assert selected == ["episodic", "semantic"]
+./tests/test_rc8_3_route_repair.py:103:def test_policy_explanations_route_all_memory_types(
+./tests/test_rc8_3_route_repair.py:110:    assert selected == ["episodic", "semantic", "procedural"]
+./tests/test_rc8_3_route_repair.py:120:def test_travel_policy_routes_semantic_and_procedural(
+./tests/test_rc8_3_route_repair.py:128:    assert selected == ["semantic", "procedural"]
+./tests/test_rc8_3_route_repair.py:131:def test_memory_type_definition_remains_semantic_only(
+./tests/test_rc8_3_route_repair.py:142:    assert selected == ["semantic"]
+./tests/test_rc8_3_route_repair.py:145:def test_scope_explanation_does_not_add_unrelated_procedural_route(
+./tests/test_rc8_3_route_repair.py:155:    assert selected == ["episodic", "semantic"]
+./tests/test_rc8_3_route_repair.py:173:    assert selected == ["episodic", "semantic", "procedural"]
+./tests/test_candidate_budget_rc7.py:7:from src.schemas import MemoryType
+./tests/test_candidate_budget_rc7.py:13:    memory_type: MemoryType = MemoryType.SEMANTIC,
+./tests/test_candidate_budget_rc7.py:17:        memory_type=memory_type,
+./tests/test_candidate_budget_rc7.py:35:            "max_extra_per_memory_type": max_extra_per_type,
+./tests/test_candidate_budget_rc7.py:43:        "semantic": 3,
+./tests/test_candidate_budget_rc7.py:44:        "episodic": 3,
+./tests/test_candidate_budget_rc7.py:45:        "procedural": 2,
+./tests/test_candidate_budget_rc7.py:58:        selected_types=[MemoryType.SEMANTIC],
+./tests/test_candidate_budget_rc7.py:77:        selected_types=[MemoryType.SEMANTIC],
+./tests/test_candidate_budget_rc7.py:104:        selected_types=[MemoryType.SEMANTIC],
+./tests/test_candidate_budget_rc7.py:127:        selected_types=[MemoryType.SEMANTIC],
+./tests/test_candidate_budget_rc7.py:144:        make_candidate("e_1", 0.60, MemoryType.EPISODIC),
+./tests/test_candidate_budget_rc7.py:146:        make_candidate("e_2", 0.50, MemoryType.EPISODIC),
+./tests/test_candidate_budget_rc7.py:148:        make_candidate("e_3", 0.49, MemoryType.EPISODIC),
+./tests/test_candidate_budget_rc7.py:153:        selected_types=[MemoryType.SEMANTIC, MemoryType.EPISODIC],
+./tests/test_candidate_budget_rc7.py:155:            "semantic": 2,
+./tests/test_candidate_budget_rc7.py:156:            "episodic": 2,
+./tests/test_candidate_budget_rc7.py:157:            "procedural": 2,
+./run_query.py:42:        print("\nCONTROLLER\n" + json.dumps({"decision": result.decision.value, "query_mode": result.query_mode.value, "route": result.selected_memory_types, "route_scores": result.route_scores, "selected_ids": result.selected_ids, "coverage": result.coverage, "adequacy": result.adequacy, "agreement": result.agreement, "latency_ms": result.latency_ms}, ensure_ascii=False, indent=2))
+./evaluation/metrics.py:41:    selected_memory_types: list[str],
+./evaluation/metrics.py:42:    expected_memory_types: list[str],
+./evaluation/metrics.py:85:        and expected_memory_types
+./evaluation/metrics.py:112:            selected_memory_types,
+./evaluation/metrics.py:113:            expected_memory_types,
+./evaluation/run_benchmark.py:82:                    selected_memory_types=(
+./evaluation/run_benchmark.py:83:                        result.selected_memory_types
+./evaluation/run_benchmark.py:85:                    expected_memory_types=(
+./evaluation/run_benchmark.py:86:                        question.expected_memory_types
+./evaluation/run_benchmark.py:118:                        "expected_memory_types": (
+./evaluation/run_benchmark.py:120:                                question.expected_memory_types
+./evaluation/run_benchmark.py:123:                        "selected_memory_types": (
+./evaluation/run_benchmark.py:125:                                result.selected_memory_types
+./evaluation/run_benchmark.py:166:                    "expected_memory_types": (
+./evaluation/run_benchmark.py:167:                        question.expected_memory_types
+./evaluation/run_benchmark.py:172:                    "summary_expected_memory_types": (
+./evaluation/run_benchmark.py:173:                        question.summary_expected_memory_types
+./evaluation/dataset_loader.py:9:    "episodic",
+./evaluation/dataset_loader.py:10:    "semantic",
+./evaluation/dataset_loader.py:11:    "procedural",
+./evaluation/dataset_loader.py:29:    expected_memory_types: list[str] = field(default_factory=list)
+./evaluation/dataset_loader.py:31:    summary_expected_memory_types: list[str] = field(default_factory=list)
+./evaluation/dataset_loader.py:62:def _memory_types(value: str | None) -> list[str]:
+./evaluation/dataset_loader.py:63:    memory_types = [
+./evaluation/dataset_loader.py:70:        for item in memory_types
+./evaluation/dataset_loader.py:83:        memory_type
+./evaluation/dataset_loader.py:84:        for memory_type in (
+./evaluation/dataset_loader.py:85:            "episodic",
+./evaluation/dataset_loader.py:86:            "semantic",
+./evaluation/dataset_loader.py:87:            "procedural",
+./evaluation/dataset_loader.py:89:        if memory_type in memory_types
+./evaluation/dataset_loader.py:156:                        expected_memory_types=_memory_types(
+./evaluation/dataset_loader.py:157:                            row.get("expected_memory_types")
+./evaluation/dataset_loader.py:165:                        summary_expected_memory_types=(
+./evaluation/dataset_loader.py:166:                            _memory_types(
+./evaluation/dataset_loader.py:168:                                    "summary_expected_memory_types"
+./run_experiment.py:34:            "episodic_only",
+./run_experiment.py:35:            "semantic_only",
+./run_experiment.py:36:            "procedural_only",

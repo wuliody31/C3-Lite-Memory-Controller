@@ -1,0 +1,8 @@
+Repository: /home/alyjw80/projects/c3_lite_system
+Python: /home/alyjw80/projects/c3_gpu/.venv/bin/python
+PYTHONPATH: /home/alyjw80/projects/c3_lite_system:/home/alyjw80/projects/c3_lite_system/src:/home/alyjw80/projects/c3_lite_system:/home/alyjw80/projects/c3_lite_system/src:/home/alyjw80/projects/c3_lite_system:/home/alyjw80/projects/c3_lite_system/src:/home/alyjw80/projects/c3_lite_system:/home/alyjw80/projects/c3_lite_system/src:
+
+Importable top-level candidates:
+  PASS evaluation: /home/alyjw80/projects/c3_lite_system/evaluation/__init__.py
+  FAIL retrievers: ImportError: attempted relative import beyond top-level package
+  PASS src: /home/alyjw80/projects/c3_lite_system/src/__init__.py

@@ -1,0 +1,26 @@
+{
+  "phase": "Phase II-B1/B2",
+  "component": "C3 lifecycle kernel and Neo4j atomic lifecycle store",
+  "lifecycle_kernel_tests": 10,
+  "neo4j_mock_transaction_tests": 9,
+  "combined_lifecycle_tests": 19,
+  "full_regression_tests": 144,
+  "test_failures": 0,
+  "supported_operations": [
+    "ADD_INITIAL",
+    "NOOP_DUPLICATE",
+    "NOOP_REPLAY",
+    "SUPERSEDE_STATE",
+    "ADD_EPISODIC_TRANSITION",
+    "REJECT_OUT_OF_ORDER"
+  ],
+  "neo4j_atomic_mutations": [
+    "update superseded SemanticFact",
+    "create current SemanticFact",
+    "create transition Episode",
+    "create SUPERSEDES relation",
+    "create FROM_STATE relation",
+    "create TO_STATE relation"
+  ],
+  "real_neo4j_integration_validated": false
+}

@@ -1,0 +1,22 @@
+===== TEST FILES =====
+./tests/test_candidate_budget_rc7.py
+./tests/test_conflicts.py
+./tests/test_controller.py
+./tests/test_dataset_loader_route_labels.py
+./tests/test_experiment_cli.py
+./tests/test_locomo_adapter.py
+./tests/test_query_analyzer_rc4.py
+./tests/test_rc2_regressions.py
+./tests/test_rc8_2_planner_calibration.py
+./tests/test_rc8_3a_regression_compatibility.py
+./tests/test_rc8_3b_procedural_retrieval.py
+./tests/test_rc8_3_route_repair.py
+./tests/test_rc8_4c_baseline_set.py
+./tests/test_rc8_4_pilot_repair.py
+./tests/test_rc8_5_ablation.py
+./tests/test_route_metrics.py
+./tests/test_route_planner_rc4.py
+./tests/test_shared_ranker_rc6.py
+./tests/test_structured_selector_rc8.py
+
+===== PYTEST CONFIGURATION =====
