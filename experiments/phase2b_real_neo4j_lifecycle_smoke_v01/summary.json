@@ -1,0 +1,42 @@
+{
+  "run_id": "20260806T210145Z",
+  "user_id": "phase2b_neo4j_smoke_alyjw80_20260806T210145Z",
+  "database": "neo4j",
+  "pipeline_passed": true,
+  "cleanup_completed": true,
+  "operations": {
+    "initial": "add_initial",
+    "duplicate": "noop_duplicate",
+    "transition": "supersede_state"
+  },
+  "memory_ids": {
+    "old_state": "a75becb2-cee6-5901-85fe-d402813001ad",
+    "new_state": "e135547f-e194-5fb7-82e4-b8950104eee7",
+    "episode": "f89c2d24-e2ad-5f75-95e6-0d5d8217a0af"
+  },
+  "current_value": "London",
+  "semantic_count": 2,
+  "current_count": 1,
+  "history_count": 3,
+  "relation_counts": {
+    "supersedes": 1,
+    "from_state": 1,
+    "to_state": 1
+  },
+  "checks": {
+    "initial_add": true,
+    "duplicate_noop": true,
+    "supersede_operation": true,
+    "current_is_london": true,
+    "old_is_superseded": true,
+    "new_supersedes_old": true,
+    "episode_created": true,
+    "one_current_state": true,
+    "two_semantic_states": true,
+    "history_has_three_records": true,
+    "supersedes_relation": true,
+    "from_state_relation": true,
+    "to_state_relation": true
+  },
+  "cleanup_deleted_count": 3
+}

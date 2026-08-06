@@ -1,0 +1,44 @@
+{
+  "phase": "Phase II-B3",
+  "experiment": "real Neo4j lifecycle integration smoke",
+  "run_id": "20260806T210145Z",
+  "database": "neo4j",
+  "pipeline_passed": true,
+  "cleanup_completed": true,
+  "cleanup_deleted_count": 3,
+  "operations": {
+    "initial": "add_initial",
+    "duplicate": "noop_duplicate",
+    "transition": "supersede_state"
+  },
+  "semantic_count": 2,
+  "current_count": 1,
+  "history_count": 3,
+  "relation_counts": {
+    "supersedes": 1,
+    "from_state": 1,
+    "to_state": 1
+  },
+  "check_count": 13,
+  "failed_checks": [],
+  "validated_scope": [
+    "real Neo4j connectivity",
+    "initial semantic state creation",
+    "duplicate no-op",
+    "semantic state supersession",
+    "historical state preservation",
+    "episodic transition creation",
+    "SUPERSEDES relation",
+    "FROM_STATE relation",
+    "TO_STATE relation",
+    "single current state after transition",
+    "test-data cleanup"
+  ],
+  "not_yet_validated": [
+    "concurrent writers",
+    "database-level uniqueness constraints",
+    "automatic text-to-state extraction",
+    "end-to-end controller retrieval after writes",
+    "benchmark-scale lifecycle evaluation"
+  ]
+}
