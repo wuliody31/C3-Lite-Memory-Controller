@@ -1,0 +1,19 @@
+{
+  "phase": "Phase II-B4",
+  "component": "Neo4j schema bootstrap and lifecycle-aware retrieval",
+  "focused_tests": 8,
+  "combined_lifecycle_tests": 27,
+  "full_regression_tests": 152,
+  "test_failures": 0,
+  "validated": [
+    "idempotent schema statement generation",
+    "constraint and index inspection mapping",
+    "index wait invocation",
+    "current query excludes superseded semantic states",
+    "historical query includes superseded semantic states",
+    "timeline query expands historical state",
+    "explicit archived override",
+    "SUPERSEDES relation mapping"
+  ],
+  "real_neo4j_validated": false
+}
