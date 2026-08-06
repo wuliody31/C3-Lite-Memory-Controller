@@ -1,0 +1,25 @@
+{
+  "experiment": "phase2a_mem0_update_path_audit_v01",
+  "mem0_version": "2.0.15",
+  "mem0_commit": "50bdaaea0c02744720ed374d88584fd01494eeb7",
+  "automatic_ingestion_method": "Memory.add(infer=True)",
+  "automatic_pipeline": "V3 phased additive batch pipeline",
+  "llm_prompt": "ADDITIVE_EXTRACTION_PROMPT",
+  "automatic_supported_operations": [
+    "ADD",
+    "duplicate_skip"
+  ],
+  "automatic_update_observed": false,
+  "automatic_delete_observed": false,
+  "automatic_supersession_supported": false,
+  "explicit_manual_update_api_available": true,
+  "explicit_manual_delete_api_available": true,
+  "history_event_for_automatic_insert": "ADD",
+  "deduplication": [
+    "LLM semantic skip",
+    "MD5 exact text hash"
+  ],
+  "llm_linked_memory_ids_used_for_lifecycle": false,
+  "entity_store_linked_memory_ids_are_lifecycle_links": false,
+  "primary_baseline_name": "Mem0 OSS infer=True Additive Memory-Formation Baseline"
+}
