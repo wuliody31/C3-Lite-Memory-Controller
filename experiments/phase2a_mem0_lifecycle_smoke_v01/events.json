@@ -1,0 +1,307 @@
+[
+  {
+    "turn": {
+      "turn_id": "turn_01_initial",
+      "timestamp": "2026-06-01T10:00:00+01:00",
+      "content": "I live in Nottingham.",
+      "expected_role": "initial_add"
+    },
+    "add_result": {
+      "results": [
+        {
+          "id": "fd3a7ec4-172b-4b88-b23d-5c2d79fada7b",
+          "memory": "User lives in Nottingham",
+          "event": "ADD"
+        }
+      ]
+    },
+    "elapsed_seconds": 6.7588621829636395,
+    "snapshot": {
+      "results": [
+        {
+          "id": "fd3a7ec4-172b-4b88-b23d-5c2d79fada7b",
+          "memory": "User lives in Nottingham",
+          "hash": "f7bdd1ede035f8bbcd4d4c647929cbee",
+          "metadata": {
+            "experiment": "phase2a_mem0_lifecycle_smoke_v01",
+            "turn_id": "turn_01_initial",
+            "expected_role": "initial_add"
+          },
+          "created_at": "2026-08-06T20:11:16.901453+00:00",
+          "updated_at": "2026-08-06T20:11:16.901453+00:00",
+          "user_id": "phase2a_residence_smoke_v01",
+          "attributed_to": "user"
+        }
+      ]
+    },
+    "histories": {
+      "fd3a7ec4-172b-4b88-b23d-5c2d79fada7b": [
+        {
+          "id": "81d26276-5417-45dc-baae-271f0c760716",
+          "memory_id": "fd3a7ec4-172b-4b88-b23d-5c2d79fada7b",
+          "old_memory": null,
+          "new_memory": "User lives in Nottingham",
+          "event": "ADD",
+          "created_at": "2026-08-06T20:11:16.901453+00:00",
+          "updated_at": null,
+          "is_deleted": false,
+          "actor_id": null,
+          "role": null
+        }
+      ]
+    },
+    "memory_count": 1,
+    "memory_texts": [
+      "User lives in Nottingham"
+    ]
+  },
+  {
+    "turn": {
+      "turn_id": "turn_02_duplicate",
+      "timestamp": "2026-06-02T10:00:00+01:00",
+      "content": "I live in Nottingham.",
+      "expected_role": "duplicate_or_noop"
+    },
+    "add_result": {
+      "results": []
+    },
+    "elapsed_seconds": 2.5381266120821238,
+    "snapshot": {
+      "results": [
+        {
+          "id": "fd3a7ec4-172b-4b88-b23d-5c2d79fada7b",
+          "memory": "User lives in Nottingham",
+          "hash": "f7bdd1ede035f8bbcd4d4c647929cbee",
+          "metadata": {
+            "experiment": "phase2a_mem0_lifecycle_smoke_v01",
+            "turn_id": "turn_01_initial",
+            "expected_role": "initial_add"
+          },
+          "created_at": "2026-08-06T20:11:16.901453+00:00",
+          "updated_at": "2026-08-06T20:11:16.901453+00:00",
+          "user_id": "phase2a_residence_smoke_v01",
+          "attributed_to": "user"
+        }
+      ]
+    },
+    "histories": {
+      "fd3a7ec4-172b-4b88-b23d-5c2d79fada7b": [
+        {
+          "id": "81d26276-5417-45dc-baae-271f0c760716",
+          "memory_id": "fd3a7ec4-172b-4b88-b23d-5c2d79fada7b",
+          "old_memory": null,
+          "new_memory": "User lives in Nottingham",
+          "event": "ADD",
+          "created_at": "2026-08-06T20:11:16.901453+00:00",
+          "updated_at": null,
+          "is_deleted": false,
+          "actor_id": null,
+          "role": null
+        }
+      ]
+    },
+    "memory_count": 1,
+    "memory_texts": [
+      "User lives in Nottingham"
+    ]
+  },
+  {
+    "turn": {
+      "turn_id": "turn_03_move",
+      "timestamp": "2026-07-15T10:00:00+01:00",
+      "content": "In July 2026, I moved from Nottingham to London.",
+      "expected_role": "state_transition"
+    },
+    "add_result": {
+      "results": [
+        {
+          "id": "4e9fa6f2-e5d7-4ceb-8343-7747373cee97",
+          "memory": "User moved from Nottingham to London in July 2026",
+          "event": "ADD"
+        }
+      ]
+    },
+    "elapsed_seconds": 5.560998413246125,
+    "snapshot": {
+      "results": [
+        {
+          "id": "4e9fa6f2-e5d7-4ceb-8343-7747373cee97",
+          "memory": "User moved from Nottingham to London in July 2026",
+          "hash": "b0f2f08ddc57206d11f09f85764ac46d",
+          "metadata": {
+            "experiment": "phase2a_mem0_lifecycle_smoke_v01",
+            "turn_id": "turn_03_move",
+            "expected_role": "state_transition"
+          },
+          "created_at": "2026-08-06T20:11:24.978925+00:00",
+          "updated_at": "2026-08-06T20:11:24.978925+00:00",
+          "user_id": "phase2a_residence_smoke_v01",
+          "attributed_to": "user"
+        },
+        {
+          "id": "fd3a7ec4-172b-4b88-b23d-5c2d79fada7b",
+          "memory": "User lives in Nottingham",
+          "hash": "f7bdd1ede035f8bbcd4d4c647929cbee",
+          "metadata": {
+            "experiment": "phase2a_mem0_lifecycle_smoke_v01",
+            "turn_id": "turn_01_initial",
+            "expected_role": "initial_add"
+          },
+          "created_at": "2026-08-06T20:11:16.901453+00:00",
+          "updated_at": "2026-08-06T20:11:16.901453+00:00",
+          "user_id": "phase2a_residence_smoke_v01",
+          "attributed_to": "user"
+        }
+      ]
+    },
+    "histories": {
+      "4e9fa6f2-e5d7-4ceb-8343-7747373cee97": [
+        {
+          "id": "fc3d5b09-8229-4044-bf1a-b5fbef662611",
+          "memory_id": "4e9fa6f2-e5d7-4ceb-8343-7747373cee97",
+          "old_memory": null,
+          "new_memory": "User moved from Nottingham to London in July 2026",
+          "event": "ADD",
+          "created_at": "2026-08-06T20:11:24.978925+00:00",
+          "updated_at": null,
+          "is_deleted": false,
+          "actor_id": null,
+          "role": null
+        }
+      ],
+      "fd3a7ec4-172b-4b88-b23d-5c2d79fada7b": [
+        {
+          "id": "81d26276-5417-45dc-baae-271f0c760716",
+          "memory_id": "fd3a7ec4-172b-4b88-b23d-5c2d79fada7b",
+          "old_memory": null,
+          "new_memory": "User lives in Nottingham",
+          "event": "ADD",
+          "created_at": "2026-08-06T20:11:16.901453+00:00",
+          "updated_at": null,
+          "is_deleted": false,
+          "actor_id": null,
+          "role": null
+        }
+      ]
+    },
+    "memory_count": 2,
+    "memory_texts": [
+      "User moved from Nottingham to London in July 2026",
+      "User lives in Nottingham"
+    ]
+  },
+  {
+    "turn": {
+      "turn_id": "turn_04_current",
+      "timestamp": "2026-07-16T10:00:00+01:00",
+      "content": "I currently live in London.",
+      "expected_role": "current_state_confirmation"
+    },
+    "add_result": {
+      "results": [
+        {
+          "id": "4e2b017a-e57d-49a1-93b3-5f62efc3d47f",
+          "memory": "User currently lives in London",
+          "event": "ADD"
+        }
+      ]
+    },
+    "elapsed_seconds": 4.3299024612642825,
+    "snapshot": {
+      "results": [
+        {
+          "id": "4e2b017a-e57d-49a1-93b3-5f62efc3d47f",
+          "memory": "User currently lives in London",
+          "hash": "aed8efd53812120561b2a460cbae0288",
+          "metadata": {
+            "experiment": "phase2a_mem0_lifecycle_smoke_v01",
+            "turn_id": "turn_04_current",
+            "expected_role": "current_state_confirmation"
+          },
+          "created_at": "2026-08-06T20:11:29.384336+00:00",
+          "updated_at": "2026-08-06T20:11:29.384336+00:00",
+          "user_id": "phase2a_residence_smoke_v01",
+          "attributed_to": "user"
+        },
+        {
+          "id": "4e9fa6f2-e5d7-4ceb-8343-7747373cee97",
+          "memory": "User moved from Nottingham to London in July 2026",
+          "hash": "b0f2f08ddc57206d11f09f85764ac46d",
+          "metadata": {
+            "experiment": "phase2a_mem0_lifecycle_smoke_v01",
+            "turn_id": "turn_03_move",
+            "expected_role": "state_transition"
+          },
+          "created_at": "2026-08-06T20:11:24.978925+00:00",
+          "updated_at": "2026-08-06T20:11:24.978925+00:00",
+          "user_id": "phase2a_residence_smoke_v01",
+          "attributed_to": "user"
+        },
+        {
+          "id": "fd3a7ec4-172b-4b88-b23d-5c2d79fada7b",
+          "memory": "User lives in Nottingham",
+          "hash": "f7bdd1ede035f8bbcd4d4c647929cbee",
+          "metadata": {
+            "experiment": "phase2a_mem0_lifecycle_smoke_v01",
+            "turn_id": "turn_01_initial",
+            "expected_role": "initial_add"
+          },
+          "created_at": "2026-08-06T20:11:16.901453+00:00",
+          "updated_at": "2026-08-06T20:11:16.901453+00:00",
+          "user_id": "phase2a_residence_smoke_v01",
+          "attributed_to": "user"
+        }
+      ]
+    },
+    "histories": {
+      "4e2b017a-e57d-49a1-93b3-5f62efc3d47f": [
+        {
+          "id": "ee1da0d4-533b-4361-ac29-21acc83a6e2d",
+          "memory_id": "4e2b017a-e57d-49a1-93b3-5f62efc3d47f",
+          "old_memory": null,
+          "new_memory": "User currently lives in London",
+          "event": "ADD",
+          "created_at": "2026-08-06T20:11:29.384336+00:00",
+          "updated_at": null,
+          "is_deleted": false,
+          "actor_id": null,
+          "role": null
+        }
+      ],
+      "4e9fa6f2-e5d7-4ceb-8343-7747373cee97": [
+        {
+          "id": "fc3d5b09-8229-4044-bf1a-b5fbef662611",
+          "memory_id": "4e9fa6f2-e5d7-4ceb-8343-7747373cee97",
+          "old_memory": null,
+          "new_memory": "User moved from Nottingham to London in July 2026",
+          "event": "ADD",
+          "created_at": "2026-08-06T20:11:24.978925+00:00",
+          "updated_at": null,
+          "is_deleted": false,
+          "actor_id": null,
+          "role": null
+        }
+      ],
+      "fd3a7ec4-172b-4b88-b23d-5c2d79fada7b": [
+        {
+          "id": "81d26276-5417-45dc-baae-271f0c760716",
+          "memory_id": "fd3a7ec4-172b-4b88-b23d-5c2d79fada7b",
+          "old_memory": null,
+          "new_memory": "User lives in Nottingham",
+          "event": "ADD",
+          "created_at": "2026-08-06T20:11:16.901453+00:00",
+          "updated_at": null,
+          "is_deleted": false,
+          "actor_id": null,
+          "role": null
+        }
+      ]
+    },
+    "memory_count": 3,
+    "memory_texts": [
+      "User currently lives in London",
+      "User moved from Nottingham to London in July 2026",
+      "User lives in Nottingham"
+    ]
+  }
+]

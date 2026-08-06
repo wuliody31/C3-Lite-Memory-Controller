@@ -1,0 +1,22 @@
+{
+  "job_id": 37342,
+  "pipeline_passed": true,
+  "turn_count": 4,
+  "completed_llm_requests": 5,
+  "lifecycle_llm_requests": 4,
+  "event_counts": {
+    "ADD": 3
+  },
+  "inferred_noop_count": 1,
+  "final_memory_count": 3,
+  "average_turn_latency_seconds": 4.796972417389043,
+  "initial_add_success": true,
+  "exact_duplicate_suppression_success": true,
+  "current_london_memory_present": true,
+  "stale_nottingham_memory_present": true,
+  "state_supersession_observed": false,
+  "current_query_top1": "User currently lives in London",
+  "current_query_top1_mentions_london": true,
+  "historical_query_top1": "User currently lives in London",
+  "historical_query_top1_mentions_nottingham": false
+}
