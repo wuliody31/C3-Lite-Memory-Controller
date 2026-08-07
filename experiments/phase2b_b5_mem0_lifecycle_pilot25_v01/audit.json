@@ -1,0 +1,21 @@
+{
+  "experiment": "phase2b_b5_mem0_lifecycle_pilot25_v01",
+  "role": "balanced pilot; not formal comparison",
+  "slurm_job_id": 37553,
+  "slurm_state": "COMPLETED",
+  "exit_code": "0:0",
+  "elapsed": "00:05:49",
+  "case_count": 25,
+  "event_count": 65,
+  "server_request_count": 66,
+  "server_port": 47553,
+  "model": "Qwen/Qwen3-8B",
+  "mem0_version": "2.0.15",
+  "mem0_commit": "50bdaaea0c02744720ed374d88584fd01494eeb7",
+  "infer": true,
+  "surface_variant": 1,
+  "checkpointing": true,
+  "job_specific_server_port": true,
+  "out_of_order_temporally_symmetric": false,
+  "failed_predecessor_job_excluded": 37491
+}

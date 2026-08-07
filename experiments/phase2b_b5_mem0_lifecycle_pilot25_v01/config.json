@@ -1,0 +1,35 @@
+{
+  "llm": {
+    "provider": "vllm",
+    "config": {
+      "model": "Qwen/Qwen3-8B",
+      "api_key": "local-placeholder",
+      "vllm_base_url": "http://127.0.0.1:47553/v1",
+      "temperature": 0.0,
+      "max_tokens": 512,
+      "top_p": 0.1,
+      "top_k": 1
+    }
+  },
+  "embedder": {
+    "provider": "huggingface",
+    "config": {
+      "model": "sentence-transformers/multi-qa-MiniLM-L6-cos-v1",
+      "embedding_dims": 384,
+      "model_kwargs": {
+        "device": "cpu",
+        "cache_folder": "/data/alyjw80/c3_lite/cache/huggingface/sentence_transformers"
+      }
+    }
+  },
+  "vector_store": {
+    "provider": "qdrant",
+    "config": {
+      "collection_name": "phase2b_b5_mem0_lifecycle_pilot25_v01",
+      "embedding_model_dims": 384,
+      "path": "/data/alyjw80/c3_lite/evaluation/phase2b_b5_mem0_lifecycle_pilot25_v01/job_37553/backend/qdrant",
+      "on_disk": true
+    }
+  },
+  "history_db_path": "/data/alyjw80/c3_lite/evaluation/phase2b_b5_mem0_lifecycle_pilot25_v01/job_37553/backend/history.db"
+}
