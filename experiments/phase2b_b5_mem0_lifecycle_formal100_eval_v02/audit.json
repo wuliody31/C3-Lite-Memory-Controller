@@ -1,0 +1,20 @@
+{
+  "experiment": "phase2b_b5_mem0_lifecycle_formal100_eval_v02",
+  "role": "formal full-benchmark Mem0 observable lifecycle evaluation",
+  "source_job": 37627,
+  "source_experiment": "phase2b_b5_mem0_lifecycle_formal100_v01",
+  "case_count": 100,
+  "canonical_scenario_count": 25,
+  "surface_variants_per_scenario": 4,
+  "main_symmetric_case_count": 80,
+  "main_symmetric_canonical_scenarios": 20,
+  "temporal_stress_case_count": 20,
+  "evaluator_commit": "546df1d",
+  "evaluator_tag": "phase2b-b5-lifecycle-observable-evaluator-v02",
+  "evaluator_frozen_before_formal_run": true,
+  "post_result_evaluator_tuning": false,
+  "pilot25_is_subset_of_formal100": true,
+  "independent_heldout_claim": false,
+  "surface_variants_statistically_independent_claim": false,
+  "out_of_order_direct_temporal_symmetry_claim": false
+}

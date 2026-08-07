@@ -1,0 +1,481 @@
+{
+  "experiment": "mem0_lifecycle_behaviour_evaluation_v02",
+  "metric_semantics": {
+    "current_only": "retrieved item contains current gold and no stale gold value",
+    "stale_only": "retrieved item contains stale gold value(s) and not current gold",
+    "mixed_transition": "retrieved item contains both current and stale gold values; this may encode a transition and is not automatically treated as a contradiction",
+    "other": "retrieved item contains neither current nor stale gold value",
+    "historical_signal_exposure": "current retrieval contains at least one stale-only or mixed-transition item"
+  },
+  "scope": {
+    "system": "Mem0 OSS infer=True",
+    "comparison_level": "observable retrieval behaviour",
+    "out_of_order_policy": "reported separately as temporal stress because structured observation timestamps are unavailable in the evaluated OSS API"
+  },
+  "overall_all_cases": {
+    "case_count": 100,
+    "current_value_availability": 1,
+    "current_top1_accuracy": 0.51,
+    "current_only_top1_rate": 0.51,
+    "stale_only_top1_rate": 0.49,
+    "mixed_transition_top1_rate": 0,
+    "other_or_missing_top1_rate": 0,
+    "stale_only_exposure_case_rate": 0.975,
+    "mixed_transition_exposure_case_rate": 0.1,
+    "historical_signal_exposure_case_rate": 1,
+    "previous_value_availability": 1,
+    "previous_top1_accuracy": 0.475,
+    "history_value_recall": 1.0,
+    "mean_final_memory_count": 2.08,
+    "current_top1_label_counts": {
+      "current_only": 51,
+      "stale_only": 49
+    }
+  },
+  "symmetric_cases": {
+    "case_count": 80,
+    "current_value_availability": 1,
+    "current_top1_accuracy": 0.55,
+    "current_only_top1_rate": 0.55,
+    "stale_only_top1_rate": 0.45,
+    "mixed_transition_top1_rate": 0,
+    "other_or_missing_top1_rate": 0,
+    "stale_only_exposure_case_rate": 0.9666666666666667,
+    "mixed_transition_exposure_case_rate": 0.1,
+    "historical_signal_exposure_case_rate": 1,
+    "previous_value_availability": 1,
+    "previous_top1_accuracy": 0.45,
+    "history_value_recall": 1.0,
+    "mean_final_memory_count": 2.05,
+    "current_top1_label_counts": {
+      "current_only": 44,
+      "stale_only": 36
+    }
+  },
+  "temporal_stress_cases": {
+    "case_count": 20,
+    "current_value_availability": 1,
+    "current_top1_accuracy": 0.35,
+    "current_only_top1_rate": 0.35,
+    "stale_only_top1_rate": 0.65,
+    "mixed_transition_top1_rate": 0,
+    "other_or_missing_top1_rate": 0,
+    "stale_only_exposure_case_rate": 1,
+    "mixed_transition_exposure_case_rate": 0.1,
+    "historical_signal_exposure_case_rate": 1,
+    "previous_value_availability": 1,
+    "previous_top1_accuracy": 0.55,
+    "history_value_recall": 1.0,
+    "mean_final_memory_count": 2.2,
+    "current_top1_label_counts": {
+      "current_only": 7,
+      "stale_only": 13
+    }
+  },
+  "by_pattern": {
+    "duplicate": {
+      "case_count": 20,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 1,
+      "current_only_top1_rate": 1,
+      "stale_only_top1_rate": 0,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": null,
+      "mixed_transition_exposure_case_rate": null,
+      "historical_signal_exposure_case_rate": null,
+      "previous_value_availability": null,
+      "previous_top1_accuracy": null,
+      "history_value_recall": null,
+      "mean_final_memory_count": 1,
+      "current_top1_label_counts": {
+        "current_only": 20
+      }
+    },
+    "multi_step": {
+      "case_count": 20,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 0.2,
+      "current_only_top1_rate": 0.2,
+      "stale_only_top1_rate": 0.8,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": 1,
+      "mixed_transition_exposure_case_rate": 0.1,
+      "historical_signal_exposure_case_rate": 1,
+      "previous_value_availability": 1,
+      "previous_top1_accuracy": 0.35,
+      "history_value_recall": 1.0,
+      "mean_final_memory_count": 3,
+      "current_top1_label_counts": {
+        "current_only": 4,
+        "stale_only": 16
+      }
+    },
+    "out_of_order": {
+      "case_count": 20,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 0.35,
+      "current_only_top1_rate": 0.35,
+      "stale_only_top1_rate": 0.65,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": 1,
+      "mixed_transition_exposure_case_rate": 0.1,
+      "historical_signal_exposure_case_rate": 1,
+      "previous_value_availability": 1,
+      "previous_top1_accuracy": 0.55,
+      "history_value_recall": 1.0,
+      "mean_final_memory_count": 2.2,
+      "current_top1_label_counts": {
+        "current_only": 7,
+        "stale_only": 13
+      }
+    },
+    "replacement": {
+      "case_count": 20,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 0.35,
+      "current_only_top1_rate": 0.35,
+      "stale_only_top1_rate": 0.65,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": 1,
+      "mixed_transition_exposure_case_rate": 0.1,
+      "historical_signal_exposure_case_rate": 1,
+      "previous_value_availability": 1,
+      "previous_top1_accuracy": 0.5,
+      "history_value_recall": 1.0,
+      "mean_final_memory_count": 2,
+      "current_top1_label_counts": {
+        "current_only": 7,
+        "stale_only": 13
+      }
+    },
+    "reversion": {
+      "case_count": 20,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 0.65,
+      "current_only_top1_rate": 0.65,
+      "stale_only_top1_rate": 0.35,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": 0.9,
+      "mixed_transition_exposure_case_rate": 0.1,
+      "historical_signal_exposure_case_rate": 1,
+      "previous_value_availability": 1,
+      "previous_top1_accuracy": 0.5,
+      "history_value_recall": 1.0,
+      "mean_final_memory_count": 2.2,
+      "current_top1_label_counts": {
+        "current_only": 13,
+        "stale_only": 7
+      }
+    }
+  },
+  "by_state_key_all": {
+    "user.current_project_tool": {
+      "case_count": 20,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 0.7,
+      "current_only_top1_rate": 0.7,
+      "stale_only_top1_rate": 0.3,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": 1,
+      "mixed_transition_exposure_case_rate": 0,
+      "historical_signal_exposure_case_rate": 1,
+      "previous_value_availability": 1,
+      "previous_top1_accuracy": 0.25,
+      "history_value_recall": 1.0,
+      "mean_final_memory_count": 2,
+      "current_top1_label_counts": {
+        "current_only": 14,
+        "stale_only": 6
+      }
+    },
+    "user.employer": {
+      "case_count": 20,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 0.4,
+      "current_only_top1_rate": 0.4,
+      "stale_only_top1_rate": 0.6,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": 1,
+      "mixed_transition_exposure_case_rate": 0,
+      "historical_signal_exposure_case_rate": 1,
+      "previous_value_availability": 1,
+      "previous_top1_accuracy": 0.5,
+      "history_value_recall": 1.0,
+      "mean_final_memory_count": 2,
+      "current_top1_label_counts": {
+        "current_only": 8,
+        "stale_only": 12
+      }
+    },
+    "user.preferred_language": {
+      "case_count": 20,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 0.45,
+      "current_only_top1_rate": 0.45,
+      "stale_only_top1_rate": 0.55,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": 1,
+      "mixed_transition_exposure_case_rate": 0,
+      "historical_signal_exposure_case_rate": 1,
+      "previous_value_availability": 1,
+      "previous_top1_accuracy": 0.5,
+      "history_value_recall": 1.0,
+      "mean_final_memory_count": 2.2,
+      "current_top1_label_counts": {
+        "current_only": 9,
+        "stale_only": 11
+      }
+    },
+    "user.residence": {
+      "case_count": 20,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 0.55,
+      "current_only_top1_rate": 0.55,
+      "stale_only_top1_rate": 0.45,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": 1,
+      "mixed_transition_exposure_case_rate": 0,
+      "historical_signal_exposure_case_rate": 1,
+      "previous_value_availability": 1,
+      "previous_top1_accuracy": 0.5,
+      "history_value_recall": 1.0,
+      "mean_final_memory_count": 2.1,
+      "current_top1_label_counts": {
+        "current_only": 11,
+        "stale_only": 9
+      }
+    },
+    "user.subscription_plan": {
+      "case_count": 20,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 0.45,
+      "current_only_top1_rate": 0.45,
+      "stale_only_top1_rate": 0.55,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": 0.875,
+      "mixed_transition_exposure_case_rate": 0.5,
+      "historical_signal_exposure_case_rate": 1,
+      "previous_value_availability": 1,
+      "previous_top1_accuracy": 0.625,
+      "history_value_recall": 1.0,
+      "mean_final_memory_count": 2.1,
+      "current_top1_label_counts": {
+        "current_only": 9,
+        "stale_only": 11
+      }
+    }
+  },
+  "by_state_key_symmetric": {
+    "user.current_project_tool": {
+      "case_count": 16,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 0.75,
+      "current_only_top1_rate": 0.75,
+      "stale_only_top1_rate": 0.25,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": 1,
+      "mixed_transition_exposure_case_rate": 0,
+      "historical_signal_exposure_case_rate": 1,
+      "previous_value_availability": 1,
+      "previous_top1_accuracy": 0.3333333333333333,
+      "history_value_recall": 1.0,
+      "mean_final_memory_count": 2,
+      "current_top1_label_counts": {
+        "current_only": 12,
+        "stale_only": 4
+      }
+    },
+    "user.employer": {
+      "case_count": 16,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 0.5,
+      "current_only_top1_rate": 0.5,
+      "stale_only_top1_rate": 0.5,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": 1,
+      "mixed_transition_exposure_case_rate": 0,
+      "historical_signal_exposure_case_rate": 1,
+      "previous_value_availability": 1,
+      "previous_top1_accuracy": 0.3333333333333333,
+      "history_value_recall": 1.0,
+      "mean_final_memory_count": 2,
+      "current_top1_label_counts": {
+        "current_only": 8,
+        "stale_only": 8
+      }
+    },
+    "user.preferred_language": {
+      "case_count": 16,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 0.5,
+      "current_only_top1_rate": 0.5,
+      "stale_only_top1_rate": 0.5,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": 1,
+      "mixed_transition_exposure_case_rate": 0,
+      "historical_signal_exposure_case_rate": 1,
+      "previous_value_availability": 1,
+      "previous_top1_accuracy": 0.4166666666666667,
+      "history_value_recall": 1.0,
+      "mean_final_memory_count": 2.125,
+      "current_top1_label_counts": {
+        "current_only": 8,
+        "stale_only": 8
+      }
+    },
+    "user.residence": {
+      "case_count": 16,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 0.5,
+      "current_only_top1_rate": 0.5,
+      "stale_only_top1_rate": 0.5,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": 1,
+      "mixed_transition_exposure_case_rate": 0,
+      "historical_signal_exposure_case_rate": 1,
+      "previous_value_availability": 1,
+      "previous_top1_accuracy": 0.5833333333333334,
+      "history_value_recall": 1.0,
+      "mean_final_memory_count": 2.0625,
+      "current_top1_label_counts": {
+        "current_only": 8,
+        "stale_only": 8
+      }
+    },
+    "user.subscription_plan": {
+      "case_count": 16,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 0.5,
+      "current_only_top1_rate": 0.5,
+      "stale_only_top1_rate": 0.5,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": 0.8333333333333334,
+      "mixed_transition_exposure_case_rate": 0.5,
+      "historical_signal_exposure_case_rate": 1,
+      "previous_value_availability": 1,
+      "previous_top1_accuracy": 0.5833333333333334,
+      "history_value_recall": 1.0,
+      "mean_final_memory_count": 2.0625,
+      "current_top1_label_counts": {
+        "current_only": 8,
+        "stale_only": 8
+      }
+    }
+  },
+  "by_state_key_temporal_stress": {
+    "user.current_project_tool": {
+      "case_count": 4,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 0.5,
+      "current_only_top1_rate": 0.5,
+      "stale_only_top1_rate": 0.5,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": 1,
+      "mixed_transition_exposure_case_rate": 0,
+      "historical_signal_exposure_case_rate": 1,
+      "previous_value_availability": 1,
+      "previous_top1_accuracy": 0.0,
+      "history_value_recall": 1.0,
+      "mean_final_memory_count": 2,
+      "current_top1_label_counts": {
+        "current_only": 2,
+        "stale_only": 2
+      }
+    },
+    "user.employer": {
+      "case_count": 4,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 0,
+      "current_only_top1_rate": 0,
+      "stale_only_top1_rate": 1,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": 1,
+      "mixed_transition_exposure_case_rate": 0,
+      "historical_signal_exposure_case_rate": 1,
+      "previous_value_availability": 1,
+      "previous_top1_accuracy": 1.0,
+      "history_value_recall": 1.0,
+      "mean_final_memory_count": 2,
+      "current_top1_label_counts": {
+        "stale_only": 4
+      }
+    },
+    "user.preferred_language": {
+      "case_count": 4,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 0.25,
+      "current_only_top1_rate": 0.25,
+      "stale_only_top1_rate": 0.75,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": 1,
+      "mixed_transition_exposure_case_rate": 0,
+      "historical_signal_exposure_case_rate": 1,
+      "previous_value_availability": 1,
+      "previous_top1_accuracy": 0.75,
+      "history_value_recall": 1.0,
+      "mean_final_memory_count": 2.5,
+      "current_top1_label_counts": {
+        "current_only": 1,
+        "stale_only": 3
+      }
+    },
+    "user.residence": {
+      "case_count": 4,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 0.75,
+      "current_only_top1_rate": 0.75,
+      "stale_only_top1_rate": 0.25,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": 1,
+      "mixed_transition_exposure_case_rate": 0,
+      "historical_signal_exposure_case_rate": 1,
+      "previous_value_availability": 1,
+      "previous_top1_accuracy": 0.25,
+      "history_value_recall": 1.0,
+      "mean_final_memory_count": 2.25,
+      "current_top1_label_counts": {
+        "current_only": 3,
+        "stale_only": 1
+      }
+    },
+    "user.subscription_plan": {
+      "case_count": 4,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 0.25,
+      "current_only_top1_rate": 0.25,
+      "stale_only_top1_rate": 0.75,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": 1,
+      "mixed_transition_exposure_case_rate": 0.5,
+      "historical_signal_exposure_case_rate": 1,
+      "previous_value_availability": 1,
+      "previous_top1_accuracy": 0.75,
+      "history_value_recall": 1.0,
+      "mean_final_memory_count": 2.25,
+      "current_top1_label_counts": {
+        "current_only": 1,
+        "stale_only": 3
+      }
+    }
+  }
+}

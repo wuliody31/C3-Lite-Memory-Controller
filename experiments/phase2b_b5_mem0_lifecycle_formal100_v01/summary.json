@@ -1,0 +1,1845 @@
+{
+  "experiment": "phase2b_b5_mem0_lifecycle_formal100_v01",
+  "system": "mem0_oss_infer_true",
+  "model": "Qwen/Qwen3-8B",
+  "case_count": 100,
+  "patterns": [
+    "replacement",
+    "replacement",
+    "replacement",
+    "replacement",
+    "duplicate",
+    "duplicate",
+    "duplicate",
+    "duplicate",
+    "multi_step",
+    "multi_step",
+    "multi_step",
+    "multi_step",
+    "out_of_order",
+    "out_of_order",
+    "out_of_order",
+    "out_of_order",
+    "reversion",
+    "reversion",
+    "reversion",
+    "reversion",
+    "replacement",
+    "replacement",
+    "replacement",
+    "replacement",
+    "duplicate",
+    "duplicate",
+    "duplicate",
+    "duplicate",
+    "multi_step",
+    "multi_step",
+    "multi_step",
+    "multi_step",
+    "out_of_order",
+    "out_of_order",
+    "out_of_order",
+    "out_of_order",
+    "reversion",
+    "reversion",
+    "reversion",
+    "reversion",
+    "replacement",
+    "replacement",
+    "replacement",
+    "replacement",
+    "duplicate",
+    "duplicate",
+    "duplicate",
+    "duplicate",
+    "multi_step",
+    "multi_step",
+    "multi_step",
+    "multi_step",
+    "out_of_order",
+    "out_of_order",
+    "out_of_order",
+    "out_of_order",
+    "reversion",
+    "reversion",
+    "reversion",
+    "reversion",
+    "replacement",
+    "replacement",
+    "replacement",
+    "replacement",
+    "duplicate",
+    "duplicate",
+    "duplicate",
+    "duplicate",
+    "multi_step",
+    "multi_step",
+    "multi_step",
+    "multi_step",
+    "out_of_order",
+    "out_of_order",
+    "out_of_order",
+    "out_of_order",
+    "reversion",
+    "reversion",
+    "reversion",
+    "reversion",
+    "replacement",
+    "replacement",
+    "replacement",
+    "replacement",
+    "duplicate",
+    "duplicate",
+    "duplicate",
+    "duplicate",
+    "multi_step",
+    "multi_step",
+    "multi_step",
+    "multi_step",
+    "out_of_order",
+    "out_of_order",
+    "out_of_order",
+    "out_of_order",
+    "reversion",
+    "reversion",
+    "reversion",
+    "reversion"
+  ],
+  "protocol_probe": {
+    "passed": true,
+    "elapsed_seconds": 2.1278760945424438,
+    "content": "{\"status\": \"READY\"}"
+  },
+  "case_summaries": [
+    {
+      "case_id": "lc_01_01_v1",
+      "pattern": "replacement",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User resides in Nottingham",
+        "User resides in London"
+      ],
+      "current_search_texts": [
+        "User resides in Nottingham",
+        "User resides in London"
+      ],
+      "historical_search_texts": [
+        "User resides in Nottingham",
+        "User resides in London"
+      ]
+    },
+    {
+      "case_id": "lc_01_01_v2",
+      "pattern": "replacement",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User's current residence is London as of August 7, 2026",
+        "User currently resides in Nottingham"
+      ],
+      "current_search_texts": [
+        "User's current residence is London as of August 7, 2026",
+        "User currently resides in Nottingham"
+      ],
+      "historical_search_texts": [
+        "User's current residence is London as of August 7, 2026",
+        "User currently resides in Nottingham"
+      ]
+    },
+    {
+      "case_id": "lc_01_01_v3",
+      "pattern": "replacement",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User is now based in Nottingham as of August 7, 2026",
+        "User is now based in London as of August 7, 2026"
+      ],
+      "current_search_texts": [
+        "User is now based in London as of August 7, 2026",
+        "User is now based in Nottingham as of August 7, 2026"
+      ],
+      "historical_search_texts": [
+        "User is now based in London as of August 7, 2026",
+        "User is now based in Nottingham as of August 7, 2026"
+      ]
+    },
+    {
+      "case_id": "lc_01_01_v4",
+      "pattern": "replacement",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User currently resides in Nottingham as of August 7, 2026",
+        "User currently resides in London as of August 7, 2026"
+      ],
+      "current_search_texts": [
+        "User currently resides in London as of August 7, 2026",
+        "User currently resides in Nottingham as of August 7, 2026"
+      ],
+      "historical_search_texts": [
+        "User currently resides in London as of August 7, 2026",
+        "User currently resides in Nottingham as of August 7, 2026"
+      ]
+    },
+    {
+      "case_id": "lc_01_02_v1",
+      "pattern": "duplicate",
+      "final_memory_count": 1,
+      "final_memory_texts": [
+        "User resides in Nottingham"
+      ],
+      "current_search_texts": [
+        "User resides in Nottingham"
+      ],
+      "historical_search_texts": [
+        "User resides in Nottingham"
+      ]
+    },
+    {
+      "case_id": "lc_01_02_v2",
+      "pattern": "duplicate",
+      "final_memory_count": 1,
+      "final_memory_texts": [
+        "User currently resides in Nottingham"
+      ],
+      "current_search_texts": [
+        "User currently resides in Nottingham"
+      ],
+      "historical_search_texts": [
+        "User currently resides in Nottingham"
+      ]
+    },
+    {
+      "case_id": "lc_01_02_v3",
+      "pattern": "duplicate",
+      "final_memory_count": 1,
+      "final_memory_texts": [
+        "User is now based in Nottingham as of August 7, 2026"
+      ],
+      "current_search_texts": [
+        "User is now based in Nottingham as of August 7, 2026"
+      ],
+      "historical_search_texts": [
+        "User is now based in Nottingham as of August 7, 2026"
+      ]
+    },
+    {
+      "case_id": "lc_01_02_v4",
+      "pattern": "duplicate",
+      "final_memory_count": 1,
+      "final_memory_texts": [
+        "User currently resides in Nottingham as of August 7, 2026"
+      ],
+      "current_search_texts": [
+        "User currently resides in Nottingham as of August 7, 2026"
+      ],
+      "historical_search_texts": [
+        "User currently resides in Nottingham as of August 7, 2026"
+      ]
+    },
+    {
+      "case_id": "lc_01_03_v1",
+      "pattern": "multi_step",
+      "final_memory_count": 3,
+      "final_memory_texts": [
+        "User resides in Nottingham",
+        "User resides in London",
+        "User resides in Edinburgh"
+      ],
+      "current_search_texts": [
+        "User resides in Nottingham",
+        "User resides in London",
+        "User resides in Edinburgh"
+      ],
+      "historical_search_texts": [
+        "User resides in Nottingham",
+        "User resides in London",
+        "User resides in Edinburgh"
+      ]
+    },
+    {
+      "case_id": "lc_01_03_v2",
+      "pattern": "multi_step",
+      "final_memory_count": 3,
+      "final_memory_texts": [
+        "User's current residence is London as of August 7, 2026",
+        "User currently resides in Nottingham",
+        "User's current residence is Edinburgh as of August 7, 2026"
+      ],
+      "current_search_texts": [
+        "User's current residence is London as of August 7, 2026",
+        "User's current residence is Edinburgh as of August 7, 2026",
+        "User currently resides in Nottingham"
+      ],
+      "historical_search_texts": [
+        "User's current residence is London as of August 7, 2026",
+        "User's current residence is Edinburgh as of August 7, 2026",
+        "User currently resides in Nottingham"
+      ]
+    },
+    {
+      "case_id": "lc_01_03_v3",
+      "pattern": "multi_step",
+      "final_memory_count": 3,
+      "final_memory_texts": [
+        "User is now based in Edinburgh as of August 7, 2026",
+        "User is now based in Nottingham as of August 7, 2026",
+        "User is now based in London as of August 7, 2026"
+      ],
+      "current_search_texts": [
+        "User is now based in London as of August 7, 2026",
+        "User is now based in Nottingham as of August 7, 2026",
+        "User is now based in Edinburgh as of August 7, 2026"
+      ],
+      "historical_search_texts": [
+        "User is now based in London as of August 7, 2026",
+        "User is now based in Nottingham as of August 7, 2026",
+        "User is now based in Edinburgh as of August 7, 2026"
+      ]
+    },
+    {
+      "case_id": "lc_01_03_v4",
+      "pattern": "multi_step",
+      "final_memory_count": 3,
+      "final_memory_texts": [
+        "User currently resides in London as of August 7, 2026",
+        "User currently resides in Nottingham as of August 7, 2026",
+        "User currently resides in Edinburgh as of August 7, 2026"
+      ],
+      "current_search_texts": [
+        "User currently resides in London as of August 7, 2026",
+        "User currently resides in Edinburgh as of August 7, 2026",
+        "User currently resides in Nottingham as of August 7, 2026"
+      ],
+      "historical_search_texts": [
+        "User currently resides in London as of August 7, 2026",
+        "User currently resides in Edinburgh as of August 7, 2026",
+        "User currently resides in Nottingham as of August 7, 2026"
+      ]
+    },
+    {
+      "case_id": "lc_01_04_v1",
+      "pattern": "out_of_order",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User resides in London",
+        "User resides in Nottingham"
+      ],
+      "current_search_texts": [
+        "User resides in Nottingham",
+        "User resides in London"
+      ],
+      "historical_search_texts": [
+        "User resides in Nottingham",
+        "User resides in London"
+      ]
+    },
+    {
+      "case_id": "lc_01_04_v2",
+      "pattern": "out_of_order",
+      "final_memory_count": 3,
+      "final_memory_texts": [
+        "User's current residence is London as of August 7, 2026",
+        "User currently resides in Nottingham",
+        "User's current residence is Nottingham as of August 7, 2026"
+      ],
+      "current_search_texts": [
+        "User's current residence is London as of August 7, 2026",
+        "User's current residence is Nottingham as of August 7, 2026",
+        "User currently resides in Nottingham"
+      ],
+      "historical_search_texts": [
+        "User's current residence is London as of August 7, 2026",
+        "User's current residence is Nottingham as of August 7, 2026",
+        "User currently resides in Nottingham"
+      ]
+    },
+    {
+      "case_id": "lc_01_04_v3",
+      "pattern": "out_of_order",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User is now based in Nottingham as of August 7, 2026",
+        "User is now based in London as of August 7, 2026"
+      ],
+      "current_search_texts": [
+        "User is now based in London as of August 7, 2026",
+        "User is now based in Nottingham as of August 7, 2026"
+      ],
+      "historical_search_texts": [
+        "User is now based in London as of August 7, 2026",
+        "User is now based in Nottingham as of August 7, 2026"
+      ]
+    },
+    {
+      "case_id": "lc_01_04_v4",
+      "pattern": "out_of_order",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User currently resides in London as of August 7, 2026",
+        "User currently resides in Nottingham as of August 7, 2026"
+      ],
+      "current_search_texts": [
+        "User currently resides in London as of August 7, 2026",
+        "User currently resides in Nottingham as of August 7, 2026"
+      ],
+      "historical_search_texts": [
+        "User currently resides in London as of August 7, 2026",
+        "User currently resides in Nottingham as of August 7, 2026"
+      ]
+    },
+    {
+      "case_id": "lc_01_05_v1",
+      "pattern": "reversion",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User resides in Nottingham",
+        "User resides in London"
+      ],
+      "current_search_texts": [
+        "User resides in Nottingham",
+        "User resides in London"
+      ],
+      "historical_search_texts": [
+        "User resides in Nottingham",
+        "User resides in London"
+      ]
+    },
+    {
+      "case_id": "lc_01_05_v2",
+      "pattern": "reversion",
+      "final_memory_count": 3,
+      "final_memory_texts": [
+        "User's current residence is London as of August 7, 2026",
+        "User currently resides in Nottingham",
+        "User's current residence is Nottingham as of August 7, 2026"
+      ],
+      "current_search_texts": [
+        "User's current residence is London as of August 7, 2026",
+        "User's current residence is Nottingham as of August 7, 2026",
+        "User currently resides in Nottingham"
+      ],
+      "historical_search_texts": [
+        "User's current residence is London as of August 7, 2026",
+        "User's current residence is Nottingham as of August 7, 2026",
+        "User currently resides in Nottingham"
+      ]
+    },
+    {
+      "case_id": "lc_01_05_v3",
+      "pattern": "reversion",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User is now based in London as of August 7, 2026",
+        "User is now based in Nottingham as of August 7, 2026"
+      ],
+      "current_search_texts": [
+        "User is now based in London as of August 7, 2026",
+        "User is now based in Nottingham as of August 7, 2026"
+      ],
+      "historical_search_texts": [
+        "User is now based in London as of August 7, 2026",
+        "User is now based in Nottingham as of August 7, 2026"
+      ]
+    },
+    {
+      "case_id": "lc_01_05_v4",
+      "pattern": "reversion",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User currently resides in London as of August 7, 2026",
+        "User currently resides in Nottingham as of August 7, 2026"
+      ],
+      "current_search_texts": [
+        "User currently resides in London as of August 7, 2026",
+        "User currently resides in Nottingham as of August 7, 2026"
+      ],
+      "historical_search_texts": [
+        "User currently resides in London as of August 7, 2026",
+        "User currently resides in Nottingham as of August 7, 2026"
+      ]
+    },
+    {
+      "case_id": "lc_02_01_v1",
+      "pattern": "replacement",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User works at Northstar Labs",
+        "User works at Meridian Systems"
+      ],
+      "current_search_texts": [
+        "User works at Northstar Labs",
+        "User works at Meridian Systems"
+      ],
+      "historical_search_texts": [
+        "User works at Northstar Labs",
+        "User works at Meridian Systems"
+      ]
+    },
+    {
+      "case_id": "lc_02_01_v2",
+      "pattern": "replacement",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User's employer is Northstar Labs",
+        "User's employer is Meridian Systems"
+      ],
+      "current_search_texts": [
+        "User's employer is Northstar Labs",
+        "User's employer is Meridian Systems"
+      ],
+      "historical_search_texts": [
+        "User's employer is Northstar Labs",
+        "User's employer is Meridian Systems"
+      ]
+    },
+    {
+      "case_id": "lc_02_01_v3",
+      "pattern": "replacement",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User is currently employed by Northstar Labs",
+        "User is currently employed by Meridian Systems"
+      ],
+      "current_search_texts": [
+        "User is currently employed by Northstar Labs",
+        "User is currently employed by Meridian Systems"
+      ],
+      "historical_search_texts": [
+        "User is currently employed by Northstar Labs",
+        "User is currently employed by Meridian Systems"
+      ]
+    },
+    {
+      "case_id": "lc_02_01_v4",
+      "pattern": "replacement",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User works at Northstar Labs",
+        "User currently works at Meridian Systems"
+      ],
+      "current_search_texts": [
+        "User works at Northstar Labs",
+        "User currently works at Meridian Systems"
+      ],
+      "historical_search_texts": [
+        "User works at Northstar Labs",
+        "User currently works at Meridian Systems"
+      ]
+    },
+    {
+      "case_id": "lc_02_02_v1",
+      "pattern": "duplicate",
+      "final_memory_count": 1,
+      "final_memory_texts": [
+        "User works at Northstar Labs"
+      ],
+      "current_search_texts": [
+        "User works at Northstar Labs"
+      ],
+      "historical_search_texts": [
+        "User works at Northstar Labs"
+      ]
+    },
+    {
+      "case_id": "lc_02_02_v2",
+      "pattern": "duplicate",
+      "final_memory_count": 1,
+      "final_memory_texts": [
+        "User's employer is Northstar Labs"
+      ],
+      "current_search_texts": [
+        "User's employer is Northstar Labs"
+      ],
+      "historical_search_texts": [
+        "User's employer is Northstar Labs"
+      ]
+    },
+    {
+      "case_id": "lc_02_02_v3",
+      "pattern": "duplicate",
+      "final_memory_count": 1,
+      "final_memory_texts": [
+        "User is currently employed by Northstar Labs"
+      ],
+      "current_search_texts": [
+        "User is currently employed by Northstar Labs"
+      ],
+      "historical_search_texts": [
+        "User is currently employed by Northstar Labs"
+      ]
+    },
+    {
+      "case_id": "lc_02_02_v4",
+      "pattern": "duplicate",
+      "final_memory_count": 1,
+      "final_memory_texts": [
+        "User works at Northstar Labs"
+      ],
+      "current_search_texts": [
+        "User works at Northstar Labs"
+      ],
+      "historical_search_texts": [
+        "User works at Northstar Labs"
+      ]
+    },
+    {
+      "case_id": "lc_02_03_v1",
+      "pattern": "multi_step",
+      "final_memory_count": 3,
+      "final_memory_texts": [
+        "User works at Northstar Labs",
+        "User works at Meridian Systems",
+        "User works at Atlas Robotics"
+      ],
+      "current_search_texts": [
+        "User works at Northstar Labs",
+        "User works at Meridian Systems",
+        "User works at Atlas Robotics"
+      ],
+      "historical_search_texts": [
+        "User works at Northstar Labs",
+        "User works at Meridian Systems",
+        "User works at Atlas Robotics"
+      ]
+    },
+    {
+      "case_id": "lc_02_03_v2",
+      "pattern": "multi_step",
+      "final_memory_count": 3,
+      "final_memory_texts": [
+        "User's employer is Atlas Robotics",
+        "User's employer is Northstar Labs",
+        "User's employer is Meridian Systems"
+      ],
+      "current_search_texts": [
+        "User's employer is Northstar Labs",
+        "User's employer is Meridian Systems",
+        "User's employer is Atlas Robotics"
+      ],
+      "historical_search_texts": [
+        "User's employer is Northstar Labs",
+        "User's employer is Meridian Systems",
+        "User's employer is Atlas Robotics"
+      ]
+    },
+    {
+      "case_id": "lc_02_03_v3",
+      "pattern": "multi_step",
+      "final_memory_count": 3,
+      "final_memory_texts": [
+        "User is currently employed by Meridian Systems",
+        "User is currently employed by Atlas Robotics",
+        "User is currently employed by Northstar Labs"
+      ],
+      "current_search_texts": [
+        "User is currently employed by Northstar Labs",
+        "User is currently employed by Meridian Systems",
+        "User is currently employed by Atlas Robotics"
+      ],
+      "historical_search_texts": [
+        "User is currently employed by Northstar Labs",
+        "User is currently employed by Meridian Systems",
+        "User is currently employed by Atlas Robotics"
+      ]
+    },
+    {
+      "case_id": "lc_02_03_v4",
+      "pattern": "multi_step",
+      "final_memory_count": 3,
+      "final_memory_texts": [
+        "User works at Northstar Labs",
+        "User currently works at Meridian Systems",
+        "User currently works at Atlas Robotics"
+      ],
+      "current_search_texts": [
+        "User works at Northstar Labs",
+        "User currently works at Meridian Systems",
+        "User currently works at Atlas Robotics"
+      ],
+      "historical_search_texts": [
+        "User works at Northstar Labs",
+        "User currently works at Atlas Robotics",
+        "User currently works at Meridian Systems"
+      ]
+    },
+    {
+      "case_id": "lc_02_04_v1",
+      "pattern": "out_of_order",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User works at Northstar Labs",
+        "User works at Meridian Systems"
+      ],
+      "current_search_texts": [
+        "User works at Northstar Labs",
+        "User works at Meridian Systems"
+      ],
+      "historical_search_texts": [
+        "User works at Northstar Labs",
+        "User works at Meridian Systems"
+      ]
+    },
+    {
+      "case_id": "lc_02_04_v2",
+      "pattern": "out_of_order",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User's employer is Meridian Systems",
+        "User's employer is Northstar Labs"
+      ],
+      "current_search_texts": [
+        "User's employer is Northstar Labs",
+        "User's employer is Meridian Systems"
+      ],
+      "historical_search_texts": [
+        "User's employer is Northstar Labs",
+        "User's employer is Meridian Systems"
+      ]
+    },
+    {
+      "case_id": "lc_02_04_v3",
+      "pattern": "out_of_order",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User is currently employed by Northstar Labs",
+        "User is currently employed by Meridian Systems"
+      ],
+      "current_search_texts": [
+        "User is currently employed by Northstar Labs",
+        "User is currently employed by Meridian Systems"
+      ],
+      "historical_search_texts": [
+        "User is currently employed by Northstar Labs",
+        "User is currently employed by Meridian Systems"
+      ]
+    },
+    {
+      "case_id": "lc_02_04_v4",
+      "pattern": "out_of_order",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User currently works at Meridian Systems",
+        "User works at Northstar Labs"
+      ],
+      "current_search_texts": [
+        "User works at Northstar Labs",
+        "User currently works at Meridian Systems"
+      ],
+      "historical_search_texts": [
+        "User works at Northstar Labs",
+        "User currently works at Meridian Systems"
+      ]
+    },
+    {
+      "case_id": "lc_02_05_v1",
+      "pattern": "reversion",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User works at Meridian Systems",
+        "User works at Northstar Labs"
+      ],
+      "current_search_texts": [
+        "User works at Northstar Labs",
+        "User works at Meridian Systems"
+      ],
+      "historical_search_texts": [
+        "User works at Northstar Labs",
+        "User works at Meridian Systems"
+      ]
+    },
+    {
+      "case_id": "lc_02_05_v2",
+      "pattern": "reversion",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User's employer is Meridian Systems",
+        "User's employer is Northstar Labs"
+      ],
+      "current_search_texts": [
+        "User's employer is Northstar Labs",
+        "User's employer is Meridian Systems"
+      ],
+      "historical_search_texts": [
+        "User's employer is Northstar Labs",
+        "User's employer is Meridian Systems"
+      ]
+    },
+    {
+      "case_id": "lc_02_05_v3",
+      "pattern": "reversion",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User is currently employed by Meridian Systems",
+        "User is currently employed by Northstar Labs"
+      ],
+      "current_search_texts": [
+        "User is currently employed by Northstar Labs",
+        "User is currently employed by Meridian Systems"
+      ],
+      "historical_search_texts": [
+        "User is currently employed by Northstar Labs",
+        "User is currently employed by Meridian Systems"
+      ]
+    },
+    {
+      "case_id": "lc_02_05_v4",
+      "pattern": "reversion",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User currently works at Meridian Systems",
+        "User works at Northstar Labs"
+      ],
+      "current_search_texts": [
+        "User works at Northstar Labs",
+        "User currently works at Meridian Systems"
+      ],
+      "historical_search_texts": [
+        "User works at Northstar Labs",
+        "User currently works at Meridian Systems"
+      ]
+    },
+    {
+      "case_id": "lc_03_01_v1",
+      "pattern": "replacement",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User's preferred programming language is Python",
+        "User's preferred programming language is Java"
+      ],
+      "current_search_texts": [
+        "User's preferred programming language is Python",
+        "User's preferred programming language is Java"
+      ],
+      "historical_search_texts": [
+        "User's preferred programming language is Python",
+        "User's preferred programming language is Java"
+      ]
+    },
+    {
+      "case_id": "lc_03_01_v2",
+      "pattern": "replacement",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User currently prefers Java for programming",
+        "User prefers Python for programming"
+      ],
+      "current_search_texts": [
+        "User prefers Python for programming",
+        "User currently prefers Java for programming"
+      ],
+      "historical_search_texts": [
+        "User prefers Python for programming",
+        "User currently prefers Java for programming"
+      ]
+    },
+    {
+      "case_id": "lc_03_01_v3",
+      "pattern": "replacement",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User's current coding-language preference is Python",
+        "User's current coding-language preference is Java"
+      ],
+      "current_search_texts": [
+        "User's current coding-language preference is Java",
+        "User's current coding-language preference is Python"
+      ],
+      "historical_search_texts": [
+        "User's current coding-language preference is Java",
+        "User's current coding-language preference is Python"
+      ]
+    },
+    {
+      "case_id": "lc_03_01_v4",
+      "pattern": "replacement",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User's preferred programming language is now Java",
+        "User's preferred programming language is now Python"
+      ],
+      "current_search_texts": [
+        "User's preferred programming language is now Python",
+        "User's preferred programming language is now Java"
+      ],
+      "historical_search_texts": [
+        "User's preferred programming language is now Python",
+        "User's preferred programming language is now Java"
+      ]
+    },
+    {
+      "case_id": "lc_03_02_v1",
+      "pattern": "duplicate",
+      "final_memory_count": 1,
+      "final_memory_texts": [
+        "User's preferred programming language is Python"
+      ],
+      "current_search_texts": [
+        "User's preferred programming language is Python"
+      ],
+      "historical_search_texts": [
+        "User's preferred programming language is Python"
+      ]
+    },
+    {
+      "case_id": "lc_03_02_v2",
+      "pattern": "duplicate",
+      "final_memory_count": 1,
+      "final_memory_texts": [
+        "User prefers Python for programming"
+      ],
+      "current_search_texts": [
+        "User prefers Python for programming"
+      ],
+      "historical_search_texts": [
+        "User prefers Python for programming"
+      ]
+    },
+    {
+      "case_id": "lc_03_02_v3",
+      "pattern": "duplicate",
+      "final_memory_count": 1,
+      "final_memory_texts": [
+        "User's current coding-language preference is Python"
+      ],
+      "current_search_texts": [
+        "User's current coding-language preference is Python"
+      ],
+      "historical_search_texts": [
+        "User's current coding-language preference is Python"
+      ]
+    },
+    {
+      "case_id": "lc_03_02_v4",
+      "pattern": "duplicate",
+      "final_memory_count": 1,
+      "final_memory_texts": [
+        "User's preferred programming language is now Python"
+      ],
+      "current_search_texts": [
+        "User's preferred programming language is now Python"
+      ],
+      "historical_search_texts": [
+        "User's preferred programming language is now Python"
+      ]
+    },
+    {
+      "case_id": "lc_03_03_v1",
+      "pattern": "multi_step",
+      "final_memory_count": 3,
+      "final_memory_texts": [
+        "User's preferred programming language is Java",
+        "User's preferred programming language is Python",
+        "User's preferred programming language is Rust"
+      ],
+      "current_search_texts": [
+        "User's preferred programming language is Python",
+        "User's preferred programming language is Java",
+        "User's preferred programming language is Rust"
+      ],
+      "historical_search_texts": [
+        "User's preferred programming language is Python",
+        "User's preferred programming language is Java",
+        "User's preferred programming language is Rust"
+      ]
+    },
+    {
+      "case_id": "lc_03_03_v2",
+      "pattern": "multi_step",
+      "final_memory_count": 3,
+      "final_memory_texts": [
+        "User prefers Python for programming",
+        "User currently prefers Rust for programming",
+        "User currently prefers Java for programming"
+      ],
+      "current_search_texts": [
+        "User prefers Python for programming",
+        "User currently prefers Java for programming",
+        "User currently prefers Rust for programming"
+      ],
+      "historical_search_texts": [
+        "User prefers Python for programming",
+        "User currently prefers Java for programming",
+        "User currently prefers Rust for programming"
+      ]
+    },
+    {
+      "case_id": "lc_03_03_v3",
+      "pattern": "multi_step",
+      "final_memory_count": 3,
+      "final_memory_texts": [
+        "User's current coding-language preference is Java",
+        "User's current coding-language preference is Rust",
+        "User's current coding-language preference is Python"
+      ],
+      "current_search_texts": [
+        "User's current coding-language preference is Java",
+        "User's current coding-language preference is Python",
+        "User's current coding-language preference is Rust"
+      ],
+      "historical_search_texts": [
+        "User's current coding-language preference is Java",
+        "User's current coding-language preference is Python",
+        "User's current coding-language preference is Rust"
+      ]
+    },
+    {
+      "case_id": "lc_03_03_v4",
+      "pattern": "multi_step",
+      "final_memory_count": 3,
+      "final_memory_texts": [
+        "User's preferred programming language is now Rust",
+        "User's preferred programming language is now Python",
+        "User's preferred programming language is now Java"
+      ],
+      "current_search_texts": [
+        "User's preferred programming language is now Python",
+        "User's preferred programming language is now Java",
+        "User's preferred programming language is now Rust"
+      ],
+      "historical_search_texts": [
+        "User's preferred programming language is now Python",
+        "User's preferred programming language is now Java",
+        "User's preferred programming language is now Rust"
+      ]
+    },
+    {
+      "case_id": "lc_03_04_v1",
+      "pattern": "out_of_order",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User's preferred programming language is Python",
+        "User's preferred programming language is Java"
+      ],
+      "current_search_texts": [
+        "User's preferred programming language is Python",
+        "User's preferred programming language is Java"
+      ],
+      "historical_search_texts": [
+        "User's preferred programming language is Python",
+        "User's preferred programming language is Java"
+      ]
+    },
+    {
+      "case_id": "lc_03_04_v2",
+      "pattern": "out_of_order",
+      "final_memory_count": 3,
+      "final_memory_texts": [
+        "User prefers Python for programming",
+        "User currently prefers Python for programming",
+        "User currently prefers Java for programming"
+      ],
+      "current_search_texts": [
+        "User currently prefers Python for programming",
+        "User prefers Python for programming",
+        "User currently prefers Java for programming"
+      ],
+      "historical_search_texts": [
+        "User currently prefers Python for programming",
+        "User prefers Python for programming",
+        "User currently prefers Java for programming"
+      ]
+    },
+    {
+      "case_id": "lc_03_04_v3",
+      "pattern": "out_of_order",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User's current coding-language preference is Python",
+        "User's current coding-language preference is Java"
+      ],
+      "current_search_texts": [
+        "User's current coding-language preference is Java",
+        "User's current coding-language preference is Python"
+      ],
+      "historical_search_texts": [
+        "User's current coding-language preference is Java",
+        "User's current coding-language preference is Python"
+      ]
+    },
+    {
+      "case_id": "lc_03_04_v4",
+      "pattern": "out_of_order",
+      "final_memory_count": 3,
+      "final_memory_texts": [
+        "User's preferred programming language is now Java",
+        "User's preferred programming language is Python",
+        "User's preferred programming language is now Python"
+      ],
+      "current_search_texts": [
+        "User's preferred programming language is Python",
+        "User's preferred programming language is now Python",
+        "User's preferred programming language is now Java"
+      ],
+      "historical_search_texts": [
+        "User's preferred programming language is now Python",
+        "User's preferred programming language is Python",
+        "User's preferred programming language is now Java"
+      ]
+    },
+    {
+      "case_id": "lc_03_05_v1",
+      "pattern": "reversion",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User's preferred programming language is Python",
+        "User's preferred programming language is Java"
+      ],
+      "current_search_texts": [
+        "User's preferred programming language is Python",
+        "User's preferred programming language is Java"
+      ],
+      "historical_search_texts": [
+        "User's preferred programming language is Python",
+        "User's preferred programming language is Java"
+      ]
+    },
+    {
+      "case_id": "lc_03_05_v2",
+      "pattern": "reversion",
+      "final_memory_count": 3,
+      "final_memory_texts": [
+        "User prefers Python for programming",
+        "User currently prefers Java for programming",
+        "User currently prefers Python for programming"
+      ],
+      "current_search_texts": [
+        "User currently prefers Python for programming",
+        "User prefers Python for programming",
+        "User currently prefers Java for programming"
+      ],
+      "historical_search_texts": [
+        "User currently prefers Python for programming",
+        "User prefers Python for programming",
+        "User currently prefers Java for programming"
+      ]
+    },
+    {
+      "case_id": "lc_03_05_v3",
+      "pattern": "reversion",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User's current coding-language preference is Java",
+        "User's current coding-language preference is Python"
+      ],
+      "current_search_texts": [
+        "User's current coding-language preference is Java",
+        "User's current coding-language preference is Python"
+      ],
+      "historical_search_texts": [
+        "User's current coding-language preference is Java",
+        "User's current coding-language preference is Python"
+      ]
+    },
+    {
+      "case_id": "lc_03_05_v4",
+      "pattern": "reversion",
+      "final_memory_count": 3,
+      "final_memory_texts": [
+        "User's preferred programming language is now Python",
+        "User's preferred programming language is Python",
+        "User's preferred programming language is now Java"
+      ],
+      "current_search_texts": [
+        "User's preferred programming language is Python",
+        "User's preferred programming language is now Python",
+        "User's preferred programming language is now Java"
+      ],
+      "historical_search_texts": [
+        "User's preferred programming language is now Python",
+        "User's preferred programming language is Python",
+        "User's preferred programming language is now Java"
+      ]
+    },
+    {
+      "case_id": "lc_04_01_v1",
+      "pattern": "replacement",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User's subscription plan is Basic",
+        "User's subscription plan was upgraded from Basic to Plus on or around August 7, 2026"
+      ],
+      "current_search_texts": [
+        "User's subscription plan is Basic",
+        "User's subscription plan was upgraded from Basic to Plus on or around August 7, 2026"
+      ],
+      "historical_search_texts": [
+        "User's subscription plan is Basic",
+        "User's subscription plan was upgraded from Basic to Plus on or around August 7, 2026"
+      ]
+    },
+    {
+      "case_id": "lc_04_01_v2",
+      "pattern": "replacement",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User is currently on the Basic plan",
+        "User is currently on the Plus plan"
+      ],
+      "current_search_texts": [
+        "User is currently on the Plus plan",
+        "User is currently on the Basic plan"
+      ],
+      "historical_search_texts": [
+        "User is currently on the Plus plan",
+        "User is currently on the Basic plan"
+      ]
+    },
+    {
+      "case_id": "lc_04_01_v3",
+      "pattern": "replacement",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User's subscription tier is Basic",
+        "User's subscription tier was upgraded from Basic to Plus on or around August 7, 2026"
+      ],
+      "current_search_texts": [
+        "User's subscription tier is Basic",
+        "User's subscription tier was upgraded from Basic to Plus on or around August 7, 2026"
+      ],
+      "historical_search_texts": [
+        "User's subscription tier was upgraded from Basic to Plus on or around August 7, 2026",
+        "User's subscription tier is Basic"
+      ]
+    },
+    {
+      "case_id": "lc_04_01_v4",
+      "pattern": "replacement",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User has a Basic subscription",
+        "User currently has a Plus subscription"
+      ],
+      "current_search_texts": [
+        "User has a Basic subscription",
+        "User currently has a Plus subscription"
+      ],
+      "historical_search_texts": [
+        "User currently has a Plus subscription",
+        "User has a Basic subscription"
+      ]
+    },
+    {
+      "case_id": "lc_04_02_v1",
+      "pattern": "duplicate",
+      "final_memory_count": 1,
+      "final_memory_texts": [
+        "User's subscription plan is Basic"
+      ],
+      "current_search_texts": [
+        "User's subscription plan is Basic"
+      ],
+      "historical_search_texts": [
+        "User's subscription plan is Basic"
+      ]
+    },
+    {
+      "case_id": "lc_04_02_v2",
+      "pattern": "duplicate",
+      "final_memory_count": 1,
+      "final_memory_texts": [
+        "User is currently on the Basic plan"
+      ],
+      "current_search_texts": [
+        "User is currently on the Basic plan"
+      ],
+      "historical_search_texts": [
+        "User is currently on the Basic plan"
+      ]
+    },
+    {
+      "case_id": "lc_04_02_v3",
+      "pattern": "duplicate",
+      "final_memory_count": 1,
+      "final_memory_texts": [
+        "User's subscription tier is Basic"
+      ],
+      "current_search_texts": [
+        "User's subscription tier is Basic"
+      ],
+      "historical_search_texts": [
+        "User's subscription tier is Basic"
+      ]
+    },
+    {
+      "case_id": "lc_04_02_v4",
+      "pattern": "duplicate",
+      "final_memory_count": 1,
+      "final_memory_texts": [
+        "User has a Basic subscription"
+      ],
+      "current_search_texts": [
+        "User has a Basic subscription"
+      ],
+      "historical_search_texts": [
+        "User has a Basic subscription"
+      ]
+    },
+    {
+      "case_id": "lc_04_03_v1",
+      "pattern": "multi_step",
+      "final_memory_count": 3,
+      "final_memory_texts": [
+        "User's subscription plan was upgraded from Plus to Pro on or around August 7, 2026",
+        "User's subscription plan is Basic",
+        "User's subscription plan was upgraded from Basic to Plus on or around August 7, 2026"
+      ],
+      "current_search_texts": [
+        "User's subscription plan is Basic",
+        "User's subscription plan was upgraded from Plus to Pro on or around August 7, 2026",
+        "User's subscription plan was upgraded from Basic to Plus on or around August 7, 2026"
+      ],
+      "historical_search_texts": [
+        "User's subscription plan is Basic",
+        "User's subscription plan was upgraded from Plus to Pro on or around August 7, 2026",
+        "User's subscription plan was upgraded from Basic to Plus on or around August 7, 2026"
+      ]
+    },
+    {
+      "case_id": "lc_04_03_v2",
+      "pattern": "multi_step",
+      "final_memory_count": 3,
+      "final_memory_texts": [
+        "User is currently on the Basic plan",
+        "User is currently on the Plus plan",
+        "User is currently on the Pro plan"
+      ],
+      "current_search_texts": [
+        "User is currently on the Plus plan",
+        "User is currently on the Basic plan",
+        "User is currently on the Pro plan"
+      ],
+      "historical_search_texts": [
+        "User is currently on the Plus plan",
+        "User is currently on the Pro plan",
+        "User is currently on the Basic plan"
+      ]
+    },
+    {
+      "case_id": "lc_04_03_v3",
+      "pattern": "multi_step",
+      "final_memory_count": 3,
+      "final_memory_texts": [
+        "User's subscription tier was upgraded from Plus to Pro on or around August 7, 2026",
+        "User's subscription tier is Basic",
+        "User's subscription tier was upgraded from Basic to Plus on or around August 7, 2026"
+      ],
+      "current_search_texts": [
+        "User's subscription tier is Basic",
+        "User's subscription tier was upgraded from Plus to Pro on or around August 7, 2026",
+        "User's subscription tier was upgraded from Basic to Plus on or around August 7, 2026"
+      ],
+      "historical_search_texts": [
+        "User's subscription tier was upgraded from Basic to Plus on or around August 7, 2026",
+        "User's subscription tier was upgraded from Plus to Pro on or around August 7, 2026",
+        "User's subscription tier is Basic"
+      ]
+    },
+    {
+      "case_id": "lc_04_03_v4",
+      "pattern": "multi_step",
+      "final_memory_count": 3,
+      "final_memory_texts": [
+        "User currently has a Plus subscription",
+        "User has a Basic subscription",
+        "User currently has a Pro subscription"
+      ],
+      "current_search_texts": [
+        "User has a Basic subscription",
+        "User currently has a Pro subscription",
+        "User currently has a Plus subscription"
+      ],
+      "historical_search_texts": [
+        "User currently has a Plus subscription",
+        "User has a Basic subscription",
+        "User currently has a Pro subscription"
+      ]
+    },
+    {
+      "case_id": "lc_04_04_v1",
+      "pattern": "out_of_order",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User's subscription plan was upgraded from Basic to Plus on or around August 7, 2026",
+        "User's subscription plan is Basic"
+      ],
+      "current_search_texts": [
+        "User's subscription plan is Basic",
+        "User's subscription plan was upgraded from Basic to Plus on or around August 7, 2026"
+      ],
+      "historical_search_texts": [
+        "User's subscription plan is Basic",
+        "User's subscription plan was upgraded from Basic to Plus on or around August 7, 2026"
+      ]
+    },
+    {
+      "case_id": "lc_04_04_v2",
+      "pattern": "out_of_order",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User is currently on the Plus plan",
+        "User is currently on the Basic plan"
+      ],
+      "current_search_texts": [
+        "User is currently on the Plus plan",
+        "User is currently on the Basic plan"
+      ],
+      "historical_search_texts": [
+        "User is currently on the Plus plan",
+        "User is currently on the Basic plan"
+      ]
+    },
+    {
+      "case_id": "lc_04_04_v3",
+      "pattern": "out_of_order",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User's subscription tier is Basic",
+        "User's subscription tier was upgraded from Basic to Plus on or around August 7, 2026"
+      ],
+      "current_search_texts": [
+        "User's subscription tier is Basic",
+        "User's subscription tier was upgraded from Basic to Plus on or around August 7, 2026"
+      ],
+      "historical_search_texts": [
+        "User's subscription tier was upgraded from Basic to Plus on or around August 7, 2026",
+        "User's subscription tier is Basic"
+      ]
+    },
+    {
+      "case_id": "lc_04_04_v4",
+      "pattern": "out_of_order",
+      "final_memory_count": 3,
+      "final_memory_texts": [
+        "User has a Basic subscription",
+        "User currently has a Basic subscription",
+        "User currently has a Plus subscription"
+      ],
+      "current_search_texts": [
+        "User currently has a Basic subscription",
+        "User has a Basic subscription",
+        "User currently has a Plus subscription"
+      ],
+      "historical_search_texts": [
+        "User currently has a Basic subscription",
+        "User currently has a Plus subscription",
+        "User has a Basic subscription"
+      ]
+    },
+    {
+      "case_id": "lc_04_05_v1",
+      "pattern": "reversion",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User's subscription plan is Basic",
+        "User's subscription plan was upgraded from Basic to Plus on or around August 7, 2026"
+      ],
+      "current_search_texts": [
+        "User's subscription plan is Basic",
+        "User's subscription plan was upgraded from Basic to Plus on or around August 7, 2026"
+      ],
+      "historical_search_texts": [
+        "User's subscription plan is Basic",
+        "User's subscription plan was upgraded from Basic to Plus on or around August 7, 2026"
+      ]
+    },
+    {
+      "case_id": "lc_04_05_v2",
+      "pattern": "reversion",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User is currently on the Basic plan",
+        "User is currently on the Plus plan"
+      ],
+      "current_search_texts": [
+        "User is currently on the Plus plan",
+        "User is currently on the Basic plan"
+      ],
+      "historical_search_texts": [
+        "User is currently on the Plus plan",
+        "User is currently on the Basic plan"
+      ]
+    },
+    {
+      "case_id": "lc_04_05_v3",
+      "pattern": "reversion",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User's subscription tier was upgraded from Basic to Plus on or around August 7, 2026",
+        "User's subscription tier is Basic"
+      ],
+      "current_search_texts": [
+        "User's subscription tier is Basic",
+        "User's subscription tier was upgraded from Basic to Plus on or around August 7, 2026"
+      ],
+      "historical_search_texts": [
+        "User's subscription tier was upgraded from Basic to Plus on or around August 7, 2026",
+        "User's subscription tier is Basic"
+      ]
+    },
+    {
+      "case_id": "lc_04_05_v4",
+      "pattern": "reversion",
+      "final_memory_count": 3,
+      "final_memory_texts": [
+        "User currently has a Basic subscription",
+        "User currently has a Plus subscription",
+        "User has a Basic subscription"
+      ],
+      "current_search_texts": [
+        "User currently has a Basic subscription",
+        "User has a Basic subscription",
+        "User currently has a Plus subscription"
+      ],
+      "historical_search_texts": [
+        "User currently has a Basic subscription",
+        "User currently has a Plus subscription",
+        "User has a Basic subscription"
+      ]
+    },
+    {
+      "case_id": "lc_05_01_v1",
+      "pattern": "replacement",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User's current project tool is Neo4j",
+        "User's current project tool is NetworkX"
+      ],
+      "current_search_texts": [
+        "User's current project tool is Neo4j",
+        "User's current project tool is NetworkX"
+      ],
+      "historical_search_texts": [
+        "User's current project tool is Neo4j",
+        "User's current project tool is NetworkX"
+      ]
+    },
+    {
+      "case_id": "lc_05_01_v2",
+      "pattern": "replacement",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User is currently using Neo4j for their project",
+        "User is currently using NetworkX for their project"
+      ],
+      "current_search_texts": [
+        "User is currently using NetworkX for their project",
+        "User is currently using Neo4j for their project"
+      ],
+      "historical_search_texts": [
+        "User is currently using Neo4j for their project",
+        "User is currently using NetworkX for their project"
+      ]
+    },
+    {
+      "case_id": "lc_05_01_v3",
+      "pattern": "replacement",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User's current project uses NetworkX as its primary tool",
+        "User's current project now uses Neo4j as its primary tool"
+      ],
+      "current_search_texts": [
+        "User's current project now uses Neo4j as its primary tool",
+        "User's current project uses NetworkX as its primary tool"
+      ],
+      "historical_search_texts": [
+        "User's current project now uses Neo4j as its primary tool",
+        "User's current project uses NetworkX as its primary tool"
+      ]
+    },
+    {
+      "case_id": "lc_05_01_v4",
+      "pattern": "replacement",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User is now using NetworkX in their project",
+        "User is now using Neo4j in their project"
+      ],
+      "current_search_texts": [
+        "User is now using NetworkX in their project",
+        "User is now using Neo4j in their project"
+      ],
+      "historical_search_texts": [
+        "User is now using Neo4j in their project",
+        "User is now using NetworkX in their project"
+      ]
+    },
+    {
+      "case_id": "lc_05_02_v1",
+      "pattern": "duplicate",
+      "final_memory_count": 1,
+      "final_memory_texts": [
+        "User's current project tool is NetworkX"
+      ],
+      "current_search_texts": [
+        "User's current project tool is NetworkX"
+      ],
+      "historical_search_texts": [
+        "User's current project tool is NetworkX"
+      ]
+    },
+    {
+      "case_id": "lc_05_02_v2",
+      "pattern": "duplicate",
+      "final_memory_count": 1,
+      "final_memory_texts": [
+        "User is currently using NetworkX for their project"
+      ],
+      "current_search_texts": [
+        "User is currently using NetworkX for their project"
+      ],
+      "historical_search_texts": [
+        "User is currently using NetworkX for their project"
+      ]
+    },
+    {
+      "case_id": "lc_05_02_v3",
+      "pattern": "duplicate",
+      "final_memory_count": 1,
+      "final_memory_texts": [
+        "User's current project uses NetworkX as its primary tool"
+      ],
+      "current_search_texts": [
+        "User's current project uses NetworkX as its primary tool"
+      ],
+      "historical_search_texts": [
+        "User's current project uses NetworkX as its primary tool"
+      ]
+    },
+    {
+      "case_id": "lc_05_02_v4",
+      "pattern": "duplicate",
+      "final_memory_count": 1,
+      "final_memory_texts": [
+        "User is now using NetworkX in their project"
+      ],
+      "current_search_texts": [
+        "User is now using NetworkX in their project"
+      ],
+      "historical_search_texts": [
+        "User is now using NetworkX in their project"
+      ]
+    },
+    {
+      "case_id": "lc_05_03_v1",
+      "pattern": "multi_step",
+      "final_memory_count": 3,
+      "final_memory_texts": [
+        "User's current project tool is Neo4j",
+        "User's current project tool is PostgreSQL",
+        "User's current project tool is NetworkX"
+      ],
+      "current_search_texts": [
+        "User's current project tool is PostgreSQL",
+        "User's current project tool is Neo4j",
+        "User's current project tool is NetworkX"
+      ],
+      "historical_search_texts": [
+        "User's current project tool is PostgreSQL",
+        "User's current project tool is Neo4j",
+        "User's current project tool is NetworkX"
+      ]
+    },
+    {
+      "case_id": "lc_05_03_v2",
+      "pattern": "multi_step",
+      "final_memory_count": 3,
+      "final_memory_texts": [
+        "User is currently using Neo4j for their project",
+        "User is currently using PostgreSQL for their project",
+        "User is currently using NetworkX for their project"
+      ],
+      "current_search_texts": [
+        "User is currently using PostgreSQL for their project",
+        "User is currently using NetworkX for their project",
+        "User is currently using Neo4j for their project"
+      ],
+      "historical_search_texts": [
+        "User is currently using PostgreSQL for their project",
+        "User is currently using Neo4j for their project",
+        "User is currently using NetworkX for their project"
+      ]
+    },
+    {
+      "case_id": "lc_05_03_v3",
+      "pattern": "multi_step",
+      "final_memory_count": 3,
+      "final_memory_texts": [
+        "User's current project now uses Neo4j as its primary tool",
+        "User's current project uses NetworkX as its primary tool",
+        "User's current project now uses PostgreSQL as its primary tool"
+      ],
+      "current_search_texts": [
+        "User's current project now uses PostgreSQL as its primary tool",
+        "User's current project now uses Neo4j as its primary tool",
+        "User's current project uses NetworkX as its primary tool"
+      ],
+      "historical_search_texts": [
+        "User's current project now uses PostgreSQL as its primary tool",
+        "User's current project now uses Neo4j as its primary tool",
+        "User's current project uses NetworkX as its primary tool"
+      ]
+    },
+    {
+      "case_id": "lc_05_03_v4",
+      "pattern": "multi_step",
+      "final_memory_count": 3,
+      "final_memory_texts": [
+        "User is now using PostgreSQL in their project",
+        "User is now using Neo4j in their project",
+        "User is now using NetworkX in their project"
+      ],
+      "current_search_texts": [
+        "User is now using PostgreSQL in their project",
+        "User is now using NetworkX in their project",
+        "User is now using Neo4j in their project"
+      ],
+      "historical_search_texts": [
+        "User is now using PostgreSQL in their project",
+        "User is now using Neo4j in their project",
+        "User is now using NetworkX in their project"
+      ]
+    },
+    {
+      "case_id": "lc_05_04_v1",
+      "pattern": "out_of_order",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User's current project tool is NetworkX",
+        "User's current project tool is Neo4j"
+      ],
+      "current_search_texts": [
+        "User's current project tool is Neo4j",
+        "User's current project tool is NetworkX"
+      ],
+      "historical_search_texts": [
+        "User's current project tool is Neo4j",
+        "User's current project tool is NetworkX"
+      ]
+    },
+    {
+      "case_id": "lc_05_04_v2",
+      "pattern": "out_of_order",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User is currently using Neo4j for their project",
+        "User is currently using NetworkX for their project"
+      ],
+      "current_search_texts": [
+        "User is currently using NetworkX for their project",
+        "User is currently using Neo4j for their project"
+      ],
+      "historical_search_texts": [
+        "User is currently using Neo4j for their project",
+        "User is currently using NetworkX for their project"
+      ]
+    },
+    {
+      "case_id": "lc_05_04_v3",
+      "pattern": "out_of_order",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User's current project now uses Neo4j as its primary tool",
+        "User's current project uses NetworkX as its primary tool"
+      ],
+      "current_search_texts": [
+        "User's current project now uses Neo4j as its primary tool",
+        "User's current project uses NetworkX as its primary tool"
+      ],
+      "historical_search_texts": [
+        "User's current project now uses Neo4j as its primary tool",
+        "User's current project uses NetworkX as its primary tool"
+      ]
+    },
+    {
+      "case_id": "lc_05_04_v4",
+      "pattern": "out_of_order",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User is now using NetworkX in their project",
+        "User is now using Neo4j in their project"
+      ],
+      "current_search_texts": [
+        "User is now using NetworkX in their project",
+        "User is now using Neo4j in their project"
+      ],
+      "historical_search_texts": [
+        "User is now using Neo4j in their project",
+        "User is now using NetworkX in their project"
+      ]
+    },
+    {
+      "case_id": "lc_05_05_v1",
+      "pattern": "reversion",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User's current project tool is Neo4j",
+        "User's current project tool is NetworkX"
+      ],
+      "current_search_texts": [
+        "User's current project tool is Neo4j",
+        "User's current project tool is NetworkX"
+      ],
+      "historical_search_texts": [
+        "User's current project tool is Neo4j",
+        "User's current project tool is NetworkX"
+      ]
+    },
+    {
+      "case_id": "lc_05_05_v2",
+      "pattern": "reversion",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User is currently using Neo4j for their project",
+        "User is currently using NetworkX for their project"
+      ],
+      "current_search_texts": [
+        "User is currently using NetworkX for their project",
+        "User is currently using Neo4j for their project"
+      ],
+      "historical_search_texts": [
+        "User is currently using Neo4j for their project",
+        "User is currently using NetworkX for their project"
+      ]
+    },
+    {
+      "case_id": "lc_05_05_v3",
+      "pattern": "reversion",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User's current project uses NetworkX as its primary tool",
+        "User's current project now uses Neo4j as its primary tool"
+      ],
+      "current_search_texts": [
+        "User's current project now uses Neo4j as its primary tool",
+        "User's current project uses NetworkX as its primary tool"
+      ],
+      "historical_search_texts": [
+        "User's current project now uses Neo4j as its primary tool",
+        "User's current project uses NetworkX as its primary tool"
+      ]
+    },
+    {
+      "case_id": "lc_05_05_v4",
+      "pattern": "reversion",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User is now using Neo4j in their project",
+        "User is now using NetworkX in their project"
+      ],
+      "current_search_texts": [
+        "User is now using NetworkX in their project",
+        "User is now using Neo4j in their project"
+      ],
+      "historical_search_texts": [
+        "User is now using Neo4j in their project",
+        "User is now using NetworkX in their project"
+      ]
+    }
+  ],
+  "pipeline_checks": {
+    "one_hundred_cases_completed": true,
+    "all_final_snapshots_nonempty": true,
+    "all_current_searches_nonempty": true
+  },
+  "interpretation_boundary": "This is a formal 100-case evaluation and raw-behaviour capture, not a formal comparative evaluation. The out-of-order case is not temporally symmetric with C3 because the evaluated Mem0 OSS API does not accept structured observation timestamps."
+}
