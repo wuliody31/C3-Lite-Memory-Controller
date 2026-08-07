@@ -30,10 +30,10 @@ from src.config import load_config
 from src.lifecycle import LifecycleService
 from src.lifecycle_neo4j import Neo4jLifecycleStore
 from src.neo4j_schema import Neo4jSchemaBootstrap
-from src.query_analyzer import QueryAnalyzer
 from src.retrievers.neo4j_store import Neo4jMemoryStore
 from src.schemas import (
     MemoryType,
+    QueryFeatures,
     QueryMode,
     QueryState,
 )
@@ -297,7 +297,6 @@ def run_case(
     service: LifecycleService,
     lifecycle_store: Neo4jLifecycleStore,
     retriever: Neo4jMemoryStore,
-    analyzer: QueryAnalyzer,
     driver,
     database: str | None,
 ) -> dict[str, Any]:
@@ -401,20 +400,30 @@ def run_case(
             current_time=query_time,
         )
 
-        current_features = analyzer.analyse(
-            current_state.query
+        current_features = QueryFeatures(
+            normalised_query=(
+                current_state.query
+                .strip()
+                .lower()
+            ),
+            tokens=re.findall(
+                r"[A-Za-z0-9_]+",
+                current_state.query.lower(),
+            ),
+            entities=[],
+            temporal_expressions=[],
+            query_mode=QueryMode.CURRENT,
+            task_type=None,
+            asks_current_state=True,
+            asks_historical_state=False,
+            asks_timeline=False,
+            asks_procedure=False,
+            asks_explanation=False,
+            asks_conflict=False,
+            information_needs=[
+                "current valid state"
+            ],
         )
-
-        if (
-            current_features.query_mode
-            != QueryMode.CURRENT
-        ):
-            raise RuntimeError(
-                "Current benchmark query was not "
-                "classified as CURRENT: "
-                f"{case_id}: "
-                f"{current_features.query_mode}"
-            )
 
         current_candidates = retriever.retrieve(
             memory_type=MemoryType.SEMANTIC,
@@ -432,20 +441,30 @@ def run_case(
             current_time=query_time,
         )
 
-        historical_features = analyzer.analyse(
-            historical_state.query
+        historical_features = QueryFeatures(
+            normalised_query=(
+                historical_state.query
+                .strip()
+                .lower()
+            ),
+            tokens=re.findall(
+                r"[A-Za-z0-9_]+",
+                historical_state.query.lower(),
+            ),
+            entities=[],
+            temporal_expressions=[],
+            query_mode=QueryMode.HISTORICAL,
+            task_type=None,
+            asks_current_state=False,
+            asks_historical_state=True,
+            asks_timeline=False,
+            asks_procedure=False,
+            asks_explanation=False,
+            asks_conflict=False,
+            information_needs=[
+                "historical event or state"
+            ],
         )
-
-        if (
-            historical_features.query_mode
-            != QueryMode.HISTORICAL
-        ):
-            raise RuntimeError(
-                "Historical benchmark query was not "
-                "classified as HISTORICAL: "
-                f"{case_id}: "
-                f"{historical_features.query_mode}"
-            )
 
         historical_candidates = retriever.retrieve(
             memory_type=MemoryType.SEMANTIC,
@@ -504,7 +523,7 @@ def run_case(
                 "C3 lifecycle + Neo4j",
 
             "observable_stage":
-                "neo4j_semantic_retrieval_top20",
+                "neo4j_semantic_retrieval_top20_role_conditioned",
 
             "user_id": user_id,
 
@@ -680,10 +699,6 @@ def main() -> None:
             lifecycle_store
         )
 
-        analyzer = QueryAnalyzer(
-            config
-        )
-
         retriever = Neo4jMemoryStore(
             driver=driver,
             database=database,
@@ -707,7 +722,7 @@ def main() -> None:
         print("Case count:", len(cases))
         print(
             "Observable stage:",
-            "neo4j_semantic_retrieval_top20",
+            "neo4j_semantic_retrieval_top20_role_conditioned",
         )
         print(
             "Database:",
@@ -726,7 +741,6 @@ def main() -> None:
                     lifecycle_store
                 ),
                 retriever=retriever,
-                analyzer=analyzer,
                 driver=driver,
                 database=database,
             )
@@ -757,7 +771,7 @@ def main() -> None:
                 len(results),
 
             "observable_stage":
-                "neo4j_semantic_retrieval_top20",
+                "neo4j_semantic_retrieval_top20_role_conditioned",
 
             "memory_formation":
                 "C3 LifecycleService",
@@ -837,7 +851,7 @@ def main() -> None:
             "database":
                 database,
             "observable_stage":
-                "neo4j_semantic_retrieval_top20",
+                "neo4j_semantic_retrieval_top20_role_conditioned",
         }
 
         (

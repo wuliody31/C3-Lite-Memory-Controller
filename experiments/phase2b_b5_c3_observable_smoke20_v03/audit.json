@@ -1,0 +1,32 @@
+{
+  "experiment": "phase2b_b5_c3_observable_smoke20_v03",
+  "role": "protocol validation before C3 formal100 observable lifecycle retrieval evaluation",
+  "case_count": 20,
+  "canonical_scenarios": 5,
+  "surface_variants": 4,
+  "state_key": "user.residence",
+  "query_role_assignment": "benchmark-role-conditioned",
+  "query_role_semantics": {
+    "current_query": "QueryMode.CURRENT",
+    "historical_query": "QueryMode.HISTORICAL"
+  },
+  "query_text_modified": false,
+  "memory_formation": "C3 LifecycleService",
+  "persistence": "real Neo4j via Neo4jLifecycleStore",
+  "retrieval": "direct Neo4jMemoryStore semantic retrieval",
+  "top_k": 20,
+  "query_analyzer_in_measurement": false,
+  "route_planner_in_measurement": false,
+  "shared_ranker_in_measurement": false,
+  "llm_generation_used": false,
+  "current_superseded_exposure_cases": 0,
+  "historical_superseded_missing_cases": 0,
+  "smoke_symmetric_current_only_top1": 1.0,
+  "smoke_symmetric_previous_top1": 0.0,
+  "smoke_symmetric_history_recall": 1.0,
+  "previous_top1_post_smoke_tuning": false,
+  "evaluator_commit": "546df1d",
+  "evaluator_frozen_before_protocol": true,
+  "out_of_order_temporally_symmetric": false,
+  "protocol_passed": true
+}
