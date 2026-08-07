@@ -1,0 +1,15 @@
+{
+  "experiment": "phase2b_b5_c3_observable_formal100_eval_v02",
+  "source_experiment": "phase2b_b5_c3_observable_formal100_v03",
+  "case_count": 100,
+  "evaluator_commit": "546df1d",
+  "evaluator_tag": "phase2b-b5-lifecycle-observable-evaluator-v02",
+  "evaluator_modified_after_mem0_formal": false,
+  "post_result_evaluator_tuning": false,
+  "per_case_sha256": "72eac8a9bca0973ba54f054c9da4f2a43af1df02c3b38b4cf57d9353c7becc5e",
+  "summary_sha256": "b8b496671df91ad44341eade4309aa69f89879dcf0f0f13eec722a77b885507e",
+  "surface_variants_statistically_independent_claim": false,
+  "primary_inference_unit": "canonical lifecycle scenario cluster",
+  "primary_symmetric_cluster_count": 20,
+  "temporal_stress_reported_separately": true
+}

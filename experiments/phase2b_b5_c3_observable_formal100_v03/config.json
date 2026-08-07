@@ -1,0 +1,11 @@
+{
+  "cases": "/home/alyjw80/projects/c3_lite_system/data/lifecycle_benchmark_v01/cases.jsonl",
+  "config": "/home/alyjw80/projects/c3_lite_system/configs/c3_lite_v2_2_final.yaml",
+  "surface_variant": null,
+  "state_key": null,
+  "pattern": null,
+  "limit": null,
+  "run_id": "20260807T200749Z_47b9d10c",
+  "database": "neo4j",
+  "observable_stage": "neo4j_semantic_retrieval_top20_role_conditioned"
+}

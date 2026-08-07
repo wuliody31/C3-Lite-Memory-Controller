@@ -1,0 +1,460 @@
+{
+  "experiment": "mem0_lifecycle_behaviour_evaluation_v02",
+  "metric_semantics": {
+    "current_only": "retrieved item contains current gold and no stale gold value",
+    "stale_only": "retrieved item contains stale gold value(s) and not current gold",
+    "mixed_transition": "retrieved item contains both current and stale gold values; this may encode a transition and is not automatically treated as a contradiction",
+    "other": "retrieved item contains neither current nor stale gold value",
+    "historical_signal_exposure": "current retrieval contains at least one stale-only or mixed-transition item"
+  },
+  "scope": {
+    "system": "Mem0 OSS infer=True",
+    "comparison_level": "observable retrieval behaviour",
+    "out_of_order_policy": "reported separately as temporal stress because structured observation timestamps are unavailable in the evaluated OSS API"
+  },
+  "overall_all_cases": {
+    "case_count": 100,
+    "current_value_availability": 1,
+    "current_top1_accuracy": 1,
+    "current_only_top1_rate": 1,
+    "stale_only_top1_rate": 0,
+    "mixed_transition_top1_rate": 0,
+    "other_or_missing_top1_rate": 0,
+    "stale_only_exposure_case_rate": 0,
+    "mixed_transition_exposure_case_rate": 0,
+    "historical_signal_exposure_case_rate": 0,
+    "previous_value_availability": 1,
+    "previous_top1_accuracy": 0.0,
+    "history_value_recall": 1.0,
+    "mean_final_memory_count": 2.2,
+    "current_top1_label_counts": {
+      "current_only": 100
+    }
+  },
+  "symmetric_cases": {
+    "case_count": 80,
+    "current_value_availability": 1,
+    "current_top1_accuracy": 1,
+    "current_only_top1_rate": 1,
+    "stale_only_top1_rate": 0,
+    "mixed_transition_top1_rate": 0,
+    "other_or_missing_top1_rate": 0,
+    "stale_only_exposure_case_rate": 0,
+    "mixed_transition_exposure_case_rate": 0,
+    "historical_signal_exposure_case_rate": 0,
+    "previous_value_availability": 1,
+    "previous_top1_accuracy": 0.0,
+    "history_value_recall": 1.0,
+    "mean_final_memory_count": 2.25,
+    "current_top1_label_counts": {
+      "current_only": 80
+    }
+  },
+  "temporal_stress_cases": {
+    "case_count": 20,
+    "current_value_availability": 1,
+    "current_top1_accuracy": 1,
+    "current_only_top1_rate": 1,
+    "stale_only_top1_rate": 0,
+    "mixed_transition_top1_rate": 0,
+    "other_or_missing_top1_rate": 0,
+    "stale_only_exposure_case_rate": 0,
+    "mixed_transition_exposure_case_rate": 0,
+    "historical_signal_exposure_case_rate": 0,
+    "previous_value_availability": 1,
+    "previous_top1_accuracy": 0.0,
+    "history_value_recall": 1.0,
+    "mean_final_memory_count": 2,
+    "current_top1_label_counts": {
+      "current_only": 20
+    }
+  },
+  "by_pattern": {
+    "duplicate": {
+      "case_count": 20,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 1,
+      "current_only_top1_rate": 1,
+      "stale_only_top1_rate": 0,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": null,
+      "mixed_transition_exposure_case_rate": null,
+      "historical_signal_exposure_case_rate": null,
+      "previous_value_availability": null,
+      "previous_top1_accuracy": null,
+      "history_value_recall": null,
+      "mean_final_memory_count": 1,
+      "current_top1_label_counts": {
+        "current_only": 20
+      }
+    },
+    "multi_step": {
+      "case_count": 20,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 1,
+      "current_only_top1_rate": 1,
+      "stale_only_top1_rate": 0,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": 0,
+      "mixed_transition_exposure_case_rate": 0,
+      "historical_signal_exposure_case_rate": 0,
+      "previous_value_availability": 1,
+      "previous_top1_accuracy": 0.0,
+      "history_value_recall": 1.0,
+      "mean_final_memory_count": 3,
+      "current_top1_label_counts": {
+        "current_only": 20
+      }
+    },
+    "out_of_order": {
+      "case_count": 20,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 1,
+      "current_only_top1_rate": 1,
+      "stale_only_top1_rate": 0,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": 0,
+      "mixed_transition_exposure_case_rate": 0,
+      "historical_signal_exposure_case_rate": 0,
+      "previous_value_availability": 1,
+      "previous_top1_accuracy": 0.0,
+      "history_value_recall": 1.0,
+      "mean_final_memory_count": 2,
+      "current_top1_label_counts": {
+        "current_only": 20
+      }
+    },
+    "replacement": {
+      "case_count": 20,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 1,
+      "current_only_top1_rate": 1,
+      "stale_only_top1_rate": 0,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": 0,
+      "mixed_transition_exposure_case_rate": 0,
+      "historical_signal_exposure_case_rate": 0,
+      "previous_value_availability": 1,
+      "previous_top1_accuracy": 0.0,
+      "history_value_recall": 1.0,
+      "mean_final_memory_count": 2,
+      "current_top1_label_counts": {
+        "current_only": 20
+      }
+    },
+    "reversion": {
+      "case_count": 20,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 1,
+      "current_only_top1_rate": 1,
+      "stale_only_top1_rate": 0,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": 0,
+      "mixed_transition_exposure_case_rate": 0,
+      "historical_signal_exposure_case_rate": 0,
+      "previous_value_availability": 1,
+      "previous_top1_accuracy": 0.0,
+      "history_value_recall": 1.0,
+      "mean_final_memory_count": 3,
+      "current_top1_label_counts": {
+        "current_only": 20
+      }
+    }
+  },
+  "by_state_key_all": {
+    "user.current_project_tool": {
+      "case_count": 20,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 1,
+      "current_only_top1_rate": 1,
+      "stale_only_top1_rate": 0,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": 0,
+      "mixed_transition_exposure_case_rate": 0,
+      "historical_signal_exposure_case_rate": 0,
+      "previous_value_availability": 1,
+      "previous_top1_accuracy": 0.0,
+      "history_value_recall": 1.0,
+      "mean_final_memory_count": 2.2,
+      "current_top1_label_counts": {
+        "current_only": 20
+      }
+    },
+    "user.employer": {
+      "case_count": 20,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 1,
+      "current_only_top1_rate": 1,
+      "stale_only_top1_rate": 0,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": 0,
+      "mixed_transition_exposure_case_rate": 0,
+      "historical_signal_exposure_case_rate": 0,
+      "previous_value_availability": 1,
+      "previous_top1_accuracy": 0.0,
+      "history_value_recall": 1.0,
+      "mean_final_memory_count": 2.2,
+      "current_top1_label_counts": {
+        "current_only": 20
+      }
+    },
+    "user.preferred_language": {
+      "case_count": 20,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 1,
+      "current_only_top1_rate": 1,
+      "stale_only_top1_rate": 0,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": 0,
+      "mixed_transition_exposure_case_rate": 0,
+      "historical_signal_exposure_case_rate": 0,
+      "previous_value_availability": 1,
+      "previous_top1_accuracy": 0.0,
+      "history_value_recall": 1.0,
+      "mean_final_memory_count": 2.2,
+      "current_top1_label_counts": {
+        "current_only": 20
+      }
+    },
+    "user.residence": {
+      "case_count": 20,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 1,
+      "current_only_top1_rate": 1,
+      "stale_only_top1_rate": 0,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": 0,
+      "mixed_transition_exposure_case_rate": 0,
+      "historical_signal_exposure_case_rate": 0,
+      "previous_value_availability": 1,
+      "previous_top1_accuracy": 0.0,
+      "history_value_recall": 1.0,
+      "mean_final_memory_count": 2.2,
+      "current_top1_label_counts": {
+        "current_only": 20
+      }
+    },
+    "user.subscription_plan": {
+      "case_count": 20,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 1,
+      "current_only_top1_rate": 1,
+      "stale_only_top1_rate": 0,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": 0,
+      "mixed_transition_exposure_case_rate": 0,
+      "historical_signal_exposure_case_rate": 0,
+      "previous_value_availability": 1,
+      "previous_top1_accuracy": 0.0,
+      "history_value_recall": 1.0,
+      "mean_final_memory_count": 2.2,
+      "current_top1_label_counts": {
+        "current_only": 20
+      }
+    }
+  },
+  "by_state_key_symmetric": {
+    "user.current_project_tool": {
+      "case_count": 16,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 1,
+      "current_only_top1_rate": 1,
+      "stale_only_top1_rate": 0,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": 0,
+      "mixed_transition_exposure_case_rate": 0,
+      "historical_signal_exposure_case_rate": 0,
+      "previous_value_availability": 1,
+      "previous_top1_accuracy": 0.0,
+      "history_value_recall": 1.0,
+      "mean_final_memory_count": 2.25,
+      "current_top1_label_counts": {
+        "current_only": 16
+      }
+    },
+    "user.employer": {
+      "case_count": 16,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 1,
+      "current_only_top1_rate": 1,
+      "stale_only_top1_rate": 0,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": 0,
+      "mixed_transition_exposure_case_rate": 0,
+      "historical_signal_exposure_case_rate": 0,
+      "previous_value_availability": 1,
+      "previous_top1_accuracy": 0.0,
+      "history_value_recall": 1.0,
+      "mean_final_memory_count": 2.25,
+      "current_top1_label_counts": {
+        "current_only": 16
+      }
+    },
+    "user.preferred_language": {
+      "case_count": 16,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 1,
+      "current_only_top1_rate": 1,
+      "stale_only_top1_rate": 0,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": 0,
+      "mixed_transition_exposure_case_rate": 0,
+      "historical_signal_exposure_case_rate": 0,
+      "previous_value_availability": 1,
+      "previous_top1_accuracy": 0.0,
+      "history_value_recall": 1.0,
+      "mean_final_memory_count": 2.25,
+      "current_top1_label_counts": {
+        "current_only": 16
+      }
+    },
+    "user.residence": {
+      "case_count": 16,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 1,
+      "current_only_top1_rate": 1,
+      "stale_only_top1_rate": 0,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": 0,
+      "mixed_transition_exposure_case_rate": 0,
+      "historical_signal_exposure_case_rate": 0,
+      "previous_value_availability": 1,
+      "previous_top1_accuracy": 0.0,
+      "history_value_recall": 1.0,
+      "mean_final_memory_count": 2.25,
+      "current_top1_label_counts": {
+        "current_only": 16
+      }
+    },
+    "user.subscription_plan": {
+      "case_count": 16,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 1,
+      "current_only_top1_rate": 1,
+      "stale_only_top1_rate": 0,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": 0,
+      "mixed_transition_exposure_case_rate": 0,
+      "historical_signal_exposure_case_rate": 0,
+      "previous_value_availability": 1,
+      "previous_top1_accuracy": 0.0,
+      "history_value_recall": 1.0,
+      "mean_final_memory_count": 2.25,
+      "current_top1_label_counts": {
+        "current_only": 16
+      }
+    }
+  },
+  "by_state_key_temporal_stress": {
+    "user.current_project_tool": {
+      "case_count": 4,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 1,
+      "current_only_top1_rate": 1,
+      "stale_only_top1_rate": 0,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": 0,
+      "mixed_transition_exposure_case_rate": 0,
+      "historical_signal_exposure_case_rate": 0,
+      "previous_value_availability": 1,
+      "previous_top1_accuracy": 0.0,
+      "history_value_recall": 1.0,
+      "mean_final_memory_count": 2,
+      "current_top1_label_counts": {
+        "current_only": 4
+      }
+    },
+    "user.employer": {
+      "case_count": 4,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 1,
+      "current_only_top1_rate": 1,
+      "stale_only_top1_rate": 0,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": 0,
+      "mixed_transition_exposure_case_rate": 0,
+      "historical_signal_exposure_case_rate": 0,
+      "previous_value_availability": 1,
+      "previous_top1_accuracy": 0.0,
+      "history_value_recall": 1.0,
+      "mean_final_memory_count": 2,
+      "current_top1_label_counts": {
+        "current_only": 4
+      }
+    },
+    "user.preferred_language": {
+      "case_count": 4,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 1,
+      "current_only_top1_rate": 1,
+      "stale_only_top1_rate": 0,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": 0,
+      "mixed_transition_exposure_case_rate": 0,
+      "historical_signal_exposure_case_rate": 0,
+      "previous_value_availability": 1,
+      "previous_top1_accuracy": 0.0,
+      "history_value_recall": 1.0,
+      "mean_final_memory_count": 2,
+      "current_top1_label_counts": {
+        "current_only": 4
+      }
+    },
+    "user.residence": {
+      "case_count": 4,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 1,
+      "current_only_top1_rate": 1,
+      "stale_only_top1_rate": 0,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": 0,
+      "mixed_transition_exposure_case_rate": 0,
+      "historical_signal_exposure_case_rate": 0,
+      "previous_value_availability": 1,
+      "previous_top1_accuracy": 0.0,
+      "history_value_recall": 1.0,
+      "mean_final_memory_count": 2,
+      "current_top1_label_counts": {
+        "current_only": 4
+      }
+    },
+    "user.subscription_plan": {
+      "case_count": 4,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 1,
+      "current_only_top1_rate": 1,
+      "stale_only_top1_rate": 0,
+      "mixed_transition_top1_rate": 0,
+      "other_or_missing_top1_rate": 0,
+      "stale_only_exposure_case_rate": 0,
+      "mixed_transition_exposure_case_rate": 0,
+      "historical_signal_exposure_case_rate": 0,
+      "previous_value_availability": 1,
+      "previous_top1_accuracy": 0.0,
+      "history_value_recall": 1.0,
+      "mean_final_memory_count": 2,
+      "current_top1_label_counts": {
+        "current_only": 4
+      }
+    }
+  }
+}
