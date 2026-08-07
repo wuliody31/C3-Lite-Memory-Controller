@@ -1,0 +1,300 @@
+scripts/diagnose_pilot20_stage.py:145:        found_ids.add(memory_id)
+scripts/analyze_rc8_requirements.py:82:                seen.add(key)
+scripts/prepare_dataset_a_v01.py:621:        seen_ids.add(question_id)
+scripts/analyze_rc8_selector_losses.py:281:                seen.add(key)
+scripts/prepare_locomo_dataset.py:145:        seen.add(reference)
+scripts/prepare_locomo_dataset.py:538:                global_memory_ids.add(memory_id)
+scripts/prepare_locomo_dataset.py:694:                        global_memory_ids.add(
+scripts/analyze_rc8_3_route_causality.py:93:    def add(token: Any) -> None:
+scripts/analyze_rc8_3_route_causality.py:113:                add(item)
+scripts/analyze_rc8_3_route_causality.py:117:                add(item)
+scripts/analyze_rc8_3_route_causality.py:119:    add(value)
+scripts/finalise_route_labels.py:58:            inferred.add("episodic")
+scripts/finalise_route_labels.py:60:            inferred.add("semantic")
+scripts/finalise_route_labels.py:62:            inferred.add("procedural")
+scripts/evaluate_locomo_external.py:121:            projected.add(memory_id)
+scripts/evaluate_locomo_external.py:138:            projected.add(memory_id)
+scripts/evaluate_locomo_external.py:144:            projected.add(memory_id)
+scripts/mem0/mem0_raw_backend.py:9:    "external/mem0/raw_backend"
+scripts/mem0/mem0_raw_backend.py:26:    provider during initialisation. It is not called when add() uses
+scripts/mem0/mem0_raw_backend.py:27:    infer=False.
+scripts/mem0/rescore_mem0_pilot200_source_equiv.py:212:        "pilot_name": "rc88_locomo_pilot200_mem0_v01",
+scripts/mem0/run_confidence_aware_route_pilot200.py:316:    parser.add_argument("--mem0-top20", type=Path, required=True)
+scripts/mem0/run_confidence_aware_route_pilot200.py:333:    mem0_rows = read_jsonl(args.mem0_top20)
+scripts/mem0/run_confidence_aware_route_pilot200.py:334:    mem0_by_id = {str(row["question_id"]): row for row in mem0_rows}
+scripts/mem0/run_confidence_aware_route_pilot200.py:339:    if set(c3_by_id) != set(question_ids) or set(mem0_by_id) != set(question_ids):
+scripts/mem0/run_confidence_aware_route_pilot200.py:345:        mem0_ids = runner.split_ids(mem0_by_id[question_id].get("retrieved_memory_ids"))
+scripts/mem0/run_confidence_aware_route_pilot200.py:346:        pools[question_id] = runner.make_pool(c3_ids, mem0_ids)
+scripts/mem0/run_qwen_soft_probe_validation.py:257:    parser.add_argument("--mem0-top20", type=Path, required=True)
+scripts/mem0/run_qwen_soft_probe_validation.py:308:    mem0_rows = qwen.read_jsonl(args.mem0_top20)
+scripts/mem0/run_qwen_soft_probe_validation.py:309:    mem0_by_id = {str(row["question_id"]): row for row in mem0_rows}
+scripts/mem0/run_qwen_soft_probe_validation.py:316:    if set(mem0_by_id) != set(question_ids):
+scripts/mem0/run_qwen_soft_probe_validation.py:325:        mem0_ids = qwen.split_ids(mem0_by_id[question_id].get("retrieved_memory_ids"))
+scripts/mem0/run_qwen_soft_probe_validation.py:326:        for memory_id in [*c3_ids, *mem0_ids]:
+scripts/mem0/run_qwen_soft_probe_validation.py:328:                missing_catalog.add(memory_id)
+scripts/mem0/run_qwen_soft_probe_validation.py:329:        hybrid_pools[question_id] = runner.make_pool(c3_ids, mem0_ids)
+scripts/mem0/run_qwen_soft_probe_validation.py:547:                    completed.add(key)
+scripts/mem0/diagnose_hybrid_candidate_drop.py:183:            f"{summary['questions_with_mem0_gold_selected']}"
+scripts/mem0/diagnose_hybrid_candidate_drop.py:187:            f"{summary['questions_without_mem0_gold_selected']}"
+scripts/mem0/diagnose_hybrid_candidate_drop.py:290:        "--mem0-top20",
+scripts/mem0/diagnose_hybrid_candidate_drop.py:350:    mem0_rows = runner.read_jsonl(
+scripts/mem0/diagnose_hybrid_candidate_drop.py:351:        args.mem0_top20
+scripts/mem0/diagnose_hybrid_candidate_drop.py:353:    mem0_by_id = {
+scripts/mem0/diagnose_hybrid_candidate_drop.py:355:        for row in mem0_rows
+scripts/mem0/diagnose_hybrid_candidate_drop.py:372:    if set(mem0_by_id) != question_ids:
+scripts/mem0/diagnose_hybrid_candidate_drop.py:389:        mem0_ids = runner.split_ids(
+scripts/mem0/diagnose_hybrid_candidate_drop.py:390:            mem0_by_id[question_id].get(
+scripts/mem0/diagnose_hybrid_candidate_drop.py:398:                mem0_ids,
+scripts/mem0/diagnose_hybrid_candidate_drop.py:425:        mem0_source_ids = set(
+scripts/mem0/diagnose_hybrid_candidate_drop.py:427:                mem0_ids,
+scripts/mem0/diagnose_hybrid_candidate_drop.py:438:                mem0_source_ids
+scripts/mem0/diagnose_hybrid_candidate_drop.py:452:                label="c3_mem0_union_diagnostic",
+scripts/mem0/diagnose_hybrid_candidate_drop.py:469:            mem0 = mem0_by_id[question_id]
+scripts/mem0/diagnose_hybrid_candidate_drop.py:481:            mem0_ids = runner.split_ids(
+scripts/mem0/diagnose_hybrid_candidate_drop.py:482:                mem0.get(
+scripts/mem0/diagnose_hybrid_candidate_drop.py:501:            mem0_only_gold_ids = []
+scripts/mem0/diagnose_hybrid_candidate_drop.py:503:            for memory_id in mem0_ids:
+scripts/mem0/diagnose_hybrid_candidate_drop.py:515:                    mem0_only_gold_ids.append(
+scripts/mem0/diagnose_hybrid_candidate_drop.py:519:            if not mem0_only_gold_ids:
+scripts/mem0/diagnose_hybrid_candidate_drop.py:556:                mem0_only_gold_ids
+scripts/mem0/diagnose_hybrid_candidate_drop.py:666:                    "mem0_top20_ids": (
+scripts/mem0/diagnose_hybrid_candidate_drop.py:667:                        mem0_ids
+scripts/mem0/diagnose_hybrid_candidate_drop.py:689:                    "mem0_only_gold_candidate_ids": (
+scripts/mem0/diagnose_hybrid_candidate_drop.py:690:                        mem0_only_gold_ids
+scripts/mem0/diagnose_hybrid_candidate_drop.py:698:                    "any_mem0_gold_selected": (
+scripts/mem0/diagnose_hybrid_candidate_drop.py:721:                "any_mem0_gold_selected"
+scripts/mem0/diagnose_hybrid_candidate_drop.py:749:        "questions_with_mem0_gold_selected": (
+scripts/mem0/diagnose_hybrid_candidate_drop.py:752:        "questions_without_mem0_gold_selected": (
+scripts/mem0/diagnose_hybrid_candidate_drop.py:778:        "mean_mem0_only_gold_candidates_per_rescue_question": (
+scripts/mem0/diagnose_hybrid_candidate_drop.py:784:                                "mem0_only_gold_candidate_ids"
+scripts/mem0/diagnose_hybrid_candidate_drop.py:828:            "mem0_gold_selected": sum(
+scripts/mem0/diagnose_hybrid_candidate_drop.py:831:                        "any_mem0_gold_selected"
+scripts/mem0/run_soft_probe1_heldout_controller_replay.py:187:    parser.add_argument("--mem0-top20", type=Path, required=True)
+scripts/mem0/run_soft_probe1_heldout_controller_replay.py:216:    mem0_by_id = {
+scripts/mem0/run_soft_probe1_heldout_controller_replay.py:218:        for row in read_jsonl(args.mem0_top20)
+scripts/mem0/run_soft_probe1_heldout_controller_replay.py:224:    if set(mem0_by_id) != set(all_ids):
+scripts/mem0/run_soft_probe1_heldout_controller_replay.py:236:        mem0_ids = qwen.split_ids(mem0_by_id[qid].get("retrieved_memory_ids"))
+scripts/mem0/run_soft_probe1_heldout_controller_replay.py:237:        for memory_id in [*c3_ids, *mem0_ids]:
+scripts/mem0/run_soft_probe1_heldout_controller_replay.py:239:                missing_catalog.add(memory_id)
+scripts/mem0/run_soft_probe1_heldout_controller_replay.py:240:        hybrid_pools[qid] = runner.make_pool(c3_ids, mem0_ids)
+scripts/mem0/run_soft_probe1_heldout_controller_replay.py:376:                    completed.add(key)
+scripts/mem0/slurm/qwen_soft_probe1_heldout1786.sbatch:10:#SBATCH --output=/data/alyjw80/c3_lite/evaluation/c3_mem0_qwen_soft_probe1_heldout1786_v01/slurm-%j.out
+scripts/mem0/slurm/qwen_soft_probe1_heldout1786.sbatch:11:#SBATCH --error=/data/alyjw80/c3_lite/evaluation/c3_mem0_qwen_soft_probe1_heldout1786_v01/slurm-%j.err
+scripts/mem0/slurm/qwen_soft_probe1_heldout1786.sbatch:18:SCRIPT="$C3_REPO/scripts/mem0/run_qwen_soft_probe1_heldout_validation.py"
+scripts/mem0/slurm/qwen_soft_probe1_heldout1786.sbatch:19:QWEN_RUNNER="$C3_REPO/scripts/mem0/run_qwen_hybrid_route_upperbound.py"
+scripts/mem0/slurm/qwen_soft_probe1_heldout1786.sbatch:20:PROBE_MODULE="$C3_REPO/scripts/mem0/run_soft_route_probe_budget_pilot200.py"
+scripts/mem0/slurm/qwen_soft_probe1_heldout1786.sbatch:21:RUNNER="$C3_REPO/scripts/mem0/run_hybrid_controller_pilot200.py"
+scripts/mem0/slurm/qwen_soft_probe1_heldout1786.sbatch:33:MEM0_TOP20=/data/$USER/c3_lite/external/mem0/heldout1786_v01/source_equiv_v02/retrieval_top20_source_equiv.jsonl
+scripts/mem0/slurm/qwen_soft_probe1_heldout1786.sbatch:35:OUTPUT=/data/$USER/c3_lite/evaluation/c3_mem0_qwen_soft_probe1_heldout1786_v01
+scripts/mem0/slurm/qwen_soft_probe1_heldout1786.sbatch:74:  --mem0-top20 "$MEM0_TOP20" \
+scripts/mem0/slurm/pilot200_ingest.sbatch:2:#SBATCH --job-name=mem0-p200-ingest
+scripts/mem0/slurm/pilot200_ingest.sbatch:9:#SBATCH --output=/home/alyjw80/projects/mem0_baseline/logs/pilot200_ingest_%j.out
+scripts/mem0/slurm/pilot200_ingest.sbatch:10:#SBATCH --error=/home/alyjw80/projects/mem0_baseline/logs/pilot200_ingest_%j.err
+scripts/mem0/slurm/pilot200_ingest.sbatch:14:MEM0_ROOT=/home/alyjw80/projects/mem0_baseline
+scripts/mem0/slurm/pilot200_ingest.sbatch:18:PILOT_SCRIPT="$C3_REPO/scripts/mem0/run_locomo_mem0_pilot200.py"
+scripts/mem0/slurm/pilot200_ingest.sbatch:21:MEM0_PILOT_ROOT=/data/alyjw80/c3_lite/external/mem0/pilot200_v01
+scripts/mem0/slurm/mem0_heldout1786_query.sbatch:2:#SBATCH --job-name=mem0-h1786-query
+scripts/mem0/slurm/mem0_heldout1786_query.sbatch:9:#SBATCH --output=/data/alyjw80/c3_lite/external/mem0/heldout1786_v01/slurm-%j.out
+scripts/mem0/slurm/mem0_heldout1786_query.sbatch:10:#SBATCH --error=/data/alyjw80/c3_lite/external/mem0/heldout1786_v01/slurm-%j.err
+scripts/mem0/slurm/mem0_heldout1786_query.sbatch:15:MEM0_ROOT=/home/$USER/projects/mem0_baseline
+scripts/mem0/slurm/mem0_heldout1786_query.sbatch:17:SCRIPT="$C3_REPO/scripts/mem0/run_locomo_mem0_heldout_query.py"
+scripts/mem0/slurm/mem0_heldout1786_query.sbatch:18:RUNNER="$C3_REPO/scripts/mem0/run_locomo_mem0_pilot200.py"
+scripts/mem0/slurm/mem0_heldout1786_query.sbatch:26:OUTPUT=/data/$USER/c3_lite/external/mem0/heldout1786_v01
+scripts/mem0/slurm/qwen_route_upperbound_pilot200.sbatch:2:#SBATCH --job-name=c3-mem0-b8
+scripts/mem0/slurm/qwen_route_upperbound_pilot200.sbatch:10:#SBATCH --output=/data/alyjw80/c3_lite/evaluation/c3_mem0_qwen_route_upperbound_pilot200_v01/slurm-%j.out
+scripts/mem0/slurm/qwen_route_upperbound_pilot200.sbatch:11:#SBATCH --error=/data/alyjw80/c3_lite/evaluation/c3_mem0_qwen_route_upperbound_pilot200_v01/slurm-%j.err
+scripts/mem0/slurm/qwen_route_upperbound_pilot200.sbatch:34:wc -l "/data/alyjw80/c3_lite/evaluation/c3_mem0_qwen_route_upperbound_pilot200_v01/predictions.jsonl"
+scripts/mem0/slurm/qwen_route_upperbound_pilot200.sbatch:36:python "/home/alyjw80/projects/c3_lite_system/scripts/mem0/run_qwen_hybrid_route_upperbound.py"   --runner-module "/home/alyjw80/projects/c3_lite_system/scripts/mem0/run_hybrid_controller_pilot200.py"   --config "/home/alyjw80/projects/c3_lite_system/configs/c3_lite_v2_2_final.yaml"   --prompt-template "/home/alyjw80/projects/c3_lite_system/prompts/answer_prompt.txt"   --questions "/data/alyjw80/c3_lite/external/locomo/adapter_v02/eval_questions_locomo_pilot200.csv"   --memories "/data/alyjw80/c3_lite/external/locomo/adapter_v02/memories_locomo.json"   --c3-predictions "/data/alyjw80/c3_lite/evaluation/frozen/locomo_pilot200_qwen3_job36163/predictions.jsonl"   --mem0-top20 "/data/alyjw80/c3_lite/external/mem0/pilot200_v01/source_equiv_v02/retrieval_top20_source_equiv.jsonl"   --output-dir "/data/alyjw80/c3_lite/evaluation/c3_mem0_qwen_route_upperbound_pilot200_v01"   --bootstrap-repetitions 50000   --bootstrap-seed 20260803
+scripts/mem0/slurm/phase2a_qwen_model_smoke.sbatch:38:  "$C3_REPO/scripts/mem0/phase2a/qwen_model_smoke.py"
+scripts/mem0/slurm/pilot200_query.sbatch:2:#SBATCH --job-name=mem0-p200-query
+scripts/mem0/slurm/pilot200_query.sbatch:9:#SBATCH --output=/home/alyjw80/projects/mem0_baseline/logs/pilot200_query_%j.out
+scripts/mem0/slurm/pilot200_query.sbatch:10:#SBATCH --error=/home/alyjw80/projects/mem0_baseline/logs/pilot200_query_%j.err
+scripts/mem0/slurm/pilot200_query.sbatch:14:MEM0_ROOT=/home/alyjw80/projects/mem0_baseline
+scripts/mem0/slurm/pilot200_query.sbatch:18:PILOT_SCRIPT="$C3_REPO/scripts/mem0/run_locomo_mem0_pilot200.py"
+scripts/mem0/slurm/pilot200_query.sbatch:20:MEM0_PILOT_ROOT=/data/alyjw80/c3_lite/external/mem0/pilot200_v01
+scripts/mem0/slurm/qwen_soft_probe_pilot200.sbatch:2:#SBATCH --job-name=c3-mem0-b12
+scripts/mem0/slurm/qwen_soft_probe_pilot200.sbatch:10:#SBATCH --output=/data/alyjw80/c3_lite/evaluation/c3_mem0_qwen_soft_probe_pilot200_v01/slurm-%j.out
+scripts/mem0/slurm/qwen_soft_probe_pilot200.sbatch:11:#SBATCH --error=/data/alyjw80/c3_lite/evaluation/c3_mem0_qwen_soft_probe_pilot200_v01/slurm-%j.err
+scripts/mem0/slurm/qwen_soft_probe_pilot200.sbatch:18:SCRIPT="$C3_REPO/scripts/mem0/run_qwen_soft_probe_validation.py"
+scripts/mem0/slurm/qwen_soft_probe_pilot200.sbatch:19:QWEN_RUNNER="$C3_REPO/scripts/mem0/run_qwen_hybrid_route_upperbound.py"
+scripts/mem0/slurm/qwen_soft_probe_pilot200.sbatch:20:PROBE_MODULE="$C3_REPO/scripts/mem0/run_soft_route_probe_budget_pilot200.py"
+scripts/mem0/slurm/qwen_soft_probe_pilot200.sbatch:21:RUNNER="$C3_REPO/scripts/mem0/run_hybrid_controller_pilot200.py"
+scripts/mem0/slurm/qwen_soft_probe_pilot200.sbatch:32:MEM0_TOP20=/data/$USER/c3_lite/external/mem0/pilot200_v01/source_equiv_v02/retrieval_top20_source_equiv.jsonl
+scripts/mem0/slurm/qwen_soft_probe_pilot200.sbatch:34:OUTPUT=/data/$USER/c3_lite/evaluation/c3_mem0_qwen_soft_probe_pilot200_v01
+scripts/mem0/slurm/qwen_soft_probe_pilot200.sbatch:61:  --mem0-top20 "$MEM0_TOP20" \
+scripts/mem0/slurm/phase2a_mem0_lifecycle_smoke.sbatch:2:#SBATCH --job-name=p2a-mem0-life
+scripts/mem0/slurm/phase2a_mem0_lifecycle_smoke.sbatch:10:#SBATCH --output=/data/%u/c3_lite/evaluation/phase2a_mem0_lifecycle_smoke_v01/slurm-%j.out
+scripts/mem0/slurm/phase2a_mem0_lifecycle_smoke.sbatch:11:#SBATCH --error=/data/%u/c3_lite/evaluation/phase2a_mem0_lifecycle_smoke_v01/slurm-%j.err
+scripts/mem0/slurm/phase2a_mem0_lifecycle_smoke.sbatch:17:MEM0_ROOT=/home/$USER/projects/mem0_baseline
+scripts/mem0/slurm/phase2a_mem0_lifecycle_smoke.sbatch:18:MEM0_VENDOR="$MEM0_ROOT/vendor/mem0-v2.0.15"
+scripts/mem0/slurm/phase2a_mem0_lifecycle_smoke.sbatch:20:ROOT=/data/$USER/c3_lite/evaluation/phase2a_mem0_lifecycle_smoke_v01
+scripts/mem0/slurm/phase2a_mem0_lifecycle_smoke.sbatch:54:  "$C3_REPO/scripts/mem0/phase2a/qwen_openai_server.py" \
+scripts/mem0/slurm/phase2a_mem0_lifecycle_smoke.sbatch:75:  "$C3_REPO/scripts/mem0/phase2a/wait_for_local_llm.py" \
+scripts/mem0/slurm/phase2a_mem0_lifecycle_smoke.sbatch:104:  "$C3_REPO/scripts/mem0/phase2a/mem0_lifecycle_smoke.py" \
+scripts/mem0/slurm/soft_probe1_heldout_controller_replay.sbatch:9:#SBATCH --output=/data/alyjw80/c3_lite/evaluation/c3_mem0_soft_probe1_heldout1786_v01/slurm-%j.out
+scripts/mem0/slurm/soft_probe1_heldout_controller_replay.sbatch:10:#SBATCH --error=/data/alyjw80/c3_lite/evaluation/c3_mem0_soft_probe1_heldout1786_v01/slurm-%j.err
+scripts/mem0/slurm/soft_probe1_heldout_controller_replay.sbatch:17:SCRIPT="$C3_REPO/scripts/mem0/run_soft_probe1_heldout_controller_replay.py"
+scripts/mem0/slurm/soft_probe1_heldout_controller_replay.sbatch:18:RUNNER="$C3_REPO/scripts/mem0/run_hybrid_controller_pilot200.py"
+scripts/mem0/slurm/soft_probe1_heldout_controller_replay.sbatch:19:PROBE_MODULE="$C3_REPO/scripts/mem0/run_soft_route_probe_budget_pilot200.py"
+scripts/mem0/slurm/soft_probe1_heldout_controller_replay.sbatch:20:QWEN_RUNNER="$C3_REPO/scripts/mem0/run_qwen_hybrid_route_upperbound.py"
+scripts/mem0/slurm/soft_probe1_heldout_controller_replay.sbatch:32:MEM0_TOP20=/data/$USER/c3_lite/external/mem0/heldout1786_v01/source_equiv_v02/retrieval_top20_source_equiv.jsonl
+scripts/mem0/slurm/soft_probe1_heldout_controller_replay.sbatch:34:OUTPUT=/data/$USER/c3_lite/evaluation/c3_mem0_soft_probe1_heldout1786_v01
+scripts/mem0/slurm/soft_probe1_heldout_controller_replay.sbatch:62:  --mem0-top20 "$MEM0_TOP20" \
+scripts/mem0/run_hybrid_route_budget_ablation.py:391:        "--mem0-top20",
+scripts/mem0/run_hybrid_route_budget_ablation.py:458:    mem0_rows = runner.read_jsonl(
+scripts/mem0/run_hybrid_route_budget_ablation.py:459:        args.mem0_top20
+scripts/mem0/run_hybrid_route_budget_ablation.py:461:    mem0_by_id = {
+scripts/mem0/run_hybrid_route_budget_ablation.py:463:        for row in mem0_rows
+scripts/mem0/run_hybrid_route_budget_ablation.py:480:    if set(mem0_by_id) != question_ids:
+scripts/mem0/run_hybrid_route_budget_ablation.py:496:        mem0_ids = runner.split_ids(
+scripts/mem0/run_hybrid_route_budget_ablation.py:497:            mem0_by_id[question_id].get(
+scripts/mem0/run_hybrid_route_budget_ablation.py:505:                mem0_ids,
+scripts/mem0/run_hybrid_route_budget_ablation.py:529:        mem0_source_ids = set(
+scripts/mem0/run_hybrid_route_budget_ablation.py:531:                mem0_ids,
+scripts/mem0/run_hybrid_route_budget_ablation.py:542:                mem0_source_ids
+scripts/mem0/run_hybrid_route_budget_ablation.py:546:            backend_rescue_ids.add(
+scripts/mem0/run_soft_route_probe_budget_pilot200.py:238:            candidate.metadata["retrieved_by_mem0"] = "mem0" in sources
+scripts/mem0/run_soft_route_probe_budget_pilot200.py:469:    parser.add_argument("--mem0-top20", type=Path, required=True)
+scripts/mem0/run_soft_route_probe_budget_pilot200.py:495:    mem0_rows = read_jsonl(args.mem0_top20)
+scripts/mem0/run_soft_route_probe_budget_pilot200.py:496:    mem0_by_id = {
+scripts/mem0/run_soft_route_probe_budget_pilot200.py:497:        str(row["question_id"]): row for row in mem0_rows
+scripts/mem0/run_soft_route_probe_budget_pilot200.py:507:    if set(mem0_by_id) != set(question_ids):
+scripts/mem0/run_soft_route_probe_budget_pilot200.py:515:        mem0_ids = runner.split_ids(
+scripts/mem0/run_soft_route_probe_budget_pilot200.py:516:            mem0_by_id[question_id].get("retrieved_memory_ids")
+scripts/mem0/run_soft_route_probe_budget_pilot200.py:518:        pools[question_id] = runner.make_pool(c3_ids, mem0_ids)
+scripts/mem0/run_conv30_raw_retrieval.py:12:from mem0 import Memory
+scripts/mem0/run_conv30_raw_retrieval.py:24:from mem0_raw_backend import (  # noqa: E402
+scripts/mem0/run_conv30_raw_retrieval.py:82:    return Memory.from_config(
+scripts/mem0/run_conv30_raw_retrieval.py:234:        memory_store.add(
+scripts/mem0/run_conv30_raw_retrieval.py:255:            infer=False,
+scripts/mem0/run_conv30_raw_retrieval.py:378:            response = memory_store.search(
+scripts/mem0/run_route_score_deconfounding_pilot200.py:400:    parser.add_argument("--mem0-top20", type=Path, required=True)
+scripts/mem0/run_route_score_deconfounding_pilot200.py:436:    mem0_rows = read_jsonl(args.mem0_top20)
+scripts/mem0/run_route_score_deconfounding_pilot200.py:437:    mem0_by_id = {
+scripts/mem0/run_route_score_deconfounding_pilot200.py:439:        for row in mem0_rows
+scripts/mem0/run_route_score_deconfounding_pilot200.py:452:    if set(mem0_by_id) != set(question_ids):
+scripts/mem0/run_route_score_deconfounding_pilot200.py:461:        mem0_ids = runner.split_ids(
+scripts/mem0/run_route_score_deconfounding_pilot200.py:462:            mem0_by_id[question_id].get("retrieved_memory_ids")
+scripts/mem0/run_route_score_deconfounding_pilot200.py:466:            mem0_ids,
+scripts/mem0/analyze_c3_mem0_overlap.py:198:    mem0_key: str,
+scripts/mem0/analyze_c3_mem0_overlap.py:201:    both = c3_only = mem0_only = neither = 0
+scripts/mem0/analyze_c3_mem0_overlap.py:205:        mem0 = row[mem0_key]
+scripts/mem0/analyze_c3_mem0_overlap.py:206:        if c3["hit"] and mem0["hit"]:
+scripts/mem0/analyze_c3_mem0_overlap.py:210:        elif mem0["hit"]:
+scripts/mem0/analyze_c3_mem0_overlap.py:211:            mem0_only += 1
+scripts/mem0/analyze_c3_mem0_overlap.py:215:            set(mem0["overlap_ids"]) - set(c3["overlap_ids"])
+scripts/mem0/analyze_c3_mem0_overlap.py:219:    mem0_summary = summarize_method(rows, mem0_key)
+scripts/mem0/analyze_c3_mem0_overlap.py:226:        "mem0_only_hit": mem0_only,
+scripts/mem0/analyze_c3_mem0_overlap.py:229:        "mem0": mem0_summary,
+scripts/mem0/analyze_c3_mem0_overlap.py:237:        "incremental_gold_source_ids_from_mem0": incremental_gold_ids,
+scripts/mem0/analyze_c3_mem0_overlap.py:254:    parser.add_argument("--mem0-top5", type=Path, required=True)
+scripts/mem0/analyze_c3_mem0_overlap.py:255:    parser.add_argument("--mem0-top20", type=Path, required=True)
+scripts/mem0/analyze_c3_mem0_overlap.py:285:    mem0_rows = {
+scripts/mem0/analyze_c3_mem0_overlap.py:286:        "top5": read_jsonl(args.mem0_top5),
+scripts/mem0/analyze_c3_mem0_overlap.py:287:        "top20": read_jsonl(args.mem0_top20),
+scripts/mem0/analyze_c3_mem0_overlap.py:291:    mem0_by_config = {
+scripts/mem0/analyze_c3_mem0_overlap.py:293:        for name, rows in mem0_rows.items()
+scripts/mem0/analyze_c3_mem0_overlap.py:307:    for name, mapping in mem0_by_config.items():
+scripts/mem0/analyze_c3_mem0_overlap.py:315:        mem0_top5 = mem0_by_config["top5"][question_id]
+scripts/mem0/analyze_c3_mem0_overlap.py:316:        mem0_top20 = mem0_by_config["top20"][question_id]
+scripts/mem0/analyze_c3_mem0_overlap.py:332:        mem0_gold_ids = split_ids(
+scripts/mem0/analyze_c3_mem0_overlap.py:333:            mem0_top20.get(
+scripts/mem0/analyze_c3_mem0_overlap.py:335:                mem0_top20.get(
+scripts/mem0/analyze_c3_mem0_overlap.py:341:        if set(gold_ids) != set(mem0_gold_ids):
+scripts/mem0/analyze_c3_mem0_overlap.py:346:                f"Mem0={mem0_gold_ids}"
+scripts/mem0/analyze_c3_mem0_overlap.py:364:        for config, mem0_row in (("top5", mem0_top5), ("top20", mem0_top20)):
+scripts/mem0/analyze_c3_mem0_overlap.py:365:            key = f"mem0_{config}"
+scripts/mem0/analyze_c3_mem0_overlap.py:366:            mem0_ids = split_ids(
+scripts/mem0/analyze_c3_mem0_overlap.py:367:                mem0_row.get(
+scripts/mem0/analyze_c3_mem0_overlap.py:369:                    mem0_row.get("projected_source_ids"),
+scripts/mem0/analyze_c3_mem0_overlap.py:372:            row[key] = score(mem0_ids, gold_ids)
+scripts/mem0/analyze_c3_mem0_overlap.py:379:                        + row[f"mem0_{config}"]["candidate_ids"]
+scripts/mem0/analyze_c3_mem0_overlap.py:387:    per_question_path = args.output_dir / "c3_mem0_overlap_per_question.jsonl"
+scripts/mem0/analyze_c3_mem0_overlap.py:399:            name = f"c3_{stage}_vs_mem0_{config}"
+scripts/mem0/analyze_c3_mem0_overlap.py:403:                f"mem0_{config}",
+scripts/mem0/analyze_c3_mem0_overlap.py:416:                name = f"c3_{stage}_vs_mem0_{config}"
+scripts/mem0/analyze_c3_mem0_overlap.py:420:                    f"mem0_{config}",
+scripts/mem0/analyze_c3_mem0_overlap.py:424:    (args.output_dir / "c3_mem0_overlap_summary.json").write_text(
+scripts/mem0/analyze_c3_mem0_overlap.py:428:    (args.output_dir / "c3_mem0_overlap_by_category.json").write_text(
+scripts/mem0/analyze_c3_mem0_overlap.py:441:            "| {name} | {both} | {c3_only} | {mem0_only} | {neither} | "
+scripts/mem0/analyze_c3_mem0_overlap.py:442:            "{c3_hit:.4f} | {mem0_hit:.4f} | {union_hit:.4f} | {delta_hit:+.4f} | "
+scripts/mem0/analyze_c3_mem0_overlap.py:443:            "{c3_recall:.4f} | {mem0_recall:.4f} | {union_recall:.4f} | {delta_recall:+.4f} |".format(
+scripts/mem0/analyze_c3_mem0_overlap.py:447:                mem0_only=result["mem0_only_hit"],
+scripts/mem0/analyze_c3_mem0_overlap.py:450:                mem0_hit=result["mem0"]["hit_rate"],
+scripts/mem0/analyze_c3_mem0_overlap.py:454:                mem0_recall=result["mem0"]["mean_recall"],
+scripts/mem0/analyze_c3_mem0_overlap.py:460:    (args.output_dir / "c3_mem0_overlap_report.md").write_text(
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:158:    mem0_key: str,
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:161:    both = c3_only = mem0_only = neither = 0
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:165:        mem0 = row[mem0_key]
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:166:        if c3["hit"] and mem0["hit"]:
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:170:        elif mem0["hit"]:
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:171:            mem0_only += 1
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:175:            set(mem0["overlap_ids"]) - set(c3["overlap_ids"])
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:179:    mem0_summary = summarize_method(rows, mem0_key)
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:186:        "mem0_only_hit": mem0_only,
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:189:        "mem0": mem0_summary,
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:197:        "incremental_gold_source_ids_from_mem0": incremental_gold_ids,
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:213:    parser.add_argument("--mem0-top5", type=Path, required=True)
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:214:    parser.add_argument("--mem0-top20", type=Path, required=True)
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:226:    mem0_rows = {
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:227:        "top5": read_jsonl(args.mem0_top5),
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:228:        "top20": read_jsonl(args.mem0_top20),
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:232:    mem0_by_config = {
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:234:        for name, rows in mem0_rows.items()
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:241:    for name, mapping in mem0_by_config.items():
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:249:        mem0_top5 = mem0_by_config["top5"][question_id]
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:250:        mem0_top20 = mem0_by_config["top20"][question_id]
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:256:        mem0_gold_ids = split_ids(
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:257:            mem0_top20.get("gold_source_ids", mem0_top20.get("gold_ids"))
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:259:        if set(gold_ids) != set(mem0_gold_ids):
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:261:                f"Gold mismatch for {question_id}: C3={gold_ids}, Mem0={mem0_gold_ids}"
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:279:        for config, mem0_row in (("top5", mem0_top5), ("top20", mem0_top20)):
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:280:            key = f"mem0_{config}"
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:281:            mem0_ids = split_ids(
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:282:                mem0_row.get(
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:284:                    mem0_row.get("projected_source_ids"),
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:287:            row[key] = score(mem0_ids, gold_ids)
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:294:                        + row[f"mem0_{config}"]["candidate_ids"]
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:302:    per_question_path = args.output_dir / "c3_mem0_overlap_per_question.jsonl"
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:314:            name = f"c3_{stage}_vs_mem0_{config}"
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:318:                f"mem0_{config}",
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:331:                name = f"c3_{stage}_vs_mem0_{config}"
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:335:                    f"mem0_{config}",
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:339:    (args.output_dir / "c3_mem0_overlap_summary.json").write_text(
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:343:    (args.output_dir / "c3_mem0_overlap_by_category.json").write_text(
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:356:            "| {name} | {both} | {c3_only} | {mem0_only} | {neither} | "
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:357:            "{c3_hit:.4f} | {mem0_hit:.4f} | {union_hit:.4f} | {delta_hit:+.4f} | "
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:358:            "{c3_recall:.4f} | {mem0_recall:.4f} | {union_recall:.4f} | {delta_recall:+.4f} |".format(
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:362:                mem0_only=result["mem0_only_hit"],
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:365:                mem0_hit=result["mem0"]["hit_rate"],
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:369:                mem0_recall=result["mem0"]["mean_recall"],
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:375:    (args.output_dir / "c3_mem0_overlap_report.md").write_text(
+scripts/mem0/phase2a/mem0_lifecycle_smoke.py:11:from mem0 import Memory
+scripts/mem0/phase2a/mem0_lifecycle_smoke.py:296:                    "phase2a_mem0_"
+scripts/mem0/phase2a/mem0_lifecycle_smoke.py:314:    memory = Memory.from_config(config)
+scripts/mem0/phase2a/mem0_lifecycle_smoke.py:394:        add_result = memory.add(
+scripts/mem0/phase2a/mem0_lifecycle_smoke.py:406:                    "phase2a_mem0_"
+scripts/mem0/phase2a/mem0_lifecycle_smoke.py:416:            infer=True,
+scripts/mem0/phase2a/mem0_lifecycle_smoke.py:492:    current_search = memory.search(
+scripts/mem0/phase2a/mem0_lifecycle_smoke.py:499:    historical_search = memory.search(
+scripts/mem0/phase2a/mem0_lifecycle_smoke.py:534:            "phase2a_mem0_"
+scripts/mem0/run_locomo_mem0_heldout_query.py:238:        "mem0_pilot_runner_module",
+scripts/mem0/run_locomo_mem0_heldout_query.py:312:                    response = store.search(
+scripts/mem0/run_locomo_mem0_heldout_query.py:386:                    completed.add(question_id)
+scripts/mem0/run_locomo_mem0_heldout_query.py:468:        "experiment": "mem0_locomo_heldout_query",
+scripts/mem0/run_hybrid_controller_pilot200.py:270:            candidate.metadata["retrieved_by_mem0"] = "mem0" in retrieval_sources
+scripts/mem0/run_hybrid_controller_pilot200.py:281:    mem0_ids: list[str] | None,
+scripts/mem0/run_hybrid_controller_pilot200.py:283:    mem0_ids = mem0_ids or []
+scripts/mem0/run_hybrid_controller_pilot200.py:284:    ordered_ids = list(dict.fromkeys([*c3_ids, *mem0_ids]))
+scripts/mem0/run_hybrid_controller_pilot200.py:286:    mem0_set = set(mem0_ids)
+scripts/mem0/run_hybrid_controller_pilot200.py:293:        if memory_id in mem0_set:
+scripts/mem0/run_hybrid_controller_pilot200.py:294:            sources.append("mem0")
+scripts/mem0/run_hybrid_controller_pilot200.py:312:        elif sources == ["mem0"]:
+scripts/mem0/run_hybrid_controller_pilot200.py:313:            counts["mem0_only"] += 1
+scripts/mem0/run_hybrid_controller_pilot200.py:314:        elif set(sources) == {"c3", "mem0"}:
+scripts/mem0/run_hybrid_controller_pilot200.py:430:        f"{summary['hybrid_selection_provenance'].get('mem0_only', 0)}",
+scripts/mem0/run_hybrid_controller_pilot200.py:458:    parser.add_argument("--mem0-top20", type=Path, required=True)
+scripts/mem0/run_hybrid_controller_pilot200.py:487:    mem0_rows = read_jsonl(args.mem0_top20)
+scripts/mem0/run_hybrid_controller_pilot200.py:488:    mem0_by_id = {
+scripts/mem0/run_hybrid_controller_pilot200.py:490:        for row in mem0_rows
+scripts/mem0/run_hybrid_controller_pilot200.py:500:    if set(mem0_by_id) != expected_ids:

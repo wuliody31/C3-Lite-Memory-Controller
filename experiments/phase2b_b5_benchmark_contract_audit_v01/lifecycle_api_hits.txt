@@ -1,0 +1,21 @@
+src/lifecycle.py:27:class LifecycleOperation(str, Enum):
+src/lifecycle.py:31:    NOOP_DUPLICATE = "noop_duplicate"
+src/lifecycle.py:33:    SUPERSEDE_STATE = "supersede_state"
+src/lifecycle.py:34:    REJECT_OUT_OF_ORDER = "reject_out_of_order"
+src/lifecycle.py:37:class LifecycleError(RuntimeError):
+src/lifecycle.py:41:class LifecycleInvariantError(LifecycleError):
+src/lifecycle.py:45:class LifecycleReplayConflict(LifecycleError):
+src/lifecycle.py:49:class LifecycleStoreError(LifecycleError):
+src/lifecycle.py:54:class LifecycleRecord:
+src/lifecycle.py:85:class LifecycleStore(Protocol):
+src/lifecycle.py:250:class LifecycleService:
+src/lifecycle.py:259:    def ingest_state(
+src/lifecycle.py:412:                operation=LifecycleOperation.NOOP_DUPLICATE,
+src/lifecycle.py:427:                    LifecycleOperation.REJECT_OUT_OF_ORDER
+src/lifecycle.py:489:                    .SUPERSEDE_STATE
+src/lifecycle.py:537:            operation=LifecycleOperation.SUPERSEDE_STATE,
+src/lifecycle.py:549:    def current_state(
+src/lifecycle.py:571:    def state_history(
+tests/test_lifecycle_phase2b.py:114:        == LifecycleOperation.NOOP_DUPLICATE
+tests/test_lifecycle_phase2b.py:133:        == LifecycleOperation.SUPERSEDE_STATE
+tests/test_lifecycle_phase2b.py:258:        == LifecycleOperation.REJECT_OUT_OF_ORDER

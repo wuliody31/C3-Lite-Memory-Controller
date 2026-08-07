@@ -1,0 +1,400 @@
+scripts/evaluate_answer_quality.py:82:    precision = overlap / len(
+scripts/evaluate_answer_quality.py:85:    recall = overlap / len(gold_tokens)
+scripts/evaluate_answer_quality.py:89:        * precision
+scripts/evaluate_answer_quality.py:90:        * recall
+scripts/evaluate_answer_quality.py:91:        / (precision + recall)
+scripts/evaluate_answer_quality.py:199:                "answer_f1_all": mean(
+scripts/evaluate_answer_quality.py:211:                "answer_f1_answerable": mean(
+scripts/analyze_rc4_trace.py:117:                "raw_recall": round(safe_div(len(gold_raw), len(gold)), 6),
+scripts/analyze_rc4_trace.py:118:                "ranked_recall": round(safe_div(len(gold_ranked), len(gold)), 6),
+scripts/analyze_rc4_trace.py:119:                "selected_recall": round(safe_div(len(gold_selected), len(gold)), 6),
+scripts/analyze_rc4_trace.py:156:        "raw_gold_recall": safe_div(totals["gold_raw"], totals["gold"]),
+scripts/analyze_rc4_trace.py:157:        "ranked_gold_recall": safe_div(totals["gold_ranked"], totals["gold"]),
+scripts/analyze_rc4_trace.py:158:        "selected_gold_recall": safe_div(totals["gold_selected"], totals["gold"]),
+scripts/analyze_rc4_trace.py:182:    print(f"Gold in raw:       {totals['gold_raw']}/{totals['gold']} ({summary['raw_gold_recall']:.3f})")
+scripts/analyze_rc4_trace.py:183:    print(f"Gold in ranked:    {totals['gold_ranked']}/{totals['gold']} ({summary['ranked_gold_recall']:.3f})")
+scripts/analyze_rc4_trace.py:184:    print(f"Gold in selected:  {totals['gold_selected']}/{totals['gold']} ({summary['selected_gold_recall']:.3f})")
+scripts/analyze_rc5_candidate_trace.py:283:        "raw_trace_recall": gold_in_trace / denominator,
+scripts/analyze_rc5_candidate_trace.py:284:        "ranker_gate_recall": gold_passed_gate / denominator,
+scripts/analyze_rc5_candidate_trace.py:285:        "type_top_k_recall": gold_kept_top_k / denominator,
+scripts/analyze_rc5_candidate_trace.py:286:        "conflict_resolution_recall": (
+scripts/analyze_rc5_candidate_trace.py:289:        "final_selection_recall": gold_selected / denominator,
+scripts/analyze_rc5_candidate_trace.py:304:        f"({summary['raw_trace_recall']:.3f})"
+scripts/analyze_rc5_candidate_trace.py:308:        f"({summary['ranker_gate_recall']:.3f})"
+scripts/analyze_rc5_candidate_trace.py:312:        f"({summary['type_top_k_recall']:.3f})"
+scripts/analyze_rc5_candidate_trace.py:316:        f"({summary['conflict_resolution_recall']:.3f})"
+scripts/analyze_rc5_candidate_trace.py:320:        f"({summary['final_selection_recall']:.3f})"
+scripts/prepare_locomo_dataset.py:84:    """Extract and canonicalise LoCoMo dialogue IDs.
+scripts/prepare_locomo_dataset.py:436:            "LoCoMo top level must be a list."
+scripts/prepare_locomo_dataset.py:459:            f"locomo_{slug(sample_id)}"
+scripts/prepare_locomo_dataset.py:555:                        "official_locomo_dialogue"
+scripts/prepare_locomo_dataset.py:560:                        "dataset": "LoCoMo",
+scripts/prepare_locomo_dataset.py:710:                                "official_locomo_observation"
+scripts/prepare_locomo_dataset.py:717:                                "dataset": "LoCoMo",
+scripts/prepare_locomo_dataset.py:800:                    f"locomo_category_{category}"
+scripts/prepare_locomo_dataset.py:823:                    "LoCoMo supplies dialogue evidence "
+scripts/prepare_locomo_dataset.py:891:        / "eval_questions_locomo_all.csv",
+scripts/prepare_locomo_dataset.py:898:        / "eval_questions_locomo_answerable.csv",
+scripts/prepare_locomo_dataset.py:905:        / "eval_questions_locomo_smoke50.csv",
+scripts/prepare_locomo_dataset.py:912:        / "eval_questions_locomo_pilot200.csv",
+scripts/prepare_locomo_dataset.py:918:        output_dir / "memories_locomo.json",
+scripts/prepare_locomo_dataset.py:923:        output_dir / "procedures_locomo.json",
+scripts/prepare_locomo_dataset.py:993:        "adapter_version": "locomo_adapter_v01",
+scripts/prepare_locomo_dataset.py:1059:            "answer_f1_primary_file": (
+scripts/prepare_locomo_dataset.py:1060:                "eval_questions_locomo_answerable.csv"
+scripts/prepare_locomo_dataset.py:1063:                "eval_questions_locomo_all.csv"
+scripts/phase2b_neo4j_schema_retrieval_smoke.py:340:        bootstrap = Neo4jSchemaBootstrap(
+scripts/phase2b_neo4j_schema_retrieval_smoke.py:345:        bootstrap_result = bootstrap.apply(
+scripts/phase2b_neo4j_schema_retrieval_smoke.py:350:            bootstrap.inspect()
+scripts/phase2b_neo4j_schema_retrieval_smoke.py:354:            "bootstrap_result"
+scripts/phase2b_neo4j_schema_retrieval_smoke.py:355:        ] = bootstrap_result
+scripts/phase2b_neo4j_schema_retrieval_smoke.py:436:                "Schema bootstrap checks failed."
+scripts/evaluate_locomo_external.py:81:def precision_recall_f1(
+scripts/evaluate_locomo_external.py:87:    precision = safe_divide(
+scripts/evaluate_locomo_external.py:92:    recall = safe_divide(
+scripts/evaluate_locomo_external.py:99:        if precision + recall == 0
+scripts/evaluate_locomo_external.py:102:            * precision
+scripts/evaluate_locomo_external.py:103:            * recall
+scripts/evaluate_locomo_external.py:104:            / (precision + recall)
+scripts/evaluate_locomo_external.py:108:    return precision, recall, f1
+scripts/evaluate_locomo_external.py:201:        "answer_f1_answerable": (
+scripts/evaluate_locomo_external.py:217:        "unanswerable_abstain_recall": (
+scripts/evaluate_locomo_external.py:237:        "strict_evidence_precision": (
+scripts/evaluate_locomo_external.py:240:                    "strict_evidence_precision"
+scripts/evaluate_locomo_external.py:245:        "strict_evidence_recall": (
+scripts/evaluate_locomo_external.py:248:                    "strict_evidence_recall"
+scripts/evaluate_locomo_external.py:253:        "strict_evidence_f1": (
+scripts/evaluate_locomo_external.py:255:                row["strict_evidence_f1"]
+scripts/evaluate_locomo_external.py:259:        "source_evidence_precision": (
+scripts/evaluate_locomo_external.py:262:                    "source_evidence_precision"
+scripts/evaluate_locomo_external.py:267:        "source_evidence_recall": (
+scripts/evaluate_locomo_external.py:270:                    "source_evidence_recall"
+scripts/evaluate_locomo_external.py:275:        "source_evidence_f1": (
+scripts/evaluate_locomo_external.py:277:                row["source_evidence_f1"]
+scripts/evaluate_locomo_external.py:444:                strict_precision,
+scripts/evaluate_locomo_external.py:445:                strict_recall,
+scripts/evaluate_locomo_external.py:447:            ) = precision_recall_f1(
+scripts/evaluate_locomo_external.py:453:                source_precision,
+scripts/evaluate_locomo_external.py:454:                source_recall,
+scripts/evaluate_locomo_external.py:456:            ) = precision_recall_f1(
+scripts/evaluate_locomo_external.py:461:            strict_precision = 0.0
+scripts/evaluate_locomo_external.py:462:            strict_recall = 0.0
+scripts/evaluate_locomo_external.py:464:            source_precision = 0.0
+scripts/evaluate_locomo_external.py:465:            source_recall = 0.0
+scripts/evaluate_locomo_external.py:517:            "strict_evidence_precision": (
+scripts/evaluate_locomo_external.py:518:                strict_precision
+scripts/evaluate_locomo_external.py:520:            "strict_evidence_recall": (
+scripts/evaluate_locomo_external.py:521:                strict_recall
+scripts/evaluate_locomo_external.py:523:            "strict_evidence_f1": (
+scripts/evaluate_locomo_external.py:526:            "source_evidence_precision": (
+scripts/evaluate_locomo_external.py:527:                source_precision
+scripts/evaluate_locomo_external.py:529:            "source_evidence_recall": (
+scripts/evaluate_locomo_external.py:530:                source_recall
+scripts/evaluate_locomo_external.py:532:            "source_evidence_f1": (
+scripts/evaluate_locomo_external.py:620:        / "locomo_external_per_question.csv",
+scripts/evaluate_locomo_external.py:626:        / "locomo_external_summary.csv",
+scripts/evaluate_locomo_external.py:632:        / "locomo_external_by_category.csv",
+scripts/evaluate_locomo_external.py:656:            "map to their official LoCoMo "
+scripts/evaluate_locomo_external.py:671:        / "locomo_external_manifest.json"
+scripts/evaluate_locomo_external.py:683:        / "locomo_external_summary.csv"
+scripts/evaluate_locomo_external.py:688:        / "locomo_external_by_category.csv"
+scripts/evaluate_locomo_external.py:693:        / "locomo_external_per_question.csv"
+scripts/prepare_locomo_formal_splits.py:190:            "locomo_formal_splits_v01"
+scripts/analyze_rc6_gate_ablation.py:116:                "gold_recall": round(gold_kept / max(total_gold, 1), 6),
+scripts/analyze_rc6_gate_ablation.py:117:                "gold_precision": round(gold_kept / max(len(kept), 1), 6),
+scripts/analyze_rc6_gate_ablation.py:140:            "recall={gold_recall:.3f}  rescued={previously_gate_lost_gold_rescued}".format(
+scripts/mem0/rescore_mem0_pilot200_source_equiv.py:89:def harmonic_f1(precision: float, recall: float) -> float:
+scripts/mem0/rescore_mem0_pilot200_source_equiv.py:90:    if precision + recall == 0:
+scripts/mem0/rescore_mem0_pilot200_source_equiv.py:92:    return 2.0 * precision * recall / (precision + recall)
+scripts/mem0/rescore_mem0_pilot200_source_equiv.py:135:        precision = len(overlap) / len(retrieved_set) if retrieved_set else 0.0
+scripts/mem0/rescore_mem0_pilot200_source_equiv.py:136:        recall = len(overlap) / len(gold_set) if gold_set else 0.0
+scripts/mem0/rescore_mem0_pilot200_source_equiv.py:137:        f1 = harmonic_f1(precision, recall)
+scripts/mem0/rescore_mem0_pilot200_source_equiv.py:140:            float(old.get("precision", 0.0)),
+scripts/mem0/rescore_mem0_pilot200_source_equiv.py:141:            float(old.get("recall", 0.0)),
+scripts/mem0/rescore_mem0_pilot200_source_equiv.py:145:        new_metrics = (precision, recall, f1, bool(overlap))
+scripts/mem0/rescore_mem0_pilot200_source_equiv.py:157:                "precision": precision,
+scripts/mem0/rescore_mem0_pilot200_source_equiv.py:158:                "recall": recall,
+scripts/mem0/rescore_mem0_pilot200_source_equiv.py:173:        "mean_precision": sum(row["precision"] for row in corrected) / n,
+scripts/mem0/rescore_mem0_pilot200_source_equiv.py:174:        "mean_recall": sum(row["recall"] for row in corrected) / n,
+scripts/mem0/rescore_mem0_pilot200_source_equiv.py:194:        description="Re-score Mem0 Pilot-200 with corrected LoCoMo v0.2 source-equivalent evidence."
+scripts/mem0/rescore_mem0_pilot200_source_equiv.py:212:        "pilot_name": "rc88_locomo_pilot200_mem0_v01",
+scripts/mem0/run_confidence_aware_route_pilot200.py:203:        "mean_precision": mean("evidence_precision"),
+scripts/mem0/run_confidence_aware_route_pilot200.py:204:        "mean_recall": mean("evidence_recall"),
+scripts/mem0/run_confidence_aware_route_pilot200.py:205:        "mean_f1": mean("evidence_f1"),
+scripts/mem0/run_confidence_aware_route_pilot200.py:206:        "hit_rate": mean("evidence_hit"),
+scripts/mem0/run_confidence_aware_route_pilot200.py:252:            "evidence_f1": sum(float(item["evidence_f1"]) for item in items)
+scripts/mem0/run_confidence_aware_route_pilot200.py:254:            "hit_rate": sum(int(bool(item["evidence_hit"])) for item in items)
+scripts/mem0/run_confidence_aware_route_pilot200.py:267:        "# Confidence-Aware Route Expansion — LoCoMo Pilot-200",
+scripts/mem0/run_confidence_aware_route_pilot200.py:285:            f"| {variant} | {row['mean_precision']:.4f} | "
+scripts/mem0/run_confidence_aware_route_pilot200.py:286:            f"{row['mean_recall']:.4f} | {row['mean_f1']:.4f} | "
+scripts/mem0/run_confidence_aware_route_pilot200.py:287:            f"{row['hit_rate']:.4f} | {row['mean_selected']:.2f} | "
+scripts/mem0/run_confidence_aware_route_pilot200.py:300:            f"- Evidence-F1 upper-bound gain captured: {gain['evidence_f1_capture']:.4f}.",
+scripts/mem0/run_confidence_aware_route_pilot200.py:301:            f"- Hit-rate upper-bound gain captured: {gain['hit_rate_capture']:.4f}.",
+scripts/mem0/run_confidence_aware_route_pilot200.py:434:                        "evidence_precision": metrics["precision"],
+scripts/mem0/run_confidence_aware_route_pilot200.py:435:                        "evidence_recall": metrics["recall"],
+scripts/mem0/run_confidence_aware_route_pilot200.py:436:                        "evidence_f1": metrics["f1"],
+scripts/mem0/run_confidence_aware_route_pilot200.py:476:            "evidence_f1_capture": capture(
+scripts/mem0/run_confidence_aware_route_pilot200.py:479:            "hit_rate_capture": capture(
+scripts/mem0/run_confidence_aware_route_pilot200.py:480:                base["hit_rate"], adaptive["hit_rate"], upper["hit_rate"]
+scripts/mem0/run_confidence_aware_route_pilot200.py:488:            "adaptive_delta_precision": adaptive["mean_precision"]
+scripts/mem0/run_confidence_aware_route_pilot200.py:489:            - base["mean_precision"],
+scripts/mem0/run_confidence_aware_route_pilot200.py:490:            "adaptive_delta_recall": adaptive["mean_recall"]
+scripts/mem0/run_confidence_aware_route_pilot200.py:491:            - base["mean_recall"],
+scripts/mem0/run_confidence_aware_route_pilot200.py:492:            "adaptive_delta_evidence_f1": adaptive["mean_f1"]
+scripts/mem0/run_confidence_aware_route_pilot200.py:494:            "adaptive_delta_hit_rate": adaptive["hit_rate"] - base["hit_rate"],
+scripts/mem0/run_qwen_soft_probe_validation.py:105:            "answer_f1": average(items, "answer_f1"),
+scripts/mem0/run_qwen_soft_probe_validation.py:106:            "evidence_f1": average(items, "evidence_f1"),
+scripts/mem0/run_qwen_soft_probe_validation.py:107:            "evidence_hit_rate": average(items, "evidence_hit"),
+scripts/mem0/run_qwen_soft_probe_validation.py:116:    p1_vs_hard = paired_statistics["soft_probe_1_minus_hard"]["answer_f1"]
+scripts/mem0/run_qwen_soft_probe_validation.py:117:    p3_vs_hard = paired_statistics["soft_probe_3_minus_hard"]["answer_f1"]
+scripts/mem0/run_qwen_soft_probe_validation.py:118:    p3_vs_p1 = paired_statistics["soft_probe_3_minus_soft_probe_1"]["answer_f1"]
+scripts/mem0/run_qwen_soft_probe_validation.py:160:        "# Qwen3 Soft-Route Probe Validation — LoCoMo Pilot-200",
+scripts/mem0/run_qwen_soft_probe_validation.py:192:            f"| {variant} | {row['answer_f1_all']:.4f} | "
+scripts/mem0/run_qwen_soft_probe_validation.py:193:            f"{row['answer_f1_answerable']:.4f} | "
+scripts/mem0/run_qwen_soft_probe_validation.py:194:            f"{row['evidence_precision']:.4f} | {row['evidence_recall']:.4f} | "
+scripts/mem0/run_qwen_soft_probe_validation.py:195:            f"{row['evidence_f1']:.4f} | {row['evidence_hit_rate']:.4f} | "
+scripts/mem0/run_qwen_soft_probe_validation.py:203:            "## Paired bootstrap",
+scripts/mem0/run_qwen_soft_probe_validation.py:211:        for metric_name in ("answer_f1", "evidence_f1"):
+scripts/mem0/run_qwen_soft_probe_validation.py:234:                "LoCoMo evaluation."
+scripts/mem0/run_qwen_soft_probe_validation.py:246:            "and soft Probe-3 on LoCoMo Pilot-200."
+scripts/mem0/run_qwen_soft_probe_validation.py:259:    parser.add_argument("--bootstrap-repetitions", type=int, default=50000)
+scripts/mem0/run_qwen_soft_probe_validation.py:260:    parser.add_argument("--bootstrap-seed", type=int, default=20260803)
+scripts/mem0/run_qwen_soft_probe_validation.py:529:                        "evidence_precision": evidence["precision"],
+scripts/mem0/run_qwen_soft_probe_validation.py:530:                        "evidence_recall": evidence["recall"],
+scripts/mem0/run_qwen_soft_probe_validation.py:531:                        "evidence_f1": evidence["f1"],
+scripts/mem0/run_qwen_soft_probe_validation.py:583:            field="answer_f1",
+scripts/mem0/run_qwen_soft_probe_validation.py:590:            field="evidence_f1",
+scripts/mem0/run_qwen_soft_probe_validation.py:595:            "answer_f1": qwen.bootstrap_mean_delta(
+scripts/mem0/run_qwen_soft_probe_validation.py:597:                repetitions=args.bootstrap_repetitions,
+scripts/mem0/run_qwen_soft_probe_validation.py:598:                seed=args.bootstrap_seed + comparison_index * 10,
+scripts/mem0/run_qwen_soft_probe_validation.py:600:            "evidence_f1": qwen.bootstrap_mean_delta(
+scripts/mem0/run_qwen_soft_probe_validation.py:602:                repetitions=args.bootstrap_repetitions,
+scripts/mem0/run_qwen_soft_probe_validation.py:603:                seed=args.bootstrap_seed + comparison_index * 10 + 1,
+scripts/mem0/run_qwen_soft_probe_validation.py:607:            "answer_f1": paired_outcomes(answer_deltas),
+scripts/mem0/run_qwen_soft_probe_validation.py:608:            "evidence_f1": paired_outcomes(evidence_deltas),
+scripts/mem0/run_soft_probe1_heldout_controller_replay.py:59:        "evidence_precision": avg(subset, "evidence_precision"),
+scripts/mem0/run_soft_probe1_heldout_controller_replay.py:60:        "evidence_recall": avg(subset, "evidence_recall"),
+scripts/mem0/run_soft_probe1_heldout_controller_replay.py:61:        "evidence_f1": avg(subset, "evidence_f1"),
+scripts/mem0/run_soft_probe1_heldout_controller_replay.py:62:        "evidence_hit_rate": avg(subset, "evidence_hit"),
+scripts/mem0/run_soft_probe1_heldout_controller_replay.py:128:            "evidence_precision": avg(items, "evidence_precision"),
+scripts/mem0/run_soft_probe1_heldout_controller_replay.py:129:            "evidence_recall": avg(items, "evidence_recall"),
+scripts/mem0/run_soft_probe1_heldout_controller_replay.py:130:            "evidence_f1": avg(items, "evidence_f1"),
+scripts/mem0/run_soft_probe1_heldout_controller_replay.py:131:            "evidence_hit_rate": avg(items, "evidence_hit"),
+scripts/mem0/run_soft_probe1_heldout_controller_replay.py:145:        "# Frozen Soft Probe-1 Controller Replay — LoCoMo Held-out-from-Pilot",
+scripts/mem0/run_soft_probe1_heldout_controller_replay.py:154:        f"| hard_route | {hard['evidence_precision']:.4f} | {hard['evidence_recall']:.4f} | {hard['evidence_f1']:.4f} | {hard['evidence_hit_rate']:.4f} | {hard['mean_selected']:.2f} | {hard['mean_ranked']:.2f} | {hard['mean_raw']:.2f} | {hard['mean_probe_raw']:.2f} |",
+scripts/mem0/run_soft_probe1_heldout_controller_replay.py:155:        f"| soft_probe_1 | {soft['evidence_precision']:.4f} | {soft['evidence_recall']:.4f} | {soft['evidence_f1']:.4f} | {soft['evidence_hit_rate']:.4f} | {soft['mean_selected']:.2f} | {soft['mean_ranked']:.2f} | {soft['mean_raw']:.2f} | {soft['mean_probe_raw']:.2f} |",
+scripts/mem0/run_soft_probe1_heldout_controller_replay.py:160:    for metric in ("evidence_precision", "evidence_recall", "evidence_f1", "evidence_hit"):
+scripts/mem0/run_soft_probe1_heldout_controller_replay.py:191:    parser.add_argument("--bootstrap-repetitions", type=int, default=50000)
+scripts/mem0/run_soft_probe1_heldout_controller_replay.py:192:    parser.add_argument("--bootstrap-seed", type=int, default=20260803)
+scripts/mem0/run_soft_probe1_heldout_controller_replay.py:363:                        "evidence_precision": evidence["precision"],
+scripts/mem0/run_soft_probe1_heldout_controller_replay.py:364:                        "evidence_recall": evidence["recall"],
+scripts/mem0/run_soft_probe1_heldout_controller_replay.py:365:                        "evidence_f1": evidence["f1"],
+scripts/mem0/run_soft_probe1_heldout_controller_replay.py:403:        "evidence_precision",
+scripts/mem0/run_soft_probe1_heldout_controller_replay.py:404:        "evidence_recall",
+scripts/mem0/run_soft_probe1_heldout_controller_replay.py:405:        "evidence_f1",
+scripts/mem0/run_soft_probe1_heldout_controller_replay.py:411:        metric: qwen.bootstrap_mean_delta(
+scripts/mem0/run_soft_probe1_heldout_controller_replay.py:413:            repetitions=args.bootstrap_repetitions,
+scripts/mem0/run_soft_probe1_heldout_controller_replay.py:414:            seed=args.bootstrap_seed + index,
+scripts/mem0/run_soft_probe1_heldout_controller_replay.py:432:    f1_boot = paired["evidence_f1"]
+scripts/mem0/run_soft_probe1_heldout_controller_replay.py:434:        "evidence_f1_confirmed": (
+scripts/mem0/slurm/qwen_soft_probe1_heldout1786.sbatch:26:LOCOMO_ROOT=/data/$USER/c3_lite/external/locomo/adapter_v02
+scripts/mem0/slurm/qwen_soft_probe1_heldout1786.sbatch:29:QUESTIONS="$HELDOUT_ROOT/eval_questions_locomo_heldout1786.csv"
+scripts/mem0/slurm/qwen_soft_probe1_heldout1786.sbatch:30:MEMORIES="$LOCOMO_ROOT/memories_locomo.json"
+scripts/mem0/slurm/qwen_soft_probe1_heldout1786.sbatch:77:  --bootstrap-repetitions 50000 \
+scripts/mem0/slurm/qwen_soft_probe1_heldout1786.sbatch:78:  --bootstrap-seed 20260803 \
+scripts/mem0/slurm/pilot200_ingest.sbatch:16:LOCOMO_ADAPTER=/data/alyjw80/c3_lite/external/locomo/adapter_v02
+scripts/mem0/slurm/pilot200_ingest.sbatch:18:PILOT_SCRIPT="$C3_REPO/scripts/mem0/run_locomo_mem0_pilot200.py"
+scripts/mem0/slurm/pilot200_ingest.sbatch:19:PILOT_QUESTIONS="$LOCOMO_ADAPTER/eval_questions_locomo_pilot200.csv"
+scripts/mem0/slurm/pilot200_ingest.sbatch:20:PILOT_MEMORIES="$LOCOMO_ADAPTER/memories_locomo.json"
+scripts/mem0/slurm/mem0_heldout1786_query.sbatch:17:SCRIPT="$C3_REPO/scripts/mem0/run_locomo_mem0_heldout_query.py"
+scripts/mem0/slurm/mem0_heldout1786_query.sbatch:18:RUNNER="$C3_REPO/scripts/mem0/run_locomo_mem0_pilot200.py"
+scripts/mem0/slurm/mem0_heldout1786_query.sbatch:20:LOCOMO_ROOT=/data/$USER/c3_lite/external/locomo/adapter_v02
+scripts/mem0/slurm/mem0_heldout1786_query.sbatch:23:QUESTIONS="$HELDOUT_ROOT/eval_questions_locomo_heldout1786.csv"
+scripts/mem0/slurm/mem0_heldout1786_query.sbatch:24:MEMORIES="$LOCOMO_ROOT/memories_locomo.json"
+scripts/mem0/slurm/qwen_route_upperbound_pilot200.sbatch:36:python "/home/alyjw80/projects/c3_lite_system/scripts/mem0/run_qwen_hybrid_route_upperbound.py"   --runner-module "/home/alyjw80/projects/c3_lite_system/scripts/mem0/run_hybrid_controller_pilot200.py"   --config "/home/alyjw80/projects/c3_lite_system/configs/c3_lite_v2_2_final.yaml"   --prompt-template "/home/alyjw80/projects/c3_lite_system/prompts/answer_prompt.txt"   --questions "/data/alyjw80/c3_lite/external/locomo/adapter_v02/eval_questions_locomo_pilot200.csv"   --memories "/data/alyjw80/c3_lite/external/locomo/adapter_v02/memories_locomo.json"   --c3-predictions "/data/alyjw80/c3_lite/evaluation/frozen/locomo_pilot200_qwen3_job36163/predictions.jsonl"   --mem0-top20 "/data/alyjw80/c3_lite/external/mem0/pilot200_v01/source_equiv_v02/retrieval_top20_source_equiv.jsonl"   --output-dir "/data/alyjw80/c3_lite/evaluation/c3_mem0_qwen_route_upperbound_pilot200_v01"   --bootstrap-repetitions 50000   --bootstrap-seed 20260803
+scripts/mem0/slurm/pilot200_query.sbatch:16:LOCOMO_ADAPTER=/data/alyjw80/c3_lite/external/locomo/adapter_v02
+scripts/mem0/slurm/pilot200_query.sbatch:18:PILOT_SCRIPT="$C3_REPO/scripts/mem0/run_locomo_mem0_pilot200.py"
+scripts/mem0/slurm/pilot200_query.sbatch:19:PILOT_QUESTIONS="$LOCOMO_ADAPTER/eval_questions_locomo_pilot200.csv"
+scripts/mem0/slurm/qwen_soft_probe_pilot200.sbatch:26:LOCOMO_ROOT=/data/$USER/c3_lite/external/locomo/adapter_v02
+scripts/mem0/slurm/qwen_soft_probe_pilot200.sbatch:27:QUESTIONS="$LOCOMO_ROOT/eval_questions_locomo_pilot200.csv"
+scripts/mem0/slurm/qwen_soft_probe_pilot200.sbatch:28:MEMORIES="$LOCOMO_ROOT/memories_locomo.json"
+scripts/mem0/slurm/qwen_soft_probe_pilot200.sbatch:30:C3_PREDICTIONS=/data/$USER/c3_lite/evaluation/frozen/locomo_pilot200_qwen3_job36163/predictions.jsonl
+scripts/mem0/slurm/qwen_soft_probe_pilot200.sbatch:64:  --bootstrap-repetitions 50000 \
+scripts/mem0/slurm/qwen_soft_probe_pilot200.sbatch:65:  --bootstrap-seed 20260803 \
+scripts/mem0/slurm/soft_probe1_heldout_controller_replay.sbatch:25:LOCOMO_ROOT=/data/$USER/c3_lite/external/locomo/adapter_v02
+scripts/mem0/slurm/soft_probe1_heldout_controller_replay.sbatch:28:QUESTIONS="$HELDOUT_ROOT/eval_questions_locomo_heldout1786.csv"
+scripts/mem0/slurm/soft_probe1_heldout_controller_replay.sbatch:29:MEMORIES="$LOCOMO_ROOT/memories_locomo.json"
+scripts/mem0/slurm/soft_probe1_heldout_controller_replay.sbatch:65:  --bootstrap-repetitions 50000 \
+scripts/mem0/slurm/soft_probe1_heldout_controller_replay.sbatch:66:  --bootstrap-seed 20260803 \
+scripts/mem0/run_hybrid_route_budget_ablation.py:118:        "mean_precision": sum(
+scripts/mem0/run_hybrid_route_budget_ablation.py:119:            float(item["precision"])
+scripts/mem0/run_hybrid_route_budget_ablation.py:123:        "mean_recall": sum(
+scripts/mem0/run_hybrid_route_budget_ablation.py:124:            float(item["recall"])
+scripts/mem0/run_hybrid_route_budget_ablation.py:133:        "hit_rate": sum(
+scripts/mem0/run_hybrid_route_budget_ablation.py:241:        "# Hybrid Route–Budget Ablation — LoCoMo Pilot-200",
+scripts/mem0/run_hybrid_route_budget_ablation.py:272:            f"{row['mean_precision']:.4f} | "
+scripts/mem0/run_hybrid_route_budget_ablation.py:273:            f"{row['mean_recall']:.4f} | "
+scripts/mem0/run_hybrid_route_budget_ablation.py:275:            f"{row['hit_rate']:.4f} | "
+scripts/mem0/run_hybrid_route_budget_ablation.py:320:            f"{row['hit_rate']:.4f} |"
+scripts/mem0/run_hybrid_route_budget_ablation.py:758:            "hit_rate": (
+scripts/mem0/run_soft_route_probe_budget_pilot200.py:277:        "mean_precision": mean("evidence_precision"),
+scripts/mem0/run_soft_route_probe_budget_pilot200.py:278:        "mean_recall": mean("evidence_recall"),
+scripts/mem0/run_soft_route_probe_budget_pilot200.py:279:        "mean_f1": mean("evidence_f1"),
+scripts/mem0/run_soft_route_probe_budget_pilot200.py:280:        "hit_rate": mean("evidence_hit"),
+scripts/mem0/run_soft_route_probe_budget_pilot200.py:338:            "mean_f1": sum(float(item["evidence_f1"]) for item in items)
+scripts/mem0/run_soft_route_probe_budget_pilot200.py:340:            "hit_rate": sum(int(bool(item["evidence_hit"])) for item in items)
+scripts/mem0/run_soft_route_probe_budget_pilot200.py:412:            f"| {variant} | {row['mean_precision']:.4f} | "
+scripts/mem0/run_soft_route_probe_budget_pilot200.py:413:            f"{row['mean_recall']:.4f} | {row['mean_f1']:.4f} | "
+scripts/mem0/run_soft_route_probe_budget_pilot200.py:414:            f"{row['hit_rate']:.4f} | {row['mean_selected']:.2f} | "
+scripts/mem0/run_soft_route_probe_budget_pilot200.py:434:            f"| {variant} | {gain['evidence_f1_capture']:.4f} | "
+scripts/mem0/run_soft_route_probe_budget_pilot200.py:435:            f"{gain['hit_rate_capture']:.4f} | "
+scripts/mem0/run_soft_route_probe_budget_pilot200.py:460:            "C3+Mem0 LoCoMo Pilot-200 pool."
+scripts/mem0/run_soft_route_probe_budget_pilot200.py:664:                        "evidence_precision": evidence["precision"],
+scripts/mem0/run_soft_route_probe_budget_pilot200.py:665:                        "evidence_recall": evidence["recall"],
+scripts/mem0/run_soft_route_probe_budget_pilot200.py:666:                        "evidence_f1": evidence["f1"],
+scripts/mem0/run_soft_route_probe_budget_pilot200.py:694:            "evidence_f1_capture": safe_capture(
+scripts/mem0/run_soft_route_probe_budget_pilot200.py:699:            "hit_rate_capture": safe_capture(
+scripts/mem0/run_soft_route_probe_budget_pilot200.py:700:                base=hard["hit_rate"],
+scripts/mem0/run_soft_route_probe_budget_pilot200.py:701:                candidate=candidate["hit_rate"],
+scripts/mem0/run_soft_route_probe_budget_pilot200.py:702:                upper=upper["hit_rate"],
+scripts/mem0/run_conv30_raw_retrieval.py:31:    "rc88_locomo_conv30_raw_v01"
+scripts/mem0/run_conv30_raw_retrieval.py:35:    "rc88_locomo_conv30_raw_v01"
+scripts/mem0/run_conv30_raw_retrieval.py:38:CONVERSATION_ID = "locomo_conv_30"
+scripts/mem0/run_conv30_raw_retrieval.py:142:    precision: float,
+scripts/mem0/run_conv30_raw_retrieval.py:143:    recall: float,
+scripts/mem0/run_conv30_raw_retrieval.py:145:    if precision + recall == 0:
+scripts/mem0/run_conv30_raw_retrieval.py:150:        * precision
+scripts/mem0/run_conv30_raw_retrieval.py:151:        * recall
+scripts/mem0/run_conv30_raw_retrieval.py:152:        / (precision + recall)
+scripts/mem0/run_conv30_raw_retrieval.py:196:            "for locomo_conv_30."
+scripts/mem0/run_conv30_raw_retrieval.py:437:            precision = (
+scripts/mem0/run_conv30_raw_retrieval.py:444:            recall = (
+scripts/mem0/run_conv30_raw_retrieval.py:452:                precision,
+scripts/mem0/run_conv30_raw_retrieval.py:453:                recall,
+scripts/mem0/run_conv30_raw_retrieval.py:461:                    "e_locomo_conv_30_"
+scripts/mem0/run_conv30_raw_retrieval.py:489:                "precision": precision,
+scripts/mem0/run_conv30_raw_retrieval.py:490:                "recall": recall,
+scripts/mem0/run_conv30_raw_retrieval.py:520:                f"{precision:.3f}",
+scripts/mem0/run_conv30_raw_retrieval.py:522:                f"{recall:.3f}",
+scripts/mem0/run_conv30_raw_retrieval.py:532:        "mean_precision": sum(
+scripts/mem0/run_conv30_raw_retrieval.py:533:            row["precision"]
+scripts/mem0/run_conv30_raw_retrieval.py:537:        "mean_recall": sum(
+scripts/mem0/run_conv30_raw_retrieval.py:538:            row["recall"]
+scripts/mem0/run_route_score_deconfounding_pilot200.py:207:        "mean_precision": mean("evidence_precision"),
+scripts/mem0/run_route_score_deconfounding_pilot200.py:208:        "mean_recall": mean("evidence_recall"),
+scripts/mem0/run_route_score_deconfounding_pilot200.py:209:        "mean_f1": mean("evidence_f1"),
+scripts/mem0/run_route_score_deconfounding_pilot200.py:210:        "hit_rate": mean("evidence_hit"),
+scripts/mem0/run_route_score_deconfounding_pilot200.py:275:                float(item["evidence_f1"])
+scripts/mem0/run_route_score_deconfounding_pilot200.py:279:            "hit_rate": sum(
+scripts/mem0/run_route_score_deconfounding_pilot200.py:332:            f"{row['mean_precision']:.4f} | "
+scripts/mem0/run_route_score_deconfounding_pilot200.py:333:            f"{row['mean_recall']:.4f} | "
+scripts/mem0/run_route_score_deconfounding_pilot200.py:335:            f"{row['hit_rate']:.4f} | "
+scripts/mem0/run_route_score_deconfounding_pilot200.py:637:                        "evidence_precision": evidence["precision"],
+scripts/mem0/run_route_score_deconfounding_pilot200.py:638:                        "evidence_recall": evidence["recall"],
+scripts/mem0/run_route_score_deconfounding_pilot200.py:639:                        "evidence_f1": evidence["f1"],
+scripts/mem0/run_route_score_deconfounding_pilot200.py:694:                metric="hit_rate",
+scripts/mem0/run_route_score_deconfounding_pilot200.py:696:            "delta_precision": metric_delta(
+scripts/mem0/run_route_score_deconfounding_pilot200.py:700:                metric="mean_precision",
+scripts/mem0/run_route_score_deconfounding_pilot200.py:702:            "delta_recall": metric_delta(
+scripts/mem0/run_route_score_deconfounding_pilot200.py:706:                metric="mean_recall",
+scripts/mem0/analyze_c3_mem0_overlap.py:105:    created before the LoCoMo gold-evidence repair. The canonical
+scripts/mem0/analyze_c3_mem0_overlap.py:165:    precision = len(overlap) / len(candidate_set) if candidate_set else 0.0
+scripts/mem0/analyze_c3_mem0_overlap.py:166:    recall = len(overlap) / len(gold_set) if gold_set else 0.0
+scripts/mem0/analyze_c3_mem0_overlap.py:168:        2.0 * precision * recall / (precision + recall)
+scripts/mem0/analyze_c3_mem0_overlap.py:169:        if precision + recall
+scripts/mem0/analyze_c3_mem0_overlap.py:177:        "precision": precision,
+scripts/mem0/analyze_c3_mem0_overlap.py:178:        "recall": recall,
+scripts/mem0/analyze_c3_mem0_overlap.py:187:        "hit_rate": sum(int(value["hit"]) for value in values) / len(values),
+scripts/mem0/analyze_c3_mem0_overlap.py:188:        "mean_precision": sum(value["precision"] for value in values) / len(values),
+scripts/mem0/analyze_c3_mem0_overlap.py:189:        "mean_recall": sum(value["recall"] for value in values) / len(values),
+scripts/mem0/analyze_c3_mem0_overlap.py:231:        "delta_hit_rate_union_minus_c3": (
+scripts/mem0/analyze_c3_mem0_overlap.py:232:            union_summary["hit_rate"] - c3_summary["hit_rate"]
+scripts/mem0/analyze_c3_mem0_overlap.py:234:        "delta_recall_union_minus_c3": (
+scripts/mem0/analyze_c3_mem0_overlap.py:235:            union_summary["mean_recall"] - c3_summary["mean_recall"]
+scripts/mem0/analyze_c3_mem0_overlap.py:247:            "Analyse C3–Mem0 evidence overlap and union recall on the "
+scripts/mem0/analyze_c3_mem0_overlap.py:248:            "aligned LoCoMo Pilot-200 question set."
+scripts/mem0/analyze_c3_mem0_overlap.py:436:        "| Comparison | Both | C3 only | Mem0 only | Neither | C3 hit | Mem0 hit | Union hit | Δ hit | C3 recall | Mem0 recall | Union recall | Δ recall |",
+scripts/mem0/analyze_c3_mem0_overlap.py:443:            "{c3_recall:.4f} | {mem0_recall:.4f} | {union_recall:.4f} | {delta_recall:+.4f} |".format(
+scripts/mem0/analyze_c3_mem0_overlap.py:449:                c3_hit=result["c3"]["hit_rate"],
+scripts/mem0/analyze_c3_mem0_overlap.py:450:                mem0_hit=result["mem0"]["hit_rate"],
+scripts/mem0/analyze_c3_mem0_overlap.py:451:                union_hit=result["union"]["hit_rate"],
+scripts/mem0/analyze_c3_mem0_overlap.py:452:                delta_hit=result["delta_hit_rate_union_minus_c3"],
+scripts/mem0/analyze_c3_mem0_overlap.py:453:                c3_recall=result["c3"]["mean_recall"],
+scripts/mem0/analyze_c3_mem0_overlap.py:454:                mem0_recall=result["mem0"]["mean_recall"],
+scripts/mem0/analyze_c3_mem0_overlap.py:455:                union_recall=result["union"]["mean_recall"],
+scripts/mem0/analyze_c3_mem0_overlap.py:456:                delta_recall=result["delta_recall_union_minus_c3"],
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:125:    precision = len(overlap) / len(candidate_set) if candidate_set else 0.0
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:126:    recall = len(overlap) / len(gold_set) if gold_set else 0.0
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:128:        2.0 * precision * recall / (precision + recall)
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:129:        if precision + recall
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:137:        "precision": precision,
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:138:        "recall": recall,
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:147:        "hit_rate": sum(int(value["hit"]) for value in values) / len(values),
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:148:        "mean_precision": sum(value["precision"] for value in values) / len(values),
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:149:        "mean_recall": sum(value["recall"] for value in values) / len(values),
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:191:        "delta_hit_rate_union_minus_c3": (
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:192:            union_summary["hit_rate"] - c3_summary["hit_rate"]
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:194:        "delta_recall_union_minus_c3": (
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:195:            union_summary["mean_recall"] - c3_summary["mean_recall"]
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:207:            "Analyse C3–Mem0 evidence overlap and union recall on the "
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:208:            "aligned LoCoMo Pilot-200 question set."
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:351:        "| Comparison | Both | C3 only | Mem0 only | Neither | C3 hit | Mem0 hit | Union hit | Δ hit | C3 recall | Mem0 recall | Union recall | Δ recall |",
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:358:            "{c3_recall:.4f} | {mem0_recall:.4f} | {union_recall:.4f} | {delta_recall:+.4f} |".format(
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:364:                c3_hit=result["c3"]["hit_rate"],
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:365:                mem0_hit=result["mem0"]["hit_rate"],
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:366:                union_hit=result["union"]["hit_rate"],
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:367:                delta_hit=result["delta_hit_rate_union_minus_c3"],
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:368:                c3_recall=result["c3"]["mean_recall"],
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:369:                mem0_recall=result["mem0"]["mean_recall"],
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:370:                union_recall=result["union"]["mean_recall"],
+scripts/mem0/analyze_c3_mem0_overlap.py.before_v02_gold_fix:371:                delta_recall=result["delta_recall_union_minus_c3"],
+scripts/mem0/prepare_conv30_smoke.py:157:        default="locomo_conv_30",
+scripts/mem0/run_locomo_mem0_heldout_query.py:44:def harmonic_f1(precision: float, recall: float) -> float:
+scripts/mem0/run_locomo_mem0_heldout_query.py:45:    if precision + recall == 0.0:
+scripts/mem0/run_locomo_mem0_heldout_query.py:47:    return 2.0 * precision * recall / (precision + recall)
+scripts/mem0/run_locomo_mem0_heldout_query.py:138:        precision = (
+scripts/mem0/run_locomo_mem0_heldout_query.py:143:        recall = (
+scripts/mem0/run_locomo_mem0_heldout_query.py:157:                "precision": precision,
+scripts/mem0/run_locomo_mem0_heldout_query.py:158:                "recall": recall,
+scripts/mem0/run_locomo_mem0_heldout_query.py:159:                "f1": harmonic_f1(precision, recall),
+scripts/mem0/run_locomo_mem0_heldout_query.py:182:        "mean_precision": sum(row["precision"] for row in output_rows)
+scripts/mem0/run_locomo_mem0_heldout_query.py:184:        "mean_recall": sum(row["recall"] for row in output_rows)
+scripts/mem0/run_locomo_mem0_heldout_query.py:217:            "Query existing provenance-preserving Mem0 LoCoMo collections "
+scripts/mem0/run_locomo_mem0_heldout_query.py:355:                    precision = (
+scripts/mem0/run_locomo_mem0_heldout_query.py:360:                    recall = (
+scripts/mem0/run_locomo_mem0_heldout_query.py:375:                        "precision": precision,
+scripts/mem0/run_locomo_mem0_heldout_query.py:376:                        "recall": recall,
+scripts/mem0/run_locomo_mem0_heldout_query.py:377:                        "f1": harmonic_f1(precision, recall),
+scripts/mem0/run_locomo_mem0_heldout_query.py:424:        "mean_precision": sum(row["precision"] for row in ordered_rows)
+scripts/mem0/run_locomo_mem0_heldout_query.py:426:        "mean_recall": sum(row["recall"] for row in ordered_rows)
+scripts/mem0/run_locomo_mem0_heldout_query.py:468:        "experiment": "mem0_locomo_heldout_query",
+scripts/mem0/run_hybrid_controller_pilot200.py:182:def harmonic_f1(precision: float, recall: float) -> float:
+scripts/mem0/run_hybrid_controller_pilot200.py:183:    if precision + recall == 0.0:
+scripts/mem0/run_hybrid_controller_pilot200.py:185:    return 2.0 * precision * recall / (precision + recall)
+scripts/mem0/run_hybrid_controller_pilot200.py:196:    precision = len(overlap) / len(predicted) if predicted else 0.0
+scripts/mem0/run_hybrid_controller_pilot200.py:197:    recall = len(overlap) / len(gold) if gold else 0.0
+scripts/mem0/run_hybrid_controller_pilot200.py:200:        "precision": precision,
+scripts/mem0/run_hybrid_controller_pilot200.py:201:        "recall": recall,
+scripts/mem0/run_hybrid_controller_pilot200.py:202:        "f1": harmonic_f1(precision, recall),
+scripts/mem0/run_hybrid_controller_pilot200.py:334:        "mean_precision": mean(metrics, "precision"),
+scripts/mem0/run_hybrid_controller_pilot200.py:335:        "mean_recall": mean(metrics, "recall"),
+scripts/mem0/run_hybrid_controller_pilot200.py:337:        "hit_rate": mean(metrics, "hit"),
+scripts/mem0/run_hybrid_controller_pilot200.py:372:        "- Fixed question set: corrected LoCoMo Pilot-200.",
+scripts/mem0/run_hybrid_controller_pilot200.py:395:            f"| Frozen C3 selected | {frozen['mean_precision']:.4f} | "
+scripts/mem0/run_hybrid_controller_pilot200.py:396:            f"{frozen['mean_recall']:.4f} | {frozen['mean_f1']:.4f} | "
+scripts/mem0/run_hybrid_controller_pilot200.py:397:            f"{frozen['hit_rate']:.4f} | {frozen['mean_selected']:.2f} |"
+scripts/mem0/run_hybrid_controller_pilot200.py:400:            f"| C3 controller replay | {replay['mean_precision']:.4f} | "
+scripts/mem0/run_hybrid_controller_pilot200.py:401:            f"{replay['mean_recall']:.4f} | {replay['mean_f1']:.4f} | "
+scripts/mem0/run_hybrid_controller_pilot200.py:402:            f"{replay['hit_rate']:.4f} | {replay['mean_selected']:.2f} |"
+scripts/mem0/run_hybrid_controller_pilot200.py:405:            f"| C3 + Mem0 hybrid | {hybrid['mean_precision']:.4f} | "
+scripts/mem0/run_hybrid_controller_pilot200.py:406:            f"{hybrid['mean_recall']:.4f} | {hybrid['mean_f1']:.4f} | "
+scripts/mem0/run_hybrid_controller_pilot200.py:407:            f"{hybrid['hit_rate']:.4f} | {hybrid['mean_selected']:.2f} |"
+scripts/mem0/run_hybrid_controller_pilot200.py:420:        f"- Precision: {comparison['delta_precision']:+.4f}",
+scripts/mem0/run_hybrid_controller_pilot200.py:421:        f"- Recall: {comparison['delta_recall']:+.4f}",
+scripts/mem0/run_hybrid_controller_pilot200.py:423:        f"- Hit rate: {comparison['delta_hit_rate']:+.4f}",
+scripts/mem0/run_hybrid_controller_pilot200.py:439:            "recall improves without an unacceptable precision collapse."
+scripts/mem0/run_hybrid_controller_pilot200.py:450:            "through the unchanged C3 controller on LoCoMo Pilot-200."
+scripts/mem0/run_hybrid_controller_pilot200.py:767:            "delta_precision": (
+scripts/mem0/run_hybrid_controller_pilot200.py:768:                hybrid_summary["mean_precision"]
+scripts/mem0/run_hybrid_controller_pilot200.py:769:                - replay_summary["mean_precision"]
+scripts/mem0/run_hybrid_controller_pilot200.py:771:            "delta_recall": (
