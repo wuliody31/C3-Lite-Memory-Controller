@@ -1,0 +1,254 @@
+{
+  "experiment": "phase2b_b5_c3_lifecycle_v01",
+  "benchmark": "lifecycle_benchmark_v01",
+  "system": "c3_lifecycle",
+  "execution_mode": "deterministic_in_memory",
+  "overall": {
+    "case_count": 100,
+    "operation_exact_match_rate": 1,
+    "operation_step_accuracy": 1.0,
+    "current_state_accuracy": 1,
+    "single_current_invariant_rate": 1,
+    "stale_memory_exposure_rate": 0.0,
+    "stale_memory_exposure_case_rate": 0,
+    "previous_state_recall": 1.0,
+    "history_retention_recall": 1.0,
+    "contradiction_rate": 0,
+    "mean_semantic_records": 2.2,
+    "mean_current_semantic_records": 1,
+    "mean_superseded_semantic_records": 1.2,
+    "mean_episodic_transition_records": 1.2,
+    "mean_total_records": 3.4,
+    "operation_counts": {
+      "add_initial": 100,
+      "noop_duplicate": 20,
+      "reject_out_of_order": 20,
+      "supersede_state": 120
+    }
+  },
+  "by_pattern": {
+    "duplicate": {
+      "case_count": 20,
+      "operation_exact_match_rate": 1,
+      "operation_step_accuracy": 1.0,
+      "current_state_accuracy": 1,
+      "single_current_invariant_rate": 1,
+      "stale_memory_exposure_rate": 0.0,
+      "stale_memory_exposure_case_rate": 0.0,
+      "previous_state_recall": null,
+      "history_retention_recall": null,
+      "contradiction_rate": 0.0,
+      "mean_semantic_records": 1,
+      "mean_current_semantic_records": 1,
+      "mean_superseded_semantic_records": 0,
+      "mean_episodic_transition_records": 0,
+      "mean_total_records": 1,
+      "operation_counts": {
+        "add_initial": 20,
+        "noop_duplicate": 20
+      }
+    },
+    "multi_step": {
+      "case_count": 20,
+      "operation_exact_match_rate": 1,
+      "operation_step_accuracy": 1.0,
+      "current_state_accuracy": 1,
+      "single_current_invariant_rate": 1,
+      "stale_memory_exposure_rate": 0.0,
+      "stale_memory_exposure_case_rate": 0,
+      "previous_state_recall": 1.0,
+      "history_retention_recall": 1.0,
+      "contradiction_rate": 0,
+      "mean_semantic_records": 3,
+      "mean_current_semantic_records": 1,
+      "mean_superseded_semantic_records": 2,
+      "mean_episodic_transition_records": 2,
+      "mean_total_records": 5,
+      "operation_counts": {
+        "add_initial": 20,
+        "supersede_state": 40
+      }
+    },
+    "out_of_order": {
+      "case_count": 20,
+      "operation_exact_match_rate": 1,
+      "operation_step_accuracy": 1.0,
+      "current_state_accuracy": 1,
+      "single_current_invariant_rate": 1,
+      "stale_memory_exposure_rate": 0.0,
+      "stale_memory_exposure_case_rate": 0,
+      "previous_state_recall": 1.0,
+      "history_retention_recall": 1.0,
+      "contradiction_rate": 0,
+      "mean_semantic_records": 2,
+      "mean_current_semantic_records": 1,
+      "mean_superseded_semantic_records": 1,
+      "mean_episodic_transition_records": 1,
+      "mean_total_records": 3,
+      "operation_counts": {
+        "add_initial": 20,
+        "reject_out_of_order": 20,
+        "supersede_state": 20
+      }
+    },
+    "replacement": {
+      "case_count": 20,
+      "operation_exact_match_rate": 1,
+      "operation_step_accuracy": 1.0,
+      "current_state_accuracy": 1,
+      "single_current_invariant_rate": 1,
+      "stale_memory_exposure_rate": 0.0,
+      "stale_memory_exposure_case_rate": 0,
+      "previous_state_recall": 1.0,
+      "history_retention_recall": 1.0,
+      "contradiction_rate": 0,
+      "mean_semantic_records": 2,
+      "mean_current_semantic_records": 1,
+      "mean_superseded_semantic_records": 1,
+      "mean_episodic_transition_records": 1,
+      "mean_total_records": 3,
+      "operation_counts": {
+        "add_initial": 20,
+        "supersede_state": 20
+      }
+    },
+    "reversion": {
+      "case_count": 20,
+      "operation_exact_match_rate": 1,
+      "operation_step_accuracy": 1.0,
+      "current_state_accuracy": 1,
+      "single_current_invariant_rate": 1,
+      "stale_memory_exposure_rate": 0.0,
+      "stale_memory_exposure_case_rate": 0,
+      "previous_state_recall": 1.0,
+      "history_retention_recall": 1.0,
+      "contradiction_rate": 0,
+      "mean_semantic_records": 3,
+      "mean_current_semantic_records": 1,
+      "mean_superseded_semantic_records": 2,
+      "mean_episodic_transition_records": 2,
+      "mean_total_records": 5,
+      "operation_counts": {
+        "add_initial": 20,
+        "supersede_state": 40
+      }
+    }
+  },
+  "by_state_key": {
+    "user.current_project_tool": {
+      "case_count": 20,
+      "operation_exact_match_rate": 1,
+      "operation_step_accuracy": 1.0,
+      "current_state_accuracy": 1,
+      "single_current_invariant_rate": 1,
+      "stale_memory_exposure_rate": 0.0,
+      "stale_memory_exposure_case_rate": 0,
+      "previous_state_recall": 1.0,
+      "history_retention_recall": 1.0,
+      "contradiction_rate": 0,
+      "mean_semantic_records": 2.2,
+      "mean_current_semantic_records": 1,
+      "mean_superseded_semantic_records": 1.2,
+      "mean_episodic_transition_records": 1.2,
+      "mean_total_records": 3.4,
+      "operation_counts": {
+        "add_initial": 20,
+        "noop_duplicate": 4,
+        "reject_out_of_order": 4,
+        "supersede_state": 24
+      }
+    },
+    "user.employer": {
+      "case_count": 20,
+      "operation_exact_match_rate": 1,
+      "operation_step_accuracy": 1.0,
+      "current_state_accuracy": 1,
+      "single_current_invariant_rate": 1,
+      "stale_memory_exposure_rate": 0.0,
+      "stale_memory_exposure_case_rate": 0,
+      "previous_state_recall": 1.0,
+      "history_retention_recall": 1.0,
+      "contradiction_rate": 0,
+      "mean_semantic_records": 2.2,
+      "mean_current_semantic_records": 1,
+      "mean_superseded_semantic_records": 1.2,
+      "mean_episodic_transition_records": 1.2,
+      "mean_total_records": 3.4,
+      "operation_counts": {
+        "add_initial": 20,
+        "noop_duplicate": 4,
+        "reject_out_of_order": 4,
+        "supersede_state": 24
+      }
+    },
+    "user.preferred_language": {
+      "case_count": 20,
+      "operation_exact_match_rate": 1,
+      "operation_step_accuracy": 1.0,
+      "current_state_accuracy": 1,
+      "single_current_invariant_rate": 1,
+      "stale_memory_exposure_rate": 0.0,
+      "stale_memory_exposure_case_rate": 0,
+      "previous_state_recall": 1.0,
+      "history_retention_recall": 1.0,
+      "contradiction_rate": 0,
+      "mean_semantic_records": 2.2,
+      "mean_current_semantic_records": 1,
+      "mean_superseded_semantic_records": 1.2,
+      "mean_episodic_transition_records": 1.2,
+      "mean_total_records": 3.4,
+      "operation_counts": {
+        "add_initial": 20,
+        "noop_duplicate": 4,
+        "reject_out_of_order": 4,
+        "supersede_state": 24
+      }
+    },
+    "user.residence": {
+      "case_count": 20,
+      "operation_exact_match_rate": 1,
+      "operation_step_accuracy": 1.0,
+      "current_state_accuracy": 1,
+      "single_current_invariant_rate": 1,
+      "stale_memory_exposure_rate": 0.0,
+      "stale_memory_exposure_case_rate": 0,
+      "previous_state_recall": 1.0,
+      "history_retention_recall": 1.0,
+      "contradiction_rate": 0,
+      "mean_semantic_records": 2.2,
+      "mean_current_semantic_records": 1,
+      "mean_superseded_semantic_records": 1.2,
+      "mean_episodic_transition_records": 1.2,
+      "mean_total_records": 3.4,
+      "operation_counts": {
+        "add_initial": 20,
+        "noop_duplicate": 4,
+        "reject_out_of_order": 4,
+        "supersede_state": 24
+      }
+    },
+    "user.subscription_plan": {
+      "case_count": 20,
+      "operation_exact_match_rate": 1,
+      "operation_step_accuracy": 1.0,
+      "current_state_accuracy": 1,
+      "single_current_invariant_rate": 1,
+      "stale_memory_exposure_rate": 0.0,
+      "stale_memory_exposure_case_rate": 0,
+      "previous_state_recall": 1.0,
+      "history_retention_recall": 1.0,
+      "contradiction_rate": 0,
+      "mean_semantic_records": 2.2,
+      "mean_current_semantic_records": 1,
+      "mean_superseded_semantic_records": 1.2,
+      "mean_episodic_transition_records": 1.2,
+      "mean_total_records": 3.4,
+      "operation_counts": {
+        "add_initial": 20,
+        "noop_duplicate": 4,
+        "reject_out_of_order": 4,
+        "supersede_state": 24
+      }
+    }
+  }
+}
