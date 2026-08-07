@@ -1,0 +1,20 @@
+{
+  "experiment": "phase2b_b5_c3_observable_smoke_v02",
+  "role": "protocol-validation smoke for common observable lifecycle retrieval comparison",
+  "case_count": 5,
+  "state_key": "user.residence",
+  "surface_variant": 1,
+  "memory_formation": "C3 LifecycleService",
+  "persistence": "real Neo4j via Neo4jLifecycleStore",
+  "observable_retrieval": "direct Neo4jMemoryStore semantic retrieval",
+  "observable_top_k": 20,
+  "query_mode": "QueryAnalyzer CURRENT / HISTORICAL",
+  "downstream_c3_pipeline_used": false,
+  "llm_generation_used": false,
+  "current_filters_superseded": true,
+  "historical_exposes_superseded": true,
+  "historical_previous_top1_tuned": false,
+  "evaluator_commit": "546df1d",
+  "evaluator_frozen_before_smoke": true,
+  "smoke_passed": true
+}

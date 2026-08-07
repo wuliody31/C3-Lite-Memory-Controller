@@ -1,0 +1,17 @@
+{
+  "experiment": "c3_lifecycle_observable_retrieval",
+  "run_id": "20260807T185017Z_bbc19af5",
+  "case_count": 5,
+  "observable_stage": "neo4j_semantic_retrieval_top20",
+  "memory_formation": "C3 LifecycleService",
+  "persistence": "Neo4jLifecycleStore",
+  "retrieval": "direct Neo4jMemoryStore semantic retrieval",
+  "generation": "MockBackbone; generation output is not evaluated",
+  "final_memory_scope": "semantic lifecycle records",
+  "pipeline_checks": {
+    "all_cases_completed": true,
+    "all_current_searches_nonempty": true,
+    "all_historical_searches_nonempty": true,
+    "operation_sequences_validated": true
+  }
+}
