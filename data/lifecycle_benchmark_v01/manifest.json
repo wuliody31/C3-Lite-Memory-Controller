@@ -1,0 +1,52 @@
+{
+  "benchmark": "Controlled Lifecycle Benchmark",
+  "version": "lifecycle_benchmark_v01",
+  "case_count": 100,
+  "state_key_count": 5,
+  "pattern_count": 5,
+  "surface_variants": 4,
+  "state_keys": [
+    "user.residence",
+    "user.employer",
+    "user.preferred_language",
+    "user.subscription_plan",
+    "user.current_project_tool"
+  ],
+  "patterns": [
+    "replacement",
+    "duplicate",
+    "multi_step",
+    "out_of_order",
+    "reversion"
+  ],
+  "cases_by_pattern": {
+    "replacement": 20,
+    "duplicate": 20,
+    "multi_step": 20,
+    "out_of_order": 20,
+    "reversion": 20
+  },
+  "cases_by_state_key": {
+    "user.residence": 20,
+    "user.employer": 20,
+    "user.preferred_language": 20,
+    "user.subscription_plan": 20,
+    "user.current_project_tool": 20
+  },
+  "primary_metrics": [
+    "current_state_accuracy",
+    "stale_memory_exposure_rate",
+    "previous_state_recall",
+    "contradiction_rate"
+  ],
+  "secondary_metrics": [
+    "history_retention_recall",
+    "memory_growth"
+  ],
+  "design_notes": [
+    "Historical is treated as a query mode rather than a lifecycle transition pattern.",
+    "All systems receive the same event content and timestamps.",
+    "Out-of-order cases distinguish ingestion order from observed time.",
+    "The benchmark is controlled and does not claim to represent the full LoCoMo distribution."
+  ]
+}
