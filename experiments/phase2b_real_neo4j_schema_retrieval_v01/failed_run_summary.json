@@ -1,0 +1,159 @@
+{
+  "run_id": "20260806T211946Z",
+  "user_id": "phase2b_schema_retrieval_alyjw80_20260806T211946Z",
+  "database": "neo4j",
+  "pipeline_passed": false,
+  "cleanup_completed": true,
+  "duplicate_audit": {
+    "semantic": {
+      "duplicate_groups": 0,
+      "duplicate_nodes": 0
+    },
+    "episodic": {
+      "duplicate_groups": 0,
+      "duplicate_nodes": 0
+    }
+  },
+  "schema_before": {
+    "constraints": [
+      {
+        "name": "entity_id_unique",
+        "type": "NODE_PROPERTY_UNIQUENESS"
+      },
+      {
+        "name": "episodic_event_id_unique",
+        "type": "NODE_PROPERTY_UNIQUENESS"
+      },
+      {
+        "name": "semantic_fact_id_unique",
+        "type": "NODE_PROPERTY_UNIQUENESS"
+      },
+      {
+        "name": "session_id_unique",
+        "type": "NODE_PROPERTY_UNIQUENESS"
+      },
+      {
+        "name": "user_id_unique",
+        "type": "NODE_PROPERTY_UNIQUENESS"
+      }
+    ],
+    "indexes": [
+      {
+        "name": "entity_id_unique",
+        "type": "RANGE",
+        "state": "ONLINE"
+      },
+      {
+        "name": "entity_name_index",
+        "type": "RANGE",
+        "state": "ONLINE"
+      },
+      {
+        "name": "episodic_event_id_unique",
+        "type": "RANGE",
+        "state": "ONLINE"
+      },
+      {
+        "name": "episodic_event_user_date",
+        "type": "RANGE",
+        "state": "ONLINE"
+      },
+      {
+        "name": "index_1b9dcc97",
+        "type": "LOOKUP",
+        "state": "ONLINE"
+      },
+      {
+        "name": "index_460996c0",
+        "type": "LOOKUP",
+        "state": "ONLINE"
+      },
+      {
+        "name": "semantic_fact_id_unique",
+        "type": "RANGE",
+        "state": "ONLINE"
+      },
+      {
+        "name": "semantic_fact_user_status",
+        "type": "RANGE",
+        "state": "ONLINE"
+      },
+      {
+        "name": "session_id_unique",
+        "type": "RANGE",
+        "state": "ONLINE"
+      },
+      {
+        "name": "user_id_unique",
+        "type": "RANGE",
+        "state": "ONLINE"
+      }
+    ]
+  },
+  "bootstrap_result": {
+    "applied": [
+      "c3_semantic_fact_id_unique",
+      "c3_episode_id_unique",
+      "c3_semantic_lifecycle_lookup",
+      "c3_episode_lifecycle_lookup",
+      "semantic_fact_text",
+      "episode_text"
+    ],
+    "constraint_names": [
+      "c3_semantic_fact_id_unique",
+      "c3_episode_id_unique"
+    ],
+    "index_names": [
+      "c3_semantic_lifecycle_lookup",
+      "c3_episode_lifecycle_lookup",
+      "semantic_fact_text",
+      "episode_text"
+    ]
+  },
+  "schema_inspection": {
+    "constraints": [
+      {
+        "name": "c3_episode_id_unique",
+        "type": "NODE_PROPERTY_UNIQUENESS"
+      },
+      {
+        "name": "c3_semantic_fact_id_unique",
+        "type": "NODE_PROPERTY_UNIQUENESS"
+      }
+    ],
+    "indexes": [
+      {
+        "name": "c3_episode_lifecycle_lookup",
+        "type": "RANGE",
+        "state": "ONLINE"
+      },
+      {
+        "name": "c3_semantic_lifecycle_lookup",
+        "type": "RANGE",
+        "state": "ONLINE"
+      },
+      {
+        "name": "episode_text",
+        "type": "FULLTEXT",
+        "state": "ONLINE"
+      },
+      {
+        "name": "semantic_fact_text",
+        "type": "FULLTEXT",
+        "state": "ONLINE"
+      }
+    ]
+  },
+  "schema_checks": {
+    "semantic_constraint_present": true,
+    "episode_constraint_present": true,
+    "all_expected_indexes_present": true,
+    "all_expected_indexes_online": true
+  },
+  "error": {
+    "type": "TypeError",
+    "message": "Session.run() got multiple values for argument 'query'",
+    "traceback": "Traceback (most recent call last):\n  File \"/home/alyjw80/projects/c3_lite_system/scripts/phase2b_neo4j_schema_retrieval_smoke.py\", line 557, in main\n    retriever.retrieve(\n  File \"/home/alyjw80/projects/c3_lite_system/src/retrievers/neo4j_store.py\", line 107, in retrieve\n    return self._semantic(\n           ^^^^^^^^^^^^^^^\n  File \"/home/alyjw80/projects/c3_lite_system/src/retrievers/neo4j_store.py\", line 265, in _semantic\n    rows = self._run(\n           ^^^^^^^^^^\n  File \"/home/alyjw80/projects/c3_lite_system/src/retrievers/neo4j_store.py\", line 468, in _run\n    for record in session.run(\n                  ^^^^^^^^^^^^\nTypeError: Session.run() got multiple values for argument 'query'\n"
+  },
+  "cleanup_deleted_count": 3
+}

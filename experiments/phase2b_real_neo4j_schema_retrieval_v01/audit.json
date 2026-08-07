@@ -1,0 +1,57 @@
+{
+  "phase": "Phase II-B4 Real Integration",
+  "component": "Neo4j schema bootstrap and lifecycle-aware retrieval",
+  "successful_run_id": "20260806T212155Z",
+  "database": "neo4j",
+  "pipeline_passed": true,
+  "cleanup_completed": true,
+  "cleanup_deleted_count": 3,
+  "test_counts": {
+    "focused": 9,
+    "combined_lifecycle": 28,
+    "full_regression": 153,
+    "failures": 0
+  },
+  "schema_checks": {
+    "semantic_constraint_present": true,
+    "episode_constraint_present": true,
+    "all_expected_indexes_present": true,
+    "all_expected_indexes_online": true
+  },
+  "retrieval_checks": {
+    "initial_operation": true,
+    "duplicate_operation": true,
+    "transition_operation": true,
+    "current_contains_london": true,
+    "current_excludes_nottingham": true,
+    "historical_contains_london": true,
+    "historical_contains_nottingham": true,
+    "supersedes_relation_preserved": true
+  },
+  "failed_checks": [],
+  "real_driver_repair": {
+    "original_error": "Session.run() got multiple values for argument query",
+    "repair": "renamed Cypher parameter from query to search_query",
+    "regression_test_added": true
+  },
+  "validated_scope": [
+    "real Neo4j connectivity",
+    "duplicate identifier audit",
+    "idempotent schema bootstrap",
+    "identity constraints",
+    "lifecycle indexes",
+    "full-text indexes",
+    "current-state retrieval",
+    "historical-state retrieval",
+    "superseded-state exclusion from current queries",
+    "SUPERSEDES relation mapping",
+    "test-data cleanup"
+  ],
+  "not_yet_validated": [
+    "concurrent writers",
+    "automatic unrestricted-dialogue extraction",
+    "benchmark-scale lifecycle evaluation",
+    "answer-generation improvement",
+    "realised utility feedback"
+  ]
+}

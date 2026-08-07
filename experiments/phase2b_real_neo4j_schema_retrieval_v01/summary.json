@@ -1,0 +1,261 @@
+{
+  "run_id": "20260806T212155Z",
+  "user_id": "phase2b_schema_retrieval_alyjw80_20260806T212155Z",
+  "database": "neo4j",
+  "pipeline_passed": true,
+  "cleanup_completed": true,
+  "duplicate_audit": {
+    "semantic": {
+      "duplicate_groups": 0,
+      "duplicate_nodes": 0
+    },
+    "episodic": {
+      "duplicate_groups": 0,
+      "duplicate_nodes": 0
+    }
+  },
+  "schema_before": {
+    "constraints": [
+      {
+        "name": "c3_episode_id_unique",
+        "type": "NODE_PROPERTY_UNIQUENESS"
+      },
+      {
+        "name": "c3_semantic_fact_id_unique",
+        "type": "NODE_PROPERTY_UNIQUENESS"
+      },
+      {
+        "name": "entity_id_unique",
+        "type": "NODE_PROPERTY_UNIQUENESS"
+      },
+      {
+        "name": "episodic_event_id_unique",
+        "type": "NODE_PROPERTY_UNIQUENESS"
+      },
+      {
+        "name": "semantic_fact_id_unique",
+        "type": "NODE_PROPERTY_UNIQUENESS"
+      },
+      {
+        "name": "session_id_unique",
+        "type": "NODE_PROPERTY_UNIQUENESS"
+      },
+      {
+        "name": "user_id_unique",
+        "type": "NODE_PROPERTY_UNIQUENESS"
+      }
+    ],
+    "indexes": [
+      {
+        "name": "c3_episode_id_unique",
+        "type": "RANGE",
+        "state": "ONLINE"
+      },
+      {
+        "name": "c3_episode_lifecycle_lookup",
+        "type": "RANGE",
+        "state": "ONLINE"
+      },
+      {
+        "name": "c3_semantic_fact_id_unique",
+        "type": "RANGE",
+        "state": "ONLINE"
+      },
+      {
+        "name": "c3_semantic_lifecycle_lookup",
+        "type": "RANGE",
+        "state": "ONLINE"
+      },
+      {
+        "name": "entity_id_unique",
+        "type": "RANGE",
+        "state": "ONLINE"
+      },
+      {
+        "name": "entity_name_index",
+        "type": "RANGE",
+        "state": "ONLINE"
+      },
+      {
+        "name": "episode_text",
+        "type": "FULLTEXT",
+        "state": "ONLINE"
+      },
+      {
+        "name": "episodic_event_id_unique",
+        "type": "RANGE",
+        "state": "ONLINE"
+      },
+      {
+        "name": "episodic_event_user_date",
+        "type": "RANGE",
+        "state": "ONLINE"
+      },
+      {
+        "name": "index_1b9dcc97",
+        "type": "LOOKUP",
+        "state": "ONLINE"
+      },
+      {
+        "name": "index_460996c0",
+        "type": "LOOKUP",
+        "state": "ONLINE"
+      },
+      {
+        "name": "semantic_fact_id_unique",
+        "type": "RANGE",
+        "state": "ONLINE"
+      },
+      {
+        "name": "semantic_fact_text",
+        "type": "FULLTEXT",
+        "state": "ONLINE"
+      },
+      {
+        "name": "semantic_fact_user_status",
+        "type": "RANGE",
+        "state": "ONLINE"
+      },
+      {
+        "name": "session_id_unique",
+        "type": "RANGE",
+        "state": "ONLINE"
+      },
+      {
+        "name": "user_id_unique",
+        "type": "RANGE",
+        "state": "ONLINE"
+      }
+    ]
+  },
+  "bootstrap_result": {
+    "applied": [
+      "c3_semantic_fact_id_unique",
+      "c3_episode_id_unique",
+      "c3_semantic_lifecycle_lookup",
+      "c3_episode_lifecycle_lookup",
+      "semantic_fact_text",
+      "episode_text"
+    ],
+    "constraint_names": [
+      "c3_semantic_fact_id_unique",
+      "c3_episode_id_unique"
+    ],
+    "index_names": [
+      "c3_semantic_lifecycle_lookup",
+      "c3_episode_lifecycle_lookup",
+      "semantic_fact_text",
+      "episode_text"
+    ]
+  },
+  "schema_inspection": {
+    "constraints": [
+      {
+        "name": "c3_episode_id_unique",
+        "type": "NODE_PROPERTY_UNIQUENESS"
+      },
+      {
+        "name": "c3_semantic_fact_id_unique",
+        "type": "NODE_PROPERTY_UNIQUENESS"
+      }
+    ],
+    "indexes": [
+      {
+        "name": "c3_episode_lifecycle_lookup",
+        "type": "RANGE",
+        "state": "ONLINE"
+      },
+      {
+        "name": "c3_semantic_lifecycle_lookup",
+        "type": "RANGE",
+        "state": "ONLINE"
+      },
+      {
+        "name": "episode_text",
+        "type": "FULLTEXT",
+        "state": "ONLINE"
+      },
+      {
+        "name": "semantic_fact_text",
+        "type": "FULLTEXT",
+        "state": "ONLINE"
+      }
+    ]
+  },
+  "schema_checks": {
+    "semantic_constraint_present": true,
+    "episode_constraint_present": true,
+    "all_expected_indexes_present": true,
+    "all_expected_indexes_online": true
+  },
+  "operations": {
+    "initial": "add_initial",
+    "duplicate": "noop_duplicate",
+    "transition": "supersede_state"
+  },
+  "memory_ids": {
+    "nottingham": "e1e8b408-6ddb-5336-b41e-1093ebfdea52",
+    "london": "b0c7b9da-9711-54a7-8c3e-77eb95dfe837",
+    "episode": "1e2361fc-bb45-5827-a546-2c7c16206dfd"
+  },
+  "current_results": [
+    {
+      "memory_id": "b0c7b9da-9711-54a7-8c3e-77eb95dfe837",
+      "status": "current",
+      "object_value": "London",
+      "relations": [
+        {
+          "target_id": "e1e8b408-6ddb-5336-b41e-1093ebfdea52",
+          "type": "SUPERSEDES"
+        }
+      ],
+      "text": "User lives in London."
+    }
+  ],
+  "historical_results": [
+    {
+      "memory_id": "b0c7b9da-9711-54a7-8c3e-77eb95dfe837",
+      "status": "current",
+      "object_value": "London",
+      "relations": [
+        {
+          "target_id": "e1e8b408-6ddb-5336-b41e-1093ebfdea52",
+          "type": "SUPERSEDES"
+        }
+      ],
+      "text": "User lives in London."
+    },
+    {
+      "memory_id": "e1e8b408-6ddb-5336-b41e-1093ebfdea52",
+      "status": "superseded",
+      "object_value": "Nottingham",
+      "relations": [],
+      "text": "User lives in Nottingham."
+    }
+  ],
+  "retrieval_checks": {
+    "initial_operation": true,
+    "duplicate_operation": true,
+    "transition_operation": true,
+    "current_contains_london": true,
+    "current_excludes_nottingham": true,
+    "historical_contains_london": true,
+    "historical_contains_nottingham": true,
+    "supersedes_relation_preserved": true
+  },
+  "checks": {
+    "semantic_constraint_present": true,
+    "episode_constraint_present": true,
+    "all_expected_indexes_present": true,
+    "all_expected_indexes_online": true,
+    "initial_operation": true,
+    "duplicate_operation": true,
+    "transition_operation": true,
+    "current_contains_london": true,
+    "current_excludes_nottingham": true,
+    "historical_contains_london": true,
+    "historical_contains_nottingham": true,
+    "supersedes_relation_preserved": true
+  },
+  "cleanup_deleted_count": 3
+}

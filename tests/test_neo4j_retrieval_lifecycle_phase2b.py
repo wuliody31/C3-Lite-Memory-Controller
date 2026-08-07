@@ -232,3 +232,27 @@ def test_supersedes_relation_is_preserved():
             "target_id": "state_nottingham",
         }
     ]
+
+
+def test_fulltext_parameter_avoids_reserved_query_name():
+    """Do not collide with Session.run(query=...)."""
+
+    store = CapturingNeo4jStore()
+
+    store.retrieve(
+        memory_type=MemoryType.SEMANTIC,
+        state=QueryState(
+            query="Where do I live?",
+            user_id="user_01",
+        ),
+        features=features(
+            QueryMode.CURRENT
+        ),
+        top_k=10,
+    )
+
+    _, params = store.calls[-1]
+
+    assert "query" not in params
+    assert params["search_query"]
+

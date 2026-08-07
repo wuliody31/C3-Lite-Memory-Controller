@@ -146,7 +146,7 @@ class Neo4jMemoryStore:
                 """
                 CALL db.index.fulltext.queryNodes(
                     $index,
-                    $query
+                    $search_query
                 )
                 YIELD node, score
                 WHERE node.user_id = $user_id
@@ -157,7 +157,7 @@ class Neo4jMemoryStore:
                 LIMIT $limit
                 """,
                 index=self.episode_index,
-                query=self._lucene(
+                search_query=self._lucene(
                     features.normalised_query
                 ),
                 user_id=state.user_id,
@@ -248,7 +248,7 @@ class Neo4jMemoryStore:
     ) -> list[MemoryCandidate]:
         params = {
             "index": self.semantic_index,
-            "query": self._lucene(
+            "search_query": self._lucene(
                 features.normalised_query
             ),
             "user_id": state.user_id,
@@ -266,7 +266,7 @@ class Neo4jMemoryStore:
                 """
                 CALL db.index.fulltext.queryNodes(
                     $index,
-                    $query
+                    $search_query
                 )
                 YIELD node, score
                 WHERE node.user_id = $user_id
