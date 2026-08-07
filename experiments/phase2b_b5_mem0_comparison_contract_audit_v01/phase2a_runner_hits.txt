@@ -1,0 +1,96 @@
+309-    write_json(
+310-        args.output_dir / "config.json",
+311-        config,
+312-    )
+313-
+314:    memory = Memory.from_config(config)
+315-
+316-    print()
+317-    print(
+318-        "Memory class:",
+319-        type(memory).__name__,
+--
+389-        )
+390-        print("Input:", turn["content"])
+391-
+392-        started = time.perf_counter()
+393-
+394:        add_result = memory.add(
+395-            [
+396-                {
+397-                    "role": "user",
+398-                    "content": (
+399-                        turn["content"]
+400-                    ),
+401-                }
+402-            ],
+403:            user_id=USER_ID,
+404:            metadata={
+405-                "experiment": (
+406-                    "phase2a_mem0_"
+407-                    "lifecycle_smoke_v01"
+408-                ),
+409-                "turn_id": (
+--
+411-                ),
+412-                "expected_role": (
+413-                    turn["expected_role"]
+414-                ),
+415-            },
+416:            infer=True,
+417-        )
+418-
+419-        elapsed = (
+420-            time.perf_counter()
+421-            - started
+422-        )
+423-
+424:        snapshot = memory.get_all(
+425-            filters={
+426:                "user_id": USER_ID
+427-            },
+428-            top_k=100,
+429-        )
+430-
+431-        current_ids = memory_ids(snapshot)
+--
+482-
+483-    ###########################################################################
+484-    # Final retrieval checks
+485-    ###########################################################################
+486-
+487:    final_snapshot = memory.get_all(
+488:        filters={"user_id": USER_ID},
+489-        top_k=100,
+490-    )
+491-
+492:    current_search = memory.search(
+493-        "Where does the user currently live?",
+494:        filters={"user_id": USER_ID},
+495-        top_k=10,
+496-        threshold=0.0,
+497-    )
+498-
+499:    historical_search = memory.search(
+500-        (
+501-            "Where did the user live "
+502-            "before moving to London?"
+503-        ),
+504:        filters={"user_id": USER_ID},
+505-        top_k=10,
+506-        threshold=0.0,
+507-    )
+508-
+509-    final_ids = memory_ids(
+--
+532-    summary = {
+533-        "experiment": (
+534-            "phase2a_mem0_"
+535-            "lifecycle_smoke_v01"
+536-        ),
+537:        "user_id": USER_ID,
+538-        "turn_count": len(turns),
+539-        "protocol_probe_passed": True,
+540-        "final_memory_count": len(
+541-            final_ids
+542-        ),

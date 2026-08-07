@@ -1,0 +1,28 @@
+14-    "huggingface/sentence_transformers"
+15-)
+16-
+17-
+18:def build_raw_backend_config(
+19-    *,
+20-    collection_name: str,
+21-    database_name: str,
+22-) -> dict[str, Any]:
+23-    """Build a provenance-preserving Mem0 configuration.
+24-
+25-    The LLM configuration is present because Mem0 constructs an LLM
+26:    provider during initialisation. It is not called when add() uses
+27:    infer=False.
+28-    """
+29-    vector_path = (
+30-        VECTOR_ROOT
+31-        / database_name
+--
+46-    return {
+47-        "llm": {
+48-            "provider": "openai",
+49-            "config": {
+50:                "model": "unused-infer-false",
+51-                "api_key": "unused-local-placeholder",
+52-                "temperature": 0.0,
+53-            },
+54-        },

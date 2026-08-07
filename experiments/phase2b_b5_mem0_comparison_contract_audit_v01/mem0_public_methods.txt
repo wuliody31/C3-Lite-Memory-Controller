@@ -1,0 +1,97 @@
+mem0/client/main.py:184:    def add(self, messages, options: Optional[AddMemoryOptions] = None, **kwargs) -> Dict[str, Any]:
+mem0/client/main.py:249:    def get_all(self, options: Optional[GetAllMemoryOptions] = None, **kwargs) -> Dict[str, Any]:
+mem0/client/main.py:300:    def search(self, query: str, options: Optional[SearchMemoryOptions] = None, **kwargs) -> Dict[str, Any]:
+mem0/client/main.py:347:    def update(
+mem0/client/main.py:386:    def delete(self, memory_id: str, delete_linked: bool = False) -> Dict[str, Any]:
+mem0/client/project.py:176:    def update(
+mem0/client/project.py:201:    def delete(self) -> Dict[str, Any]:
+mem0/client/project.py:393:    def update(
+mem0/client/project.py:454:    def delete(self) -> Dict[str, Any]:
+mem0/memory/main.py:438:    def update(
+mem0/memory/main.py:736:    def add(
+mem0/memory/main.py:1226:    def get_all(
+mem0/memory/main.py:1350:    def search(
+mem0/memory/main.py:1786:    def update(
+mem0/memory/main.py:1840:    def delete(self, memory_id):
+mem0/memory/base.py:19:    def get_all(self):
+mem0/memory/base.py:29:    def update(self, memory_id, data):
+mem0/memory/base.py:43:    def delete(self, memory_id):
+mem0/vector_stores/qdrant.py:415:    def search(self, query: str, vectors: list, top_k: int = 5, filters: dict = None) -> list:
+mem0/vector_stores/qdrant.py:486:    def delete(self, vector_id: int):
+mem0/vector_stores/qdrant.py:500:    def update(self, vector_id: int, vector: list = None, payload: dict = None):
+mem0/vector_stores/s3_vectors.py:104:    def search(self, query, vectors, top_k=5, filters=None):
+mem0/vector_stores/s3_vectors.py:119:    def delete(self, vector_id):
+mem0/vector_stores/s3_vectors.py:126:    def update(self, vector_id, vector=None, payload=None):
+mem0/vector_stores/databricks.py:463:    def search(self, query: str, vectors: list, top_k: int = 5, filters: dict = None) -> List[MemoryResult]:
+mem0/vector_stores/databricks.py:573:    def delete(self, vector_id):
+mem0/vector_stores/databricks.py:601:    def update(self, vector_id=None, vector=None, payload=None):
+mem0/vector_stores/pinecone.py:224:    def search(
+mem0/vector_stores/pinecone.py:298:    def delete(self, vector_id: Union[str, int]):
+mem0/vector_stores/pinecone.py:307:    def update(self, vector_id: Union[str, int], vector: Optional[List[float]] = None, payload: Optional[Dict] = None):
+mem0/vector_stores/chroma.py:145:    def search(
+mem0/vector_stores/chroma.py:165:    def delete(self, vector_id: str):
+mem0/vector_stores/chroma.py:174:    def update(
+mem0/vector_stores/valkey.py:436:    def search(self, query: str, vectors: list, top_k: int = 5, filters: dict = None, ef_runtime: int = None):
+mem0/vector_stores/valkey.py:475:    def delete(self, vector_id):
+mem0/vector_stores/valkey.py:490:    def update(self, vector_id=None, vector=None, payload=None):
+mem0/vector_stores/baidu.py:192:    def search(self, query: str, vectors: list, top_k: int = 5, filters: dict = None) -> list:
+mem0/vector_stores/baidu.py:283:    def delete(self, vector_id):
+mem0/vector_stores/baidu.py:292:    def update(self, vector_id=None, vector=None, payload=None):
+mem0/vector_stores/upstash_vector.py:97:    def search(
+mem0/vector_stores/upstash_vector.py:190:    def delete(self, vector_id: int):
+mem0/vector_stores/upstash_vector.py:202:    def update(
+mem0/vector_stores/weaviate.py:181:    def search(
+mem0/vector_stores/weaviate.py:275:    def delete(self, vector_id):
+mem0/vector_stores/weaviate.py:285:    def update(self, vector_id, vector=None, payload=None):
+mem0/vector_stores/milvus.py:205:    def search(self, query: str, vectors: list, top_k: int = 5, filters: dict = None) -> list:
+mem0/vector_stores/milvus.py:272:    def delete(self, vector_id):
+mem0/vector_stores/milvus.py:281:    def update(self, vector_id=None, vector=None, payload=None):
+mem0/vector_stores/neptune_analytics.py:159:    def search(
+mem0/vector_stores/neptune_analytics.py:201:    def delete(self, vector_id: str):
+mem0/vector_stores/neptune_analytics.py:218:    def update(
+mem0/vector_stores/redis.py:148:    def search(self, query: str, vectors: list, top_k: int = 5, filters: dict = None):
+mem0/vector_stores/redis.py:245:    def delete(self, vector_id):
+mem0/vector_stores/redis.py:248:    def update(self, vector_id=None, vector=None, payload=None):
+mem0/vector_stores/oracledb.py:388:    def search(
+mem0/vector_stores/oracledb.py:436:    def delete(self, vector_id: str) -> None:
+mem0/vector_stores/oracledb.py:446:    def update(
+mem0/vector_stores/cassandra.py:225:    def search(
+mem0/vector_stores/cassandra.py:291:    def delete(self, vector_id: str):
+mem0/vector_stores/cassandra.py:310:    def update(
+mem0/vector_stores/turbopuffer.py:159:    def search(
+mem0/vector_stores/turbopuffer.py:187:    def delete(self, vector_id: Union[str, int]):
+mem0/vector_stores/turbopuffer.py:196:    def update(
+mem0/vector_stores/base.py:16:    def search(self, query, vectors, top_k=5, filters=None):
+mem0/vector_stores/base.py:29:    def delete(self, vector_id):
+mem0/vector_stores/base.py:34:    def update(self, vector_id, vector=None, payload=None):
+mem0/vector_stores/azure_mysql.py:273:    def search(
+mem0/vector_stores/azure_mysql.py:392:    def delete(self, vector_id: str):
+mem0/vector_stores/azure_mysql.py:402:    def update(
+mem0/vector_stores/supabase.py:120:    def search(
+mem0/vector_stores/supabase.py:152:    def delete(self, vector_id: str):
+mem0/vector_stores/supabase.py:161:    def update(self, vector_id: str, vector: Optional[List[float]] = None, payload: Optional[dict] = None):
+mem0/vector_stores/opensearch.py:212:    def search(
+mem0/vector_stores/opensearch.py:303:    def delete(self, vector_id: str) -> None:
+mem0/vector_stores/opensearch.py:319:    def update(self, vector_id: str, vector: Optional[List[float]] = None, payload: Optional[Dict] = None) -> None:
+mem0/vector_stores/vertex_ai_vector_search.py:212:    def search(
+mem0/vector_stores/vertex_ai_vector_search.py:287:    def delete(self, vector_id: Optional[str] = None, ids: Optional[List[str]] = None) -> bool:
+mem0/vector_stores/vertex_ai_vector_search.py:328:    def update(
+mem0/vector_stores/vertex_ai_vector_search.py:515:    def add(self, text: str, metadata: Optional[Dict] = None, user_id: Optional[str] = None) -> str:
+mem0/vector_stores/mongodb.py:167:    def search(self, query: str, vectors: List[float], top_k=5, filters: Optional[Dict] = None) -> List[OutputData]:
+mem0/vector_stores/mongodb.py:281:    def delete(self, vector_id: str) -> None:
+mem0/vector_stores/mongodb.py:297:    def update(self, vector_id: str, vector: Optional[List[float]] = None, payload: Optional[Dict] = None) -> None:
+mem0/vector_stores/pgvector.py:327:    def search(
+mem0/vector_stores/pgvector.py:401:    def delete(self, vector_id: str) -> None:
+mem0/vector_stores/pgvector.py:412:    def update(
+mem0/vector_stores/langchain.py:104:    def search(self, query: str, vectors: List[List[float]], top_k: int = 5, filters: Optional[Dict] = None):
+mem0/vector_stores/langchain.py:143:    def delete(self, vector_id):
+mem0/vector_stores/langchain.py:149:    def update(self, vector_id, vector=None, payload=None):
+mem0/vector_stores/elasticsearch.py:154:    def search(
+mem0/vector_stores/elasticsearch.py:232:    def delete(self, vector_id: str) -> None:
+mem0/vector_stores/elasticsearch.py:236:    def update(self, vector_id: str, vector: Optional[List[float]] = None, payload: Optional[Dict] = None) -> None:
+mem0/vector_stores/azure_ai_search.py:215:    def search(self, query, vectors, top_k=5, filters=None):
+mem0/vector_stores/azure_ai_search.py:284:    def delete(self, vector_id):
+mem0/vector_stores/azure_ai_search.py:298:    def update(self, vector_id, vector=None, payload=None):
+mem0/vector_stores/faiss.py:377:    def search(
+mem0/vector_stores/faiss.py:445:    def delete(self, vector_id: str):
+mem0/vector_stores/faiss.py:486:    def update(
