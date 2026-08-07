@@ -1,0 +1,111 @@
+{
+  "experiment": "phase2b_b5_mem0_lifecycle_smoke_v01",
+  "system": "mem0_oss_infer_true",
+  "model": "Qwen/Qwen3-8B",
+  "case_count": 5,
+  "patterns": [
+    "replacement",
+    "duplicate",
+    "multi_step",
+    "out_of_order",
+    "reversion"
+  ],
+  "protocol_probe": {
+    "passed": true,
+    "elapsed_seconds": 2.4118164582177997,
+    "content": "{\"status\": \"READY\"}"
+  },
+  "case_summaries": [
+    {
+      "case_id": "lc_01_01_v1",
+      "pattern": "replacement",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User resides in London",
+        "User resides in Nottingham"
+      ],
+      "current_search_texts": [
+        "User resides in Nottingham",
+        "User resides in London"
+      ],
+      "historical_search_texts": [
+        "User resides in Nottingham",
+        "User resides in London"
+      ]
+    },
+    {
+      "case_id": "lc_01_02_v1",
+      "pattern": "duplicate",
+      "final_memory_count": 1,
+      "final_memory_texts": [
+        "User resides in Nottingham"
+      ],
+      "current_search_texts": [
+        "User resides in Nottingham"
+      ],
+      "historical_search_texts": [
+        "User resides in Nottingham"
+      ]
+    },
+    {
+      "case_id": "lc_01_03_v1",
+      "pattern": "multi_step",
+      "final_memory_count": 3,
+      "final_memory_texts": [
+        "User resides in Edinburgh",
+        "User resides in London",
+        "User resides in Nottingham"
+      ],
+      "current_search_texts": [
+        "User resides in Nottingham",
+        "User resides in London",
+        "User resides in Edinburgh"
+      ],
+      "historical_search_texts": [
+        "User resides in Nottingham",
+        "User resides in London",
+        "User resides in Edinburgh"
+      ]
+    },
+    {
+      "case_id": "lc_01_04_v1",
+      "pattern": "out_of_order",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User resides in London",
+        "User resides in Nottingham"
+      ],
+      "current_search_texts": [
+        "User resides in Nottingham",
+        "User resides in London"
+      ],
+      "historical_search_texts": [
+        "User resides in Nottingham",
+        "User resides in London"
+      ]
+    },
+    {
+      "case_id": "lc_01_05_v1",
+      "pattern": "reversion",
+      "final_memory_count": 2,
+      "final_memory_texts": [
+        "User resides in London",
+        "User resides in Nottingham"
+      ],
+      "current_search_texts": [
+        "User resides in Nottingham",
+        "User resides in London"
+      ],
+      "historical_search_texts": [
+        "User resides in Nottingham",
+        "User resides in London"
+      ]
+    }
+  ],
+  "pipeline_checks": {
+    "five_cases_completed": true,
+    "all_final_snapshots_nonempty": true,
+    "all_current_searches_nonempty": true
+  },
+  "interpretation_boundary": "This is a protocol smoke and raw-behaviour capture, not a formal comparative evaluation. The out-of-order case is not temporally symmetric with C3 because the evaluated Mem0 OSS API does not accept structured observation timestamps."
+}

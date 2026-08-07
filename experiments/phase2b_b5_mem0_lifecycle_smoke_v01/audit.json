@@ -1,0 +1,14 @@
+{
+  "experiment": "phase2b_b5_mem0_lifecycle_smoke_v01",
+  "slurm_job_id": 37402,
+  "status": "COMPLETED",
+  "exit_code": "0:0",
+  "case_count": 5,
+  "model": "Qwen/Qwen3-8B",
+  "mem0_version": "2.0.15",
+  "mem0_commit": "50bdaaea0c02744720ed374d88584fd01494eeb7",
+  "infer": true,
+  "role": "protocol smoke and observable-behaviour validation",
+  "formal_comparison": false,
+  "out_of_order_temporally_symmetric": false
+}

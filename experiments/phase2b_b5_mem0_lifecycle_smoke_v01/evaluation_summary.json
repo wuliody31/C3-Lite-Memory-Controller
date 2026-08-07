@@ -1,0 +1,120 @@
+{
+  "experiment": "mem0_lifecycle_behaviour_evaluation",
+  "scope": {
+    "system": "Mem0 OSS infer=True",
+    "comparison_level": "observable memory behaviour",
+    "out_of_order_policy": "reported separately as temporal stress because structured observation timestamps are unavailable in the evaluated OSS API"
+  },
+  "overall_all_cases": {
+    "case_count": 5,
+    "current_value_availability": 1,
+    "current_top1_accuracy": 0.4,
+    "stale_exposure_case_rate": 1,
+    "stale_exposure_value_rate": 1.0,
+    "previous_value_recall": 1.0,
+    "history_value_recall": 1.0,
+    "current_contradiction_rate": 1,
+    "final_contradiction_rate": 1,
+    "mean_final_memory_count": 2
+  },
+  "symmetric_cases": {
+    "case_count": 4,
+    "current_value_availability": 1,
+    "current_top1_accuracy": 0.5,
+    "stale_exposure_case_rate": 1,
+    "stale_exposure_value_rate": 1.0,
+    "previous_value_recall": 1.0,
+    "history_value_recall": 1.0,
+    "current_contradiction_rate": 1,
+    "final_contradiction_rate": 1,
+    "mean_final_memory_count": 2
+  },
+  "temporal_stress_cases": {
+    "case_count": 1,
+    "current_value_availability": 1,
+    "current_top1_accuracy": 0,
+    "stale_exposure_case_rate": 1,
+    "stale_exposure_value_rate": 1.0,
+    "previous_value_recall": 1.0,
+    "history_value_recall": 1.0,
+    "current_contradiction_rate": 1,
+    "final_contradiction_rate": 1,
+    "mean_final_memory_count": 2
+  },
+  "by_pattern": {
+    "duplicate": {
+      "case_count": 1,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 1,
+      "stale_exposure_case_rate": null,
+      "stale_exposure_value_rate": null,
+      "previous_value_recall": null,
+      "history_value_recall": null,
+      "current_contradiction_rate": null,
+      "final_contradiction_rate": null,
+      "mean_final_memory_count": 1
+    },
+    "multi_step": {
+      "case_count": 1,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 0,
+      "stale_exposure_case_rate": 1,
+      "stale_exposure_value_rate": 1.0,
+      "previous_value_recall": 1.0,
+      "history_value_recall": 1.0,
+      "current_contradiction_rate": 1,
+      "final_contradiction_rate": 1,
+      "mean_final_memory_count": 3
+    },
+    "out_of_order": {
+      "case_count": 1,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 0,
+      "stale_exposure_case_rate": 1,
+      "stale_exposure_value_rate": 1.0,
+      "previous_value_recall": 1.0,
+      "history_value_recall": 1.0,
+      "current_contradiction_rate": 1,
+      "final_contradiction_rate": 1,
+      "mean_final_memory_count": 2
+    },
+    "replacement": {
+      "case_count": 1,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 0,
+      "stale_exposure_case_rate": 1,
+      "stale_exposure_value_rate": 1.0,
+      "previous_value_recall": 1.0,
+      "history_value_recall": 1.0,
+      "current_contradiction_rate": 1,
+      "final_contradiction_rate": 1,
+      "mean_final_memory_count": 2
+    },
+    "reversion": {
+      "case_count": 1,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 1,
+      "stale_exposure_case_rate": 1,
+      "stale_exposure_value_rate": 1.0,
+      "previous_value_recall": 1.0,
+      "history_value_recall": 1.0,
+      "current_contradiction_rate": 1,
+      "final_contradiction_rate": 1,
+      "mean_final_memory_count": 2
+    }
+  },
+  "by_state_key": {
+    "user.residence": {
+      "case_count": 5,
+      "current_value_availability": 1,
+      "current_top1_accuracy": 0.4,
+      "stale_exposure_case_rate": 1,
+      "stale_exposure_value_rate": 1.0,
+      "previous_value_recall": 1.0,
+      "history_value_recall": 1.0,
+      "current_contradiction_rate": 1,
+      "final_contradiction_rate": 1,
+      "mean_final_memory_count": 2
+    }
+  }
+}
