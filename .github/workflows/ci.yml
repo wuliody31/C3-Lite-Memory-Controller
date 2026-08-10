@@ -1,0 +1,79 @@
+name: C3 Quality Gates
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Python quality and regression
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version:
+          - "3.11"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: |
+            requirements.txt
+            requirements-dev.txt
+
+      - name: Upgrade packaging tools
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+
+      - name: Install development dependencies
+        run: |
+          python -m pip install -r requirements-dev.txt
+
+      - name: Show environment
+        run: |
+          python --version
+          python -m pip --version
+          python -m pytest --version
+          python -m ruff --version
+
+      - name: Compile source tree
+        run: |
+          python -m compileall -q src evaluation
+
+      - name: Critical Ruff checks
+        run: |
+          python -m ruff check src evaluation tests \
+            --select E9,F63,F7,F82
+
+      - name: Regression test suite
+        env:
+          PYTHONPATH: ${{ github.workspace }}:${{ github.workspace }}/src
+        run: |
+          python -m pytest -q
+
+      - name: Coverage baseline
+        env:
+          PYTHONPATH: ${{ github.workspace }}:${{ github.workspace }}/src
+        run: |
+          python -m pytest \
+            --cov=src \
+            --cov-branch \
+            --cov-report=term-missing \
+            --cov-report=xml \
+            -q
+
+      - name: Upload coverage artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-python-${{ matrix.python-version }}
+          path: coverage.xml

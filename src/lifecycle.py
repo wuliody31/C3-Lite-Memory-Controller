@@ -7,6 +7,8 @@ can later be executed through different persistence adapters.
 
 from __future__ import annotations
 
+import builtins
+
 from dataclasses import dataclass, field, replace
 from datetime import datetime, timezone
 from enum import Enum
@@ -98,7 +100,7 @@ class LifecycleStore(Protocol):
     ) -> list[LifecycleRecord]:
         ...
 
-    def all(self) -> list[LifecycleRecord]:
+    def all(self) -> builtins.list[LifecycleRecord]:
         ...
 
     def commit(
@@ -172,7 +174,7 @@ class InMemoryLifecycleStore:
             ),
         )
 
-    def all(self) -> list[LifecycleRecord]:
+    def all(self) -> builtins.list[LifecycleRecord]:
         return self.list()
 
     def commit(
