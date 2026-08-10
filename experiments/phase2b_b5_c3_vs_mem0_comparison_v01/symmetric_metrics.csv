@@ -1,0 +1,10 @@
+metric,cases,clusters,c3,mem0,c3_minus_mem0,higher_is_better,effect_favouring_c3,ci95_low_favouring_c3,ci95_high_favouring_c3
+current_only_top1_rate,80,20,1.0,0.55,0.44999999999999996,True,0.44999999999999996,0.275,0.625
+stale_only_top1_rate,80,20,0.0,0.45,-0.45,False,0.45,0.275,0.625
+mixed_transition_top1_rate,80,20,0.0,0.0,0.0,False,-0.0,-0.0,-0.0
+stale_only_exposure_case_rate,60,15,0.0,0.9666666666666667,-0.9666666666666667,False,0.9666666666666667,0.9,1.0
+mixed_transition_exposure_case_rate,60,15,0.0,0.1,-0.1,False,0.1,-0.0,0.2
+historical_signal_exposure_case_rate,60,15,0.0,1.0,-1.0,False,1.0,1.0,1.0
+previous_value_availability,60,15,1.0,1.0,0.0,True,0.0,0.0,0.0
+previous_top1_accuracy,60,15,0.0,0.45,-0.45,True,-0.45,-0.6333333333333333,-0.26666666666666666
+history_value_recall,60,15,1.0,1.0,0.0,True,0.0,0.0,0.0

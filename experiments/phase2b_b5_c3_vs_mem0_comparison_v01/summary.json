@@ -1,0 +1,327 @@
+{
+  "experiment": "phase2b_b5_c3_vs_mem0_paired_comparison",
+  "primary_analysis": "symmetric lifecycle cases",
+  "paired_case_count": 100,
+  "symmetric_case_count": 80,
+  "symmetric_canonical_clusters": 20,
+  "temporal_stress_case_count": 20,
+  "temporal_stress_canonical_clusters": 5,
+  "surface_variants_are_independent": false,
+  "bootstrap_unit": "canonical lifecycle scenario",
+  "bootstrap_iterations": 50000,
+  "bootstrap_seed": 20260807,
+  "c3_protocol": "phase2b-b5-c3-observable-protocol-v03",
+  "mem0_protocol": "Mem0 OSS infer=True additive memory-formation baseline",
+  "evaluator": "phase2b-b5-lifecycle-observable-evaluator-v02",
+  "symmetric": {
+    "current_only_top1_rate": {
+      "metric": "current_only_top1_rate",
+      "case_count": 80,
+      "canonical_cluster_count": 20,
+      "c3": 1.0,
+      "mem0": 0.55,
+      "c3_minus_mem0": 0.44999999999999996,
+      "higher_is_better": true,
+      "cluster_count": 20,
+      "paired_difference": 0.45,
+      "bootstrap_iterations": 50000,
+      "bootstrap_ci95": [
+        0.275,
+        0.625
+      ],
+      "min_cluster_difference": 0.0,
+      "max_cluster_difference": 1.0,
+      "effect_favouring_c3": 0.44999999999999996,
+      "effect_favouring_c3_ci95": [
+        0.275,
+        0.625
+      ]
+    },
+    "stale_only_top1_rate": {
+      "metric": "stale_only_top1_rate",
+      "case_count": 80,
+      "canonical_cluster_count": 20,
+      "c3": 0.0,
+      "mem0": 0.45,
+      "c3_minus_mem0": -0.45,
+      "higher_is_better": false,
+      "cluster_count": 20,
+      "paired_difference": -0.45,
+      "bootstrap_iterations": 50000,
+      "bootstrap_ci95": [
+        -0.625,
+        -0.275
+      ],
+      "min_cluster_difference": -1.0,
+      "max_cluster_difference": 0.0,
+      "effect_favouring_c3": 0.45,
+      "effect_favouring_c3_ci95": [
+        0.275,
+        0.625
+      ]
+    },
+    "mixed_transition_top1_rate": {
+      "metric": "mixed_transition_top1_rate",
+      "case_count": 80,
+      "canonical_cluster_count": 20,
+      "c3": 0.0,
+      "mem0": 0.0,
+      "c3_minus_mem0": 0.0,
+      "higher_is_better": false,
+      "cluster_count": 20,
+      "paired_difference": 0.0,
+      "bootstrap_iterations": 50000,
+      "bootstrap_ci95": [
+        0.0,
+        0.0
+      ],
+      "min_cluster_difference": 0.0,
+      "max_cluster_difference": 0.0,
+      "effect_favouring_c3": -0.0,
+      "effect_favouring_c3_ci95": [
+        -0.0,
+        -0.0
+      ]
+    },
+    "stale_only_exposure_case_rate": {
+      "metric": "stale_only_exposure_case_rate",
+      "case_count": 60,
+      "canonical_cluster_count": 15,
+      "c3": 0.0,
+      "mem0": 0.9666666666666667,
+      "c3_minus_mem0": -0.9666666666666667,
+      "higher_is_better": false,
+      "cluster_count": 15,
+      "paired_difference": -0.9666666666666667,
+      "bootstrap_iterations": 50000,
+      "bootstrap_ci95": [
+        -1.0,
+        -0.9
+      ],
+      "min_cluster_difference": -1.0,
+      "max_cluster_difference": -0.5,
+      "effect_favouring_c3": 0.9666666666666667,
+      "effect_favouring_c3_ci95": [
+        0.9,
+        1.0
+      ]
+    },
+    "mixed_transition_exposure_case_rate": {
+      "metric": "mixed_transition_exposure_case_rate",
+      "case_count": 60,
+      "canonical_cluster_count": 15,
+      "c3": 0.0,
+      "mem0": 0.1,
+      "c3_minus_mem0": -0.1,
+      "higher_is_better": false,
+      "cluster_count": 15,
+      "paired_difference": -0.1,
+      "bootstrap_iterations": 50000,
+      "bootstrap_ci95": [
+        -0.2,
+        0.0
+      ],
+      "min_cluster_difference": -0.5,
+      "max_cluster_difference": 0.0,
+      "effect_favouring_c3": 0.1,
+      "effect_favouring_c3_ci95": [
+        -0.0,
+        0.2
+      ]
+    },
+    "historical_signal_exposure_case_rate": {
+      "metric": "historical_signal_exposure_case_rate",
+      "case_count": 60,
+      "canonical_cluster_count": 15,
+      "c3": 0.0,
+      "mem0": 1.0,
+      "c3_minus_mem0": -1.0,
+      "higher_is_better": false,
+      "cluster_count": 15,
+      "paired_difference": -1.0,
+      "bootstrap_iterations": 50000,
+      "bootstrap_ci95": [
+        -1.0,
+        -1.0
+      ],
+      "min_cluster_difference": -1.0,
+      "max_cluster_difference": -1.0,
+      "effect_favouring_c3": 1.0,
+      "effect_favouring_c3_ci95": [
+        1.0,
+        1.0
+      ]
+    },
+    "previous_value_availability": {
+      "metric": "previous_value_availability",
+      "case_count": 60,
+      "canonical_cluster_count": 15,
+      "c3": 1.0,
+      "mem0": 1.0,
+      "c3_minus_mem0": 0.0,
+      "higher_is_better": true,
+      "cluster_count": 15,
+      "paired_difference": 0.0,
+      "bootstrap_iterations": 50000,
+      "bootstrap_ci95": [
+        0.0,
+        0.0
+      ],
+      "min_cluster_difference": 0.0,
+      "max_cluster_difference": 0.0,
+      "effect_favouring_c3": 0.0,
+      "effect_favouring_c3_ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    "previous_top1_accuracy": {
+      "metric": "previous_top1_accuracy",
+      "case_count": 60,
+      "canonical_cluster_count": 15,
+      "c3": 0.0,
+      "mem0": 0.45,
+      "c3_minus_mem0": -0.45,
+      "higher_is_better": true,
+      "cluster_count": 15,
+      "paired_difference": -0.45,
+      "bootstrap_iterations": 50000,
+      "bootstrap_ci95": [
+        -0.6333333333333333,
+        -0.26666666666666666
+      ],
+      "min_cluster_difference": -1.0,
+      "max_cluster_difference": 0.0,
+      "effect_favouring_c3": -0.45,
+      "effect_favouring_c3_ci95": [
+        -0.6333333333333333,
+        -0.26666666666666666
+      ]
+    },
+    "history_value_recall": {
+      "metric": "history_value_recall",
+      "case_count": 60,
+      "canonical_cluster_count": 15,
+      "c3": 1.0,
+      "mem0": 1.0,
+      "c3_minus_mem0": 0.0,
+      "higher_is_better": true,
+      "cluster_count": 15,
+      "paired_difference": 0.0,
+      "bootstrap_iterations": 50000,
+      "bootstrap_ci95": [
+        0.0,
+        0.0
+      ],
+      "min_cluster_difference": 0.0,
+      "max_cluster_difference": 0.0,
+      "effect_favouring_c3": 0.0,
+      "effect_favouring_c3_ci95": [
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "temporal_stress_descriptive": {
+    "current_only_top1_rate": {
+      "metric": "current_only_top1_rate",
+      "case_count": 20,
+      "canonical_cluster_count": 5,
+      "c3": 1.0,
+      "mem0": 0.35,
+      "c3_minus_mem0": 0.65,
+      "higher_is_better": true
+    },
+    "stale_only_top1_rate": {
+      "metric": "stale_only_top1_rate",
+      "case_count": 20,
+      "canonical_cluster_count": 5,
+      "c3": 0.0,
+      "mem0": 0.65,
+      "c3_minus_mem0": -0.65,
+      "higher_is_better": false
+    },
+    "mixed_transition_top1_rate": {
+      "metric": "mixed_transition_top1_rate",
+      "case_count": 20,
+      "canonical_cluster_count": 5,
+      "c3": 0.0,
+      "mem0": 0.0,
+      "c3_minus_mem0": 0.0,
+      "higher_is_better": false
+    },
+    "stale_only_exposure_case_rate": {
+      "metric": "stale_only_exposure_case_rate",
+      "case_count": 20,
+      "canonical_cluster_count": 5,
+      "c3": 0.0,
+      "mem0": 1.0,
+      "c3_minus_mem0": -1.0,
+      "higher_is_better": false
+    },
+    "mixed_transition_exposure_case_rate": {
+      "metric": "mixed_transition_exposure_case_rate",
+      "case_count": 20,
+      "canonical_cluster_count": 5,
+      "c3": 0.0,
+      "mem0": 0.1,
+      "c3_minus_mem0": -0.1,
+      "higher_is_better": false
+    },
+    "historical_signal_exposure_case_rate": {
+      "metric": "historical_signal_exposure_case_rate",
+      "case_count": 20,
+      "canonical_cluster_count": 5,
+      "c3": 0.0,
+      "mem0": 1.0,
+      "c3_minus_mem0": -1.0,
+      "higher_is_better": false
+    },
+    "previous_value_availability": {
+      "metric": "previous_value_availability",
+      "case_count": 20,
+      "canonical_cluster_count": 5,
+      "c3": 1.0,
+      "mem0": 1.0,
+      "c3_minus_mem0": 0.0,
+      "higher_is_better": true
+    },
+    "previous_top1_accuracy": {
+      "metric": "previous_top1_accuracy",
+      "case_count": 20,
+      "canonical_cluster_count": 5,
+      "c3": 0.0,
+      "mem0": 0.55,
+      "c3_minus_mem0": -0.55,
+      "higher_is_better": true
+    },
+    "history_value_recall": {
+      "metric": "history_value_recall",
+      "case_count": 20,
+      "canonical_cluster_count": 5,
+      "c3": 1.0,
+      "mem0": 1.0,
+      "c3_minus_mem0": 0.0,
+      "higher_is_better": true
+    }
+  },
+  "final_memory_count_descriptive": {
+    "note": "Descriptive only. C3 final_memory_count covers semantic lifecycle records and does not include episodic transition records.",
+    "symmetric": {
+      "c3": 2.25,
+      "mem0": 2.05
+    },
+    "temporal_stress": {
+      "c3": 2,
+      "mem0": 2.2
+    }
+  },
+  "interpretation_constraints": [
+    "The primary comparison is symmetric_cases; out-of-order cases are temporal capability stress tests.",
+    "The four surface variants within a canonical scenario are treated as correlated observations.",
+    "C3 and Mem0 use different upstream memory-formation interfaces.",
+    "C3 is evaluated with benchmark-role-conditioned CURRENT/HISTORICAL retrieval.",
+    "The comparison therefore supports observable lifecycle-retrieval conclusions, not a claim of fully identical end-to-end inputs.",
+    "Confidence intervals quantify variation across the benchmark's canonical scenarios; they should not be interpreted as population-level guarantees."
+  ]
+}
