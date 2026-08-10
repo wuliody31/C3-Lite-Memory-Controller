@@ -1,100 +1,428 @@
-# C3-Lite v2.2 Final
+# C3: Lifecycle-Aware Multi-Memory Orchestration for Long-Term LLM Agents
 
-**Context-adaptive, Conflict-aware, Confidence-controlled Multi-Memory Controller**
+C3 is a training-free, lifecycle-aware memory orchestration framework for long-term LLM agents.
 
-This is a dissertation-ready, training-free implementation. The LLM backbone remains frozen. C3-Lite performs query analysis, multi-label routing, three-memory retrieval, shared BM25/metadata ranking, explicit and implicit conflict handling, coverage-aware MMR selection, evidence adequacy estimation, and direct/caveat/abstain control.
+The system coordinates **episodic**, **semantic**, and **procedural** memory through query-aware routing, shared evidence ranking, conflict resolution, lifecycle-aware semantic state management, evidence selection, confidence control, and auditable execution traces.
 
-## Put it here
+> **Project status:** research-grade and production-oriented.  
+> The repository contains frozen experimental protocols, real Neo4j validation, external-memory baselines, formal evaluation artifacts, statistical analyses, and reproducibility checkpoints. It should not be interpreted as a production-scale deployment claim.
+
+---
+
+## 1. Research Problem
+
+Long-term LLM agents must solve two related but distinct memory-control problems:
+
+1. **Which memories should be used for the current query?**
+2. **Which stored memories should still be treated as current?**
+
+C3 addresses these through two major research phases:
+
+### Phase I — Evidence Orchestration
+
+Phase I focuses on selecting useful evidence across heterogeneous memory sources:
+
+- episodic memory;
+- semantic memory;
+- procedural memory;
+- query-aware multi-memory routing;
+- shared ranking;
+- conflict resolution;
+- evidence selection;
+- abstention and confidence control.
+
+### Phase II — Memory Lifecycle Control
+
+Phase II extends C3 from retrieval orchestration to semantic-state lifecycle management:
+
+- current-state tracking;
+- supersession;
+- duplicate suppression;
+- out-of-order update rejection;
+- reversion handling;
+- historical-state retention;
+- lifecycle-aware current retrieval.
+
+The central distinction is:
+
+> **Phase I asks which memories should be used; Phase II-B asks which memories should still be considered current.**
+
+---
+
+## 2. System Architecture
 
 ```text
-DISSERTATION/
-└── c3_lite_system/
-    └── c3_lite_v2_2_final/
+                         User Query
+                             |
+                             v
+                    +----------------+
+                    | Query Analyzer |
+                    +--------+-------+
+                             |
+                             v
+                    +----------------+
+                    | Route Planner  |
+                    +--------+-------+
+                             |
+             +---------------+---------------+
+             |               |               |
+             v               v               v
+       Episodic        Semantic         Procedural
+        Memory          Memory            Memory
+             |               |               |
+             +---------------+---------------+
+                             |
+                             v
+                    Candidate Retrieval
+                             |
+                             v
+                      Shared Ranker
+                             |
+                             v
+                  Conflict Detection /
+                      Resolution
+                             |
+                             v
+                    Evidence Selector
+                             |
+                             v
+                  Confidence Controller
+                             |
+                             v
+                       LLM Backbone
 ```
 
-Keep the old `c3_lite_algorithm_v2_1...` folders unchanged for historical comparison.
+Phase II adds lifecycle-aware semantic state:
 
-## Install on Windows
-
-```powershell
-cd C:\Users\Lenovo\Desktop\Dissertation\c3_lite_system\c3_lite_v2_2_final
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
-pip install -r requirements.txt
+```text
+Incoming Semantic State
+          |
+          v
+ +--------------------+
+ | Lifecycle Service  |
+ +---------+----------+
+           |
+     +-----+-----------------------+
+     |             |               |
+     v             v               v
+  Initial       Duplicate       Newer State
+    ADD           NO-OP          SUPERSEDE
+                                   |
+                                   v
+                         previous -> superseded
+                         latest   -> current
+                                   |
+                                   v
+                          transition history
 ```
 
-## Smoke test without Neo4j/Ollama
+---
 
-```powershell
-python run_query.py `
-  --query "How did my project scope change over time?" `
-  --user-id user01 `
-  --memory-json examples/demo_memories.json `
-  --procedure-json examples/demo_procedures.json `
-  --backbone mock `
-  --show-trace
+## 3. Core Capabilities
+
+### Multi-memory orchestration
+
+C3 separates memory by function rather than by storage technology:
+
+- **Episodic memory** — what happened and when;
+- **Semantic memory** — what is currently believed to be true;
+- **Procedural memory** — how a task should be performed.
+
+### Query-aware routing
+
+The controller determines which memory types are relevant instead of placing all available memory into every prompt.
+
+### Shared evidence ranking
+
+Candidates from different memory sources are normalized through a shared ranking layer before final evidence selection.
+
+### Conflict-aware retrieval
+
+The framework supports:
+
+- explicit graph conflicts;
+- implicit state/version conflicts;
+- current-state queries;
+- timeline queries;
+- historical evidence.
+
+### Lifecycle-aware semantic memory
+
+Semantic facts can explicitly transition between lifecycle states such as:
+
+```text
+current
+superseded
+archived
 ```
 
-The mock backbone only verifies the pipeline. Do not report it as an experimental model.
+This allows current-state retrieval to distinguish active state from retained history.
 
-## Run with Ollama
+### Confidence-controlled generation
 
-```powershell
-ollama pull llama3.2:3b
-ollama serve
-python run_query.py `
-  --query "What is my current MSc project focus?" `
-  --user-id user01 `
-  --memory-json examples/demo_memories.json `
-  --procedure-json examples/demo_procedures.json `
-  --backbone ollama `
-  --model llama3.2:3b `
-  --show-trace
+The controller estimates evidence adequacy and chooses between:
+
+```text
+direct answer
+caveated answer
+abstention
 ```
 
-## Neo4j schema expected by the adapter
+### Auditable execution
 
-- `(:Episode)` with `episode_id`, `user_id`, `text`, `timestamp`, `confidence`, `importance`.
-- `(:SemanticFact)` with `fact_id`, `user_id`, `subject`, `predicate`, `object`, `text`, `status`, `valid_from`, `valid_to`, `confidence`.
-- Optional relations: `SUPERSEDES`, `CONTRADICTS`, `INVALIDATES`.
+Experimental runs preserve:
 
-Recommended indexes:
+- routing decisions;
+- candidate memories;
+- ranked evidence;
+- selected evidence;
+- confidence state;
+- lifecycle operations;
+- frozen configuration;
+- experiment artifacts.
 
-```cypher
-CREATE FULLTEXT INDEX episode_text IF NOT EXISTS FOR (e:Episode) ON EACH [e.text];
-CREATE FULLTEXT INDEX semantic_fact_text IF NOT EXISTS FOR (f:SemanticFact) ON EACH [f.text, f.subject, f.predicate, f.object];
+---
+
+## 4. Technology Stack
+
+Core research implementation:
+
+- Python
+- PyTorch / Transformers
+- Qwen3-8B
+- Neo4j
+- Mem0 OSS
+- BM25 / metadata ranking
+- pytest
+- Slurm GPU execution
+
+Formal GPU validation used a frozen Qwen3-8B backbone with no task-specific fine-tuning.
+
+---
+
+## 5. Headline Experimental Results
+
+### 5.1 Dataset A
+
+On the formal Dataset A evaluation:
+
+| Method | Answer F1 |
+|---|---:|
+| No memory | 0.2443 |
+| All memory | 0.3067 |
+| Simple retrieval | 0.3705 |
+| **C3** | **0.4184** |
+
+C3 additionally achieved:
+
+- Evidence F1: **0.5071**
+- Route exact accuracy: **0.9286**
+- Route F1: **0.9786**
+
+See [`docs/EXPERIMENT_RESULTS.md`](docs/EXPERIMENT_RESULTS.md) for the complete analysis.
+
+### 5.2 LoCoMo External Validation
+
+LoCoMo exposed a precision-recall-generation trade-off.
+
+| Method | Answer F1 | Evidence F1 | Mean selected evidence |
+|---|---:|---:|---:|
+| No memory | 0.0276 | — | — |
+| Simple retrieval | **0.1424** | 0.2162 | ~5 |
+| All memory | 0.1354 | 0.0783 | ~19.87 |
+| **C3** | 0.1236 | **0.2712** | **~2.03** |
+
+C3 produced the strongest evidence quality and smallest context, but did not achieve the highest LoCoMo Answer F1.
+
+### 5.3 C3 vs Mem0 Lifecycle Retrieval
+
+The primary controlled lifecycle comparison used:
+
+- 80 symmetric observations;
+- 20 canonical lifecycle scenarios;
+- 4 surface variants per scenario;
+- 50,000 paired cluster-bootstrap resamples;
+- canonical lifecycle scenario as the inference/resampling unit.
+
+| Metric | C3 | Mem0 |
+|---|---:|---:|
+| **Current-only Top-1** | **1.000** | 0.550 |
+| **Stale-only exposure** | **0.000** | 0.967 |
+| Previous-state availability | 1.000 | 1.000 |
+| History value recall | 1.000 | 1.000 |
+| Previous-state Top-1 | 0.000 | **0.450** |
+
+Current-only Top-1 improved by **45 percentage points**:
+
+```text
+Effect favouring C3 = +0.450
+95% paired cluster-bootstrap CI = [+0.275, +0.625]
 ```
 
-Set credentials:
+Stale-only exposure decreased from **96.7% to 0%**:
 
-```powershell
-$env:NEO4J_URI="bolt://localhost:7687"
-$env:NEO4J_USER="neo4j"
-$env:NEO4J_PASSWORD="your-password"
+```text
+Effect favouring C3 = +0.967
+95% paired cluster-bootstrap CI = [+0.900, +1.000]
 ```
 
-Then add `--neo4j` instead of `--memory-json`.
+Historical information remained available in both systems, but C3 did not rank the immediate previous state first under the evaluated historical retrieval policy.
 
-## Dataset A experiment
+This distinction is important:
 
-```powershell
-python run_experiment.py `
-  --dataset C:\path\to\eval_questions.csv `
-  --memory-json C:\path\to\all_memories.json `
-  --procedure-json C:\path\to\procedural_memories.json `
-  --methods no_memory episodic_only semantic_only procedural_only simple_retrieval all_memory c3 `
-  --backbone ollama `
-  --model llama3.2:3b `
-  --output outputs\dataset_a_dev
+> Explicit lifecycle control strongly improves current-state isolation, but lifecycle storage alone does not solve historical-state ranking.
+
+---
+
+## 6. Experimental Scope
+
+The lifecycle experiment is a:
+
+> **controlled observable lifecycle-retrieval comparison**
+
+It is not claimed to be a perfectly symmetric end-to-end comparison.
+
+Important boundaries include:
+
+- C3 and Mem0 do not receive identical upstream memory-formation interfaces;
+- C3 uses explicit lifecycle state;
+- Mem0 uses its evaluated OSS `infer=True` formation path;
+- out-of-order cases are treated as temporal capability stress tests;
+- surface variants are not treated as independent statistical samples;
+- historical routing generalisation in the full C3 agent remains a separate limitation.
+
+See:
+
+- [`docs/EXPERIMENT_RESULTS.md`](docs/EXPERIMENT_RESULTS.md)
+- [`docs/DEVELOPMENT_HISTORY.md`](docs/DEVELOPMENT_HISTORY.md)
+
+---
+
+## 7. Repository Structure
+
+```text
+.
+├── configs/           Frozen and experimental configuration
+├── data/              Benchmark and adapted data
+├── evaluation/        Evaluation metrics and evaluators
+├── experiments/       Frozen experimental artifacts
+├── scripts/           Experiment, analysis and Slurm runners
+├── src/               Core C3 implementation
+├── tests/             Unit and regression tests
+├── docs/              Research and reproducibility documentation
+├── run_query.py       Local query entry point
+├── run_query_gpu.py   GPU query entry point
+└── run_experiment.py  Experiment entry point
 ```
 
-The output contains predictions, per-question metrics, a global summary, a question-type summary and the frozen configuration.
+---
 
-## Experimental rules
+## 8. Development Lineage
 
-- Tune only on Dataset A v0.1.
-- Freeze the YAML before held-out and LoCoMo runs.
-- Never pass `question_type`, `supporting_memory_ids`, `should_abstain`, `expected_outdated_memory_ids`, or `gold_answer` into C3.
-- Use the same frozen backbone, prompts and decoding settings within each method comparison.
-- Adapt only `src/retrievers/neo4j_store.py` if your existing labels/property names differ.
+The repository preserves the development trail through Git tags.
+
+Major stages include:
+
+```text
+C3-Lite v2.2
+        |
+        v
+RC8 routing / retrieval repair
+        |
+        v
+Dataset A formal evaluation
+        |
+        v
+LoCoMo external validation
+        |
+        v
+Soft Probe companion admission
+        |
+        v
+Mem0 baseline investigation
+        |
+        v
+Phase II-A lifecycle diagnosis
+        |
+        v
+Phase II-B explicit lifecycle control
+        |
+        v
+Real Neo4j validation
+        |
+        v
+Formal100 C3 / Mem0 evaluation
+        |
+        v
+Paired cluster-bootstrap comparison
+```
+
+See [`docs/DEVELOPMENT_HISTORY.md`](docs/DEVELOPMENT_HISTORY.md).
+
+---
+
+## 9. Reproducibility
+
+The repository records frozen experiment tags and artifacts for:
+
+- Dataset A;
+- LoCoMo;
+- Soft Probe;
+- Mem0 baseline analysis;
+- C3 lifecycle conformance;
+- real Neo4j lifecycle validation;
+- Mem0 Formal100;
+- C3 Formal100;
+- C3 vs Mem0 paired comparison.
+
+The final Phase II-B synthesis is tagged:
+
+```text
+phase2b-b5-final-summary-v01
+```
+
+The final paired C3 vs Mem0 lifecycle comparison is tagged:
+
+```text
+phase2b-b5-c3-vs-mem0-comparison-passed
+```
+
+---
+
+## 10. Known Limitations
+
+Current limitations include:
+
+1. Immediate-previous historical ranking is not solved by the current C3 retrieval policy.
+2. Full-agent historical routing generalisation remains separate from the controlled lifecycle retrieval evaluation.
+3. The lifecycle comparison does not use identical upstream formation interfaces for C3 and Mem0.
+4. Out-of-order evaluation is a temporal capability stress case rather than part of the primary symmetric comparison.
+5. Real Neo4j lifecycle validation is single-writer; distributed concurrency and fault-injection guarantees have not been established.
+6. The repository does not claim production-scale QPS, latency, or distributed-service validation.
+7. Phase II-C realised-utility feedback and online retention optimisation are not part of the frozen implementation.
+
+---
+
+## 11. Research Positioning
+
+C3 should be interpreted as a:
+
+> **research-grade, production-oriented memory orchestration framework**
+
+rather than a production-proven commercial platform.
+
+The primary contribution is not simply storing or retrieving more memory. It is providing explicit mechanisms for deciding:
+
+- which memory sources should be consulted;
+- which evidence should be selected;
+- which conflicting state should dominate;
+- which semantic memories remain current;
+- when available evidence is insufficient to answer reliably.
+
+---
+
+## 12. Citation and Academic Use
+
+This repository accompanies an MSc dissertation on multi-memory orchestration and lifecycle-aware long-term memory for LLM agents.
+
+When using experimental results, preserve the protocol boundaries and limitations documented in this repository.
