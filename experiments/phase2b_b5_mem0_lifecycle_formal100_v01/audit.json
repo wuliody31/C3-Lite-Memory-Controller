@@ -19,6 +19,10 @@
   "checkpointing": true,
   "job_specific_server_port": true,
   "out_of_order_temporally_symmetric": false,
-  "formal_protocol_frozen_before_run": true,
-  "post_result_parameter_tuning": false
+  "post_result_parameter_tuning": false,
+  "formal_protocol_static_checked_before_run": true,
+  "formal_protocol_git_frozen_before_run": false,
+  "evaluator_frozen_before_run": true,
+  "provenance_correction_source_commit": "c305e0d",
+  "provenance_correction_note": "Follow-up metadata correction: the formal runner/protocol was static-checked before the run but was not Git-frozen until the subsequent formal freeze commit. Raw results, evaluator outputs, parameters, and reported metrics are unchanged."
 }
