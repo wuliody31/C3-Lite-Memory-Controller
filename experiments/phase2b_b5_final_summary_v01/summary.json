@@ -1,0 +1,83 @@
+{
+  "experiment": "phase2b_b5_final_summary_v01",
+  "status": "thesis-facing synthesis of frozen B5 results",
+  "frozen_inputs": {
+    "benchmark": "phase2b-b5-lifecycle-benchmark-v01",
+    "mem0_formal": "phase2b-b5-mem0-lifecycle-formal100-passed",
+    "mem0_provenance_correction": "phase2b-b5-mem0-formal100-provenance-corrected",
+    "c3_formal": "phase2b-b5-c3-observable-formal100-passed",
+    "comparison": "phase2b-b5-c3-vs-mem0-comparison-passed"
+  },
+  "primary_design": {
+    "symmetric_observations": 80,
+    "canonical_clusters": 20,
+    "surface_variants_per_cluster": 4,
+    "bootstrap_iterations": 50000,
+    "bootstrap_unit": "canonical lifecycle scenario"
+  },
+  "primary_metrics": {
+    "current_only_top1": {
+      "c3": 1.0,
+      "mem0": 0.55,
+      "difference": 0.44999999999999996,
+      "effect_favouring_c3": 0.44999999999999996,
+      "ci95_favouring_c3": [
+        0.275,
+        0.625
+      ],
+      "cases": 80,
+      "clusters": 20
+    },
+    "stale_only_exposure": {
+      "c3": 0.0,
+      "mem0": 0.9666666666666667,
+      "difference": -0.9666666666666667,
+      "effect_favouring_c3": 0.9666666666666667,
+      "ci95_favouring_c3": [
+        0.9,
+        1.0
+      ],
+      "cases": 60,
+      "clusters": 15
+    },
+    "previous_value_availability": {
+      "c3": 1.0,
+      "mem0": 1.0,
+      "difference": 0.0,
+      "effect_favouring_c3": 0.0,
+      "ci95_favouring_c3": [
+        0.0,
+        0.0
+      ],
+      "cases": 60,
+      "clusters": 15
+    },
+    "previous_top1": {
+      "c3": 0.0,
+      "mem0": 0.45,
+      "difference": -0.45,
+      "effect_favouring_c3": -0.45,
+      "ci95_favouring_c3": [
+        -0.6333333333333333,
+        -0.26666666666666666
+      ],
+      "cases": 60,
+      "clusters": 15
+    },
+    "history_value_recall": {
+      "c3": 1.0,
+      "mem0": 1.0,
+      "difference": 0.0,
+      "effect_favouring_c3": 0.0,
+      "ci95_favouring_c3": [
+        0.0,
+        0.0
+      ],
+      "cases": 60,
+      "clusters": 15
+    }
+  },
+  "main_supported_claim": "Explicit lifecycle control improves current-state isolation while preserving historical information.",
+  "main_limitation": "The evaluated C3 historical retrieval policy preserves previous states but does not prioritise the immediate previous state at Top-1.",
+  "comparison_scope": "Controlled observable lifecycle-retrieval comparison; not a fully identical end-to-end comparison."
+}

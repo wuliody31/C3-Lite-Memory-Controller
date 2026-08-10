@@ -1,0 +1,20 @@
+{
+  "artifact": "phase2b_b5_final_summary_v01",
+  "role": "thesis-facing synthesis of frozen Phase II-B5 results",
+  "new_experiment": false,
+  "source_comparison_commit": "8ce88af",
+  "source_comparison_tag": "phase2b-b5-c3-vs-mem0-comparison-passed",
+  "mem0_provenance_correction_commit": "c59f8fd",
+  "mem0_provenance_correction_tag": "phase2b-b5-mem0-formal100-provenance-corrected",
+  "c3_formal_commit": "67d64d9",
+  "c3_formal_tag": "phase2b-b5-c3-observable-formal100-passed",
+  "benchmark_tag": "phase2b-b5-lifecycle-benchmark-v01",
+  "evaluator_tag": "phase2b-b5-lifecycle-observable-evaluator-v02",
+  "statistics_recomputed": false,
+  "model_parameters_modified": false,
+  "post_result_tuning": false,
+  "summary_sha256": "246c9348236c240e72c4123be941e44a847a8132f8a0ecce837b7f9fcfbd20fe",
+  "report_sha256": "e6b11bdf24a6716bb85b3c339701008948ef1fa4c851c971fb1ffbfb172b7a1a",
+  "primary_claim": "Explicit lifecycle control improves current-state isolation while preserving historical information.",
+  "known_limitation": "Immediate-previous-state Top-1 ranking is weaker for the evaluated C3 historical retrieval policy."
+}
