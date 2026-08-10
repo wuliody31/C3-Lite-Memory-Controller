@@ -1,0 +1,8 @@
+cff-version: 1.2.0
+message: "If you use this software or experimental artifact, please cite the associated MSc dissertation."
+title: "C3: Lifecycle-Aware Multi-Memory Orchestration for Long-Term LLM Agents"
+type: software
+authors:
+  - family-names: "Wu"
+repository-code: "https://github.com/wuliody31/C3-Lite-Memory-Controller"
+license: "NOASSERTION"
