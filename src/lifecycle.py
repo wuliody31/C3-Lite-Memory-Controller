@@ -15,6 +15,7 @@ from enum import Enum
 from typing import Any, Iterable, Protocol
 from uuid import NAMESPACE_URL, uuid5
 
+from .errors import C3Error
 from .schemas import MemoryType
 
 
@@ -36,7 +37,7 @@ class LifecycleOperation(str, Enum):
     REJECT_OUT_OF_ORDER = "reject_out_of_order"
 
 
-class LifecycleError(RuntimeError):
+class LifecycleError(RuntimeError, C3Error):
     """Base class for lifecycle failures."""
 
 

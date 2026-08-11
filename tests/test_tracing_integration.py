@@ -154,3 +154,98 @@ def test_jsonl_sink_writes_safe_single_line(
 
     assert result.query not in lines[0]
     assert result.final_prompt not in lines[0]
+
+
+class EmitFailingTraceSink:
+    def emit(self, result: C3Result) -> None:
+        del result
+        raise RuntimeError("telemetry backend unavailable")
+
+    def close(self) -> None:
+        pass
+
+
+class CloseFailingTraceSink:
+    def emit(self, result: C3Result) -> None:
+        del result
+
+    def close(self) -> None:
+        raise RuntimeError("telemetry close failed")
+
+
+def test_trace_emit_failure_does_not_break_answer() -> None:
+    from src.tracing import BestEffortTraceSink
+
+    pipeline = build_pipeline(
+        trace_sink=EmitFailingTraceSink()
+    )
+
+    result = pipeline.answer(
+        QueryState(
+            "What is my current MSc project scope?",
+            "user01",
+        )
+    )
+
+    assert isinstance(
+        pipeline.trace_sink,
+        BestEffortTraceSink,
+    )
+    assert pipeline.trace_sink.emit_failure_count == 1
+    assert pipeline.trace_sink.last_error is not None
+    assert "RuntimeError" in pipeline.trace_sink.last_error
+
+    assert result.query
+    assert result.decision is not None
+
+    pipeline.close()
+
+
+def test_trace_close_failure_is_isolated() -> None:
+    from src.tracing import BestEffortTraceSink
+
+    pipeline = build_pipeline(
+        trace_sink=CloseFailingTraceSink()
+    )
+
+    assert isinstance(
+        pipeline.trace_sink,
+        BestEffortTraceSink,
+    )
+
+    pipeline.close()
+
+    assert pipeline.trace_sink.close_failure_count == 1
+    assert pipeline.trace_sink.last_error is not None
+    assert "RuntimeError" in pipeline.trace_sink.last_error
+
+
+def test_closed_jsonl_sink_raises_observability_error(
+    tmp_path: Path,
+) -> None:
+    from src.errors import ObservabilityError
+
+    sink = JsonlTraceSink(
+        tmp_path / "closed.jsonl"
+    )
+    sink.close()
+
+    pipeline = build_pipeline()
+
+    result = pipeline.answer(
+        QueryState(
+            "What is my current MSc project scope?",
+            "user01",
+        )
+    )
+
+    try:
+        sink.emit(result)
+    except ObservabilityError as exc:
+        assert isinstance(exc, RuntimeError)
+    else:
+        raise AssertionError(
+            "Expected ObservabilityError."
+        )
+
+    pipeline.close()

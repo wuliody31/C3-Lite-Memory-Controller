@@ -14,6 +14,7 @@ from .ablation import (
 )
 from .contracts import (
     Backbone,
+    BestEffortTraceSink,
     MemoryStore,
     NullTraceSink,
     TraceSink,
@@ -564,11 +565,17 @@ class C3Pipeline:
             procedure_store
         )
         self.backbone = backbone
-        self.trace_sink = (
-            trace_sink
-            if trace_sink is not None
-            else NullTraceSink()
-        )
+        if trace_sink is None:
+            self.trace_sink: TraceSink = NullTraceSink()
+        elif isinstance(
+            trace_sink,
+            BestEffortTraceSink,
+        ):
+            self.trace_sink = trace_sink
+        else:
+            self.trace_sink = BestEffortTraceSink(
+                trace_sink
+            )
 
         self.analyzer = QueryAnalyzer(
             config

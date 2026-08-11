@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from .errors import ConfigurationError
+
 from copy import deepcopy
 from pathlib import Path
 from typing import Any
@@ -7,7 +9,7 @@ from typing import Any
 import yaml
 
 
-class ConfigError(ValueError):
+class ConfigError(ConfigurationError):
     pass
 
 

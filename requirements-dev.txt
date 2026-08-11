@@ -3,3 +3,4 @@
 ruff>=0.12,<1.0
 mypy>=1.17,<2.0
 pytest-cov>=6.0,<8.0
+types-PyYAML

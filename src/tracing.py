@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any, Protocol, TextIO
 from uuid import uuid4
 
+from .errors import ObservabilityError
 from .schemas import C3Result
 
 
@@ -30,6 +31,39 @@ class NullTraceSink:
 
     def close(self) -> None:
         pass
+
+
+class BestEffortTraceSink:
+    """Isolate observability failures from the C3 answer path.
+
+    The wrapped sink is allowed to fail without invalidating an otherwise
+    successful pipeline result. Failure counters remain available for
+    operational inspection.
+    """
+
+    def __init__(self, sink: TraceSink) -> None:
+        self.sink = sink
+        self.emit_failure_count = 0
+        self.close_failure_count = 0
+        self.last_error: str | None = None
+
+    def emit(self, result: C3Result) -> None:
+        try:
+            self.sink.emit(result)
+        except Exception as exc:
+            self.emit_failure_count += 1
+            self.last_error = (
+                f"{type(exc).__name__}: {exc}"
+            )
+
+    def close(self) -> None:
+        try:
+            self.sink.close()
+        except Exception as exc:
+            self.close_failure_count += 1
+            self.last_error = (
+                f"{type(exc).__name__}: {exc}"
+            )
 
 
 @dataclass(frozen=True, slots=True)
@@ -130,7 +164,7 @@ class JsonlTraceSink:
 
     def emit(self, result: C3Result) -> None:
         if self._handle.closed:
-            raise RuntimeError(
+            raise ObservabilityError(
                 "Cannot emit telemetry to a closed JsonlTraceSink."
             )
 

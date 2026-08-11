@@ -6,9 +6,20 @@ remain supported.
 """
 
 from ..backbones import Backbone, GenerationResult
+from ..errors import (
+    C3Error,
+    ConfigurationError,
+    GenerationError,
+    ObservabilityError,
+    RetrievalError,
+)
 from ..lifecycle import LifecycleStore
 from ..retrievers.base import MemoryStore
-from ..tracing import NullTraceSink, TraceSink
+from ..tracing import (
+    BestEffortTraceSink,
+    NullTraceSink,
+    TraceSink,
+)
 
 # Semantic alias for callers that view retrieval as a capability rather than
 # as a persistence implementation. The legacy MemoryStore name remains the
@@ -17,6 +28,12 @@ MemoryRetriever = MemoryStore
 
 __all__ = [
     "Backbone",
+    "C3Error",
+    "ConfigurationError",
+    "GenerationError",
+    "ObservabilityError",
+    "RetrievalError",
+    "BestEffortTraceSink",
     "GenerationResult",
     "LifecycleStore",
     "MemoryRetriever",

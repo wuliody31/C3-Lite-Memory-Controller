@@ -4,6 +4,8 @@ from pathlib import Path
 
 from .backbones import GenerationResult
 
+from .errors import GenerationError
+
 
 class TransformersBackbone:
     """Frozen Hugging Face Transformers backbone for C3-Lite.
@@ -141,7 +143,7 @@ class TransformersBackbone:
                 self.model.parameters()
             ).device
         except StopIteration as exc:
-            raise RuntimeError(
+            raise GenerationError(
                 "The loaded model contains no parameters."
             ) from exc
 
@@ -232,7 +234,7 @@ class TransformersBackbone:
         ).strip()
 
         if not generated_text:
-            raise RuntimeError(
+            raise GenerationError(
                 "The Transformers backbone returned "
                 "an empty generated response."
             )

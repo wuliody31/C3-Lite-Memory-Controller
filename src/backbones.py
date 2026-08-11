@@ -7,6 +7,8 @@ import urllib.request
 from dataclasses import dataclass
 from typing import Any, Protocol, cast
 
+from .errors import GenerationError
+
 
 @dataclass(slots=True)
 class GenerationResult:
@@ -140,24 +142,24 @@ class OllamaBackbone:
                 response_data = response.read().decode("utf-8")
         except urllib.error.HTTPError as exc:
             details = exc.read().decode("utf-8", errors="replace")
-            raise RuntimeError(
+            raise GenerationError(
                 f"Ollama returned HTTP {exc.code} at {self.base_url}: "
                 f"{details or exc.reason}"
             ) from exc
         except urllib.error.URLError as exc:
-            raise RuntimeError(
+            raise GenerationError(
                 f"Unable to call Ollama at {self.base_url}. Check that "
                 "Ollama is running and the requested model is installed."
             ) from exc
         except TimeoutError as exc:
-            raise RuntimeError(
+            raise GenerationError(
                 f"Ollama generation timed out after {self.timeout} seconds."
             ) from exc
 
         try:
             data = json.loads(response_data)
         except json.JSONDecodeError as exc:
-            raise RuntimeError(
+            raise GenerationError(
                 "Ollama returned a response that was not valid JSON."
             ) from exc
 
@@ -165,8 +167,8 @@ class OllamaBackbone:
         if not generated_text:
             error_message = str(data.get("error", "")).strip()
             if error_message:
-                raise RuntimeError(f"Ollama generation failed: {error_message}")
-            raise RuntimeError("Ollama returned an empty generated response.")
+                raise GenerationError(f"Ollama generation failed: {error_message}")
+            raise GenerationError("Ollama returned an empty generated response.")
 
         return GenerationResult(
             text=generated_text,
