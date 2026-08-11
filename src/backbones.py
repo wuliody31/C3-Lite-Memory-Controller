@@ -5,7 +5,7 @@ import re
 import urllib.error
 import urllib.request
 from dataclasses import dataclass
-from typing import Protocol
+from typing import Any, Protocol, cast
 
 
 @dataclass(slots=True)
@@ -181,6 +181,6 @@ def _optional_int(value: object) -> int | None:
     if value is None:
         return None
     try:
-        return int(value)
+        return int(cast(Any, value))
     except (TypeError, ValueError):
         return None

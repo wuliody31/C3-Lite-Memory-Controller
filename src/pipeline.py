@@ -12,7 +12,12 @@ from .ablation import (
     force_all_memory_route,
     select_ranked_top_k,
 )
-from .backbones import Backbone
+from .contracts import (
+    Backbone,
+    MemoryStore,
+    NullTraceSink,
+    TraceSink,
+)
 from .candidate_budget import (
     BoundaryAwareCandidateBudget,
 )
@@ -544,10 +549,11 @@ class C3Pipeline:
         self,
         *,
         config: dict[str, Any],
-        memory_store: Any,
-        procedure_store: Any | None,
+        memory_store: MemoryStore,
+        procedure_store: MemoryStore | None,
         backbone: Backbone,
         prompt_template: str | Path,
+        trace_sink: TraceSink | None = None,
     ) -> None:
         self.config = config
         self.ablation = AblationSettings.from_config(
@@ -558,6 +564,11 @@ class C3Pipeline:
             procedure_store
         )
         self.backbone = backbone
+        self.trace_sink = (
+            trace_sink
+            if trace_sink is not None
+            else NullTraceSink()
+        )
 
         self.analyzer = QueryAnalyzer(
             config
@@ -903,7 +914,7 @@ class C3Pipeline:
             )
         )
 
-        return C3Result(
+        result = C3Result(
             query=state.query,
             user_id=state.user_id,
             answer=answer,
@@ -1036,6 +1047,9 @@ class C3Pipeline:
             },
         )
 
+        self.trace_sink.emit(result)
+        return result
+
     def close(self) -> None:
         if hasattr(
             self.memory_store,
@@ -1051,3 +1065,5 @@ class C3Pipeline:
             )
         ):
             self.procedure_store.close()
+
+        self.trace_sink.close()
