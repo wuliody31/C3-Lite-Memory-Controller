@@ -19,3 +19,6 @@ class GenerationError(RuntimeError, C3Error):
 
 class ObservabilityError(RuntimeError, C3Error):
     """Failure inside an observability or telemetry adapter."""
+
+class ResourceCleanupError(RuntimeError, C3Error):
+    """One or more managed resources failed during cleanup."""

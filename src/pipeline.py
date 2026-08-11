@@ -17,6 +17,7 @@ from .contracts import (
     BestEffortTraceSink,
     MemoryStore,
     NullTraceSink,
+    ResourceCleanupError,
     TraceSink,
 )
 from .candidate_budget import (
@@ -565,6 +566,7 @@ class C3Pipeline:
             procedure_store
         )
         self.backbone = backbone
+        self._closed = False
         if trace_sink is None:
             self.trace_sink: TraceSink = NullTraceSink()
         elif isinstance(
@@ -1058,19 +1060,49 @@ class C3Pipeline:
         return result
 
     def close(self) -> None:
-        if hasattr(
-            self.memory_store,
-            "close",
-        ):
-            self.memory_store.close()
+        if self._closed:
+            return
 
-        if (
-            self.procedure_store
-            and hasattr(
-                self.procedure_store,
+        failures: list[tuple[str, Exception]] = []
+
+        resources = [
+            ("memory_store", self.memory_store),
+            ("procedure_store", self.procedure_store),
+            ("trace_sink", self.trace_sink),
+        ]
+
+        for name, resource in resources:
+            if resource is None:
+                continue
+
+            close = getattr(
+                resource,
                 "close",
+                None,
             )
-        ):
-            self.procedure_store.close()
 
-        self.trace_sink.close()
+            if not callable(close):
+                continue
+
+            try:
+                close()
+            except Exception as exc:
+                failures.append(
+                    (name, exc)
+                )
+
+        # One pipeline instance performs one cleanup attempt. This prevents
+        # repeated teardown from duplicating close side effects.
+        self._closed = True
+
+        if failures:
+            details = "; ".join(
+                f"{name}: "
+                f"{type(exc).__name__}: {exc}"
+                for name, exc in failures
+            )
+
+            raise ResourceCleanupError(
+                "Pipeline resource cleanup failed: "
+                + details
+            )

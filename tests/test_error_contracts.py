@@ -47,3 +47,16 @@ def test_lifecycle_errors_join_c3_hierarchy_without_breaking_runtime_contract() 
         LifecycleStoreError,
         LifecycleError,
     )
+
+
+def test_resource_cleanup_error_preserves_runtime_contract() -> None:
+    from src.contracts import ResourceCleanupError
+
+    assert issubclass(
+        ResourceCleanupError,
+        RuntimeError,
+    )
+    assert issubclass(
+        ResourceCleanupError,
+        C3Error,
+    )

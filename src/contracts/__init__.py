@@ -11,6 +11,7 @@ from ..errors import (
     ConfigurationError,
     GenerationError,
     ObservabilityError,
+    ResourceCleanupError,
     RetrievalError,
 )
 from ..lifecycle import LifecycleStore
@@ -32,6 +33,7 @@ __all__ = [
     "ConfigurationError",
     "GenerationError",
     "ObservabilityError",
+    "ResourceCleanupError",
     "RetrievalError",
     "BestEffortTraceSink",
     "GenerationResult",
