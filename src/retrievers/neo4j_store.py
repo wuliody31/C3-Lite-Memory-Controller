@@ -3,15 +3,25 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Any
 
+GraphDatabase: Any
+ClientError: Any
+
 try:
-    from neo4j import GraphDatabase
-    from neo4j.exceptions import ClientError
+    from neo4j import GraphDatabase as _GraphDatabase
+    from neo4j.exceptions import ClientError as _Neo4jClientError
 except ImportError:
     GraphDatabase = None
 
-    class ClientError(Exception):
+    class _FallbackClientError(Exception):
         pass
 
+    ClientError = _FallbackClientError
+else:
+    GraphDatabase = _GraphDatabase
+    ClientError = _Neo4jClientError
+
+
+from ..errors import RetrievalError
 
 from ..schemas import (
     MemoryCandidate,
@@ -89,29 +99,35 @@ class Neo4jMemoryStore:
         top_k: int,
         include_archived: bool = False,
     ) -> list[MemoryCandidate]:
-        if memory_type == MemoryType.EPISODIC:
-            return self._episodes(
-                state,
-                features,
-                top_k,
-            )
-
-        if memory_type == MemoryType.SEMANTIC:
-            effective_include_archived = (
-                self._include_archived(
-                    features=features,
-                    requested=include_archived,
+        try:
+            if memory_type == MemoryType.EPISODIC:
+                return self._episodes(
+                    state,
+                    features,
+                    top_k,
                 )
-            )
 
-            return self._semantic(
-                state,
-                features,
-                top_k,
-                effective_include_archived,
-            )
+            if memory_type == MemoryType.SEMANTIC:
+                effective_include_archived = (
+                    self._include_archived(
+                        features=features,
+                        requested=include_archived,
+                    )
+                )
 
-        return []
+                return self._semantic(
+                    state,
+                    features,
+                    top_k,
+                    effective_include_archived,
+                )
+
+            return []
+
+        except ClientError as exc:
+            raise RetrievalError(
+                "Neo4j retrieval fallback query failed."
+            ) from exc
 
     @staticmethod
     def _include_archived(
@@ -462,14 +478,26 @@ class Neo4jMemoryStore:
         cypher: str,
         **params: Any,
     ) -> list[dict[str, Any]]:
-        with self._session() as session:
-            return [
-                dict(record)
-                for record in session.run(
-                    cypher,
-                    **params,
-                )
-            ]
+        try:
+            with self._session() as session:
+                return [
+                    dict(record)
+                    for record in session.run(
+                        cypher,
+                        **params,
+                    )
+                ]
+
+        except ClientError:
+            # Full-text ClientError is intentionally allowed to propagate
+            # so episodic and semantic retrieval can use their existing
+            # fallback MATCH queries.
+            raise
+
+        except Exception as exc:
+            raise RetrievalError(
+                "Neo4j query execution failed."
+            ) from exc
 
     @staticmethod
     def _lucene(query: str) -> str:
