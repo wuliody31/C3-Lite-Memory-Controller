@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 
 from .backbones import GenerationResult
 
@@ -113,7 +114,7 @@ class TransformersBackbone:
                 quantization_config
             )
 
-        loaded_model = (
+        loaded_model: Any = (
             AutoModelForCausalLM.from_pretrained(
                 model,
                 **model_kwargs,
@@ -134,8 +135,8 @@ class TransformersBackbone:
         self.model_name = model
         self.adapter_path = adapter_path
         self.enable_thinking = bool(enable_thinking)
-        self.tokenizer = tokenizer
-        self.model = loaded_model
+        self.tokenizer: Any = tokenizer
+        self.model: Any = loaded_model
         self.torch = torch
 
         try:
