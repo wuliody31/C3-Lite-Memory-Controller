@@ -355,6 +355,27 @@ Formal100 C3 / Mem0 evaluation
         |
         v
 Paired cluster-bootstrap comparison
+        |
+        v
+Repository governance baseline
+        |
+        v
+Reproducible quality gates
+        |
+        v
+Typed integration contracts
+        |
+        v
+Safe telemetry and observability isolation
+        |
+        v
+Structured failure contracts
+        |
+        v
+Neo4j retrieval failure boundary
+        |
+        v
+Configuration and resource lifecycle hardening
 ```
 
 See [`docs/DEVELOPMENT_HISTORY.md`](docs/DEVELOPMENT_HISTORY.md).
@@ -387,9 +408,108 @@ The final paired C3 vs Mem0 lifecycle comparison is tagged:
 phase2b-b5-c3-vs-mem0-comparison-passed
 ```
 
+Enterprise-hardening checkpoints are preserved separately:
+
+```text
+c3-enterprise-governance-v01
+c3-enterprise-quality-v01
+c3-enterprise-contracts-v01
+c3-enterprise-reliability-v01
+```
+
+These tags record repository governance, reproducible quality gates,
+integration contracts, and reliability/failure semantics without replacing
+the frozen experimental checkpoints.
+
 ---
 
-## 10. Known Limitations
+## 10. Engineering Quality and Reliability
+
+The frozen research implementation is supplemented by a compatibility-focused
+engineering layer intended to improve reproducibility, integration clarity,
+and in-process reliability.
+
+### Quality baseline
+
+At the current enterprise-hardening checkpoint:
+
+- Python **3.11+** is the supported development baseline;
+- the complete regression and contract suite contains **191 passing tests**;
+- critical Ruff checks pass;
+- MyPy checks pass across the hardened service boundaries;
+- Python compilation checks pass;
+- GitHub Actions provides automated repository quality gates;
+- branch-aware coverage is recorded as a diagnostic baseline rather than used
+  as a target for mechanical coverage inflation.
+
+See [`docs/QUALITY_GATES.md`](docs/QUALITY_GATES.md).
+
+### Stable integration contracts
+
+The repository exposes typed service boundaries for:
+
+- memory retrieval through `MemoryStore`;
+- language-model generation through `Backbone`;
+- lifecycle persistence through `LifecycleStore`;
+- observability through `TraceSink`.
+
+The compatibility facade is documented in
+[`docs/INTERFACES_AND_CONTRACTS.md`](docs/INTERFACES_AND_CONTRACTS.md).
+
+### Observability and failure isolation
+
+C3 supports a restricted JSONL telemetry projection that excludes query text,
+answer text, prompts, evidence content, and full debug payloads.
+
+User-provided observability sinks are isolated through `BestEffortTraceSink`,
+so telemetry failures do not invalidate an otherwise successful answer path.
+
+### Structured failure contracts
+
+The public exception hierarchy includes:
+
+- `C3Error`;
+- `ConfigurationError`;
+- `RetrievalError`;
+- `GenerationError`;
+- `ObservabilityError`;
+- `ResourceCleanupError`;
+- the existing lifecycle exception hierarchy.
+
+Neo4j retrieval distinguishes a valid empty result from an operational backend
+failure, while preserving the existing full-text-to-MATCH fallback behaviour.
+
+### Configuration and resource lifecycle
+
+Configuration validation fails early for malformed required sections, missing
+weight keys, non-numeric weights, and invalid weight normalisation.
+
+`C3Pipeline.close()` performs coordinated resource teardown, attempts remaining
+resources even when an earlier close operation fails, and is idempotent at the
+pipeline boundary.
+
+Detailed failure semantics are documented in
+[`docs/RELIABILITY.md`](docs/RELIABILITY.md).
+
+### Claim boundary
+
+These mechanisms strengthen software quality, reproducibility, integration
+contracts, and in-process failure handling.
+
+They do **not** establish:
+
+- distributed fault tolerance;
+- automatic retry orchestration;
+- circuit breaking;
+- high-availability deployment;
+- multi-process telemetry guarantees;
+- production-scale concurrency guarantees;
+- service-level availability;
+- production deployment certification.
+
+---
+
+## 11. Known Limitations
 
 Current limitations include:
 
@@ -403,7 +523,7 @@ Current limitations include:
 
 ---
 
-## 11. Research Positioning
+## 12. Research Positioning
 
 C3 should be interpreted as a:
 
@@ -421,7 +541,7 @@ The primary contribution is not simply storing or retrieving more memory. It is 
 
 ---
 
-## 12. Citation and Academic Use
+## 13. Citation and Academic Use
 
 This repository accompanies an MSc dissertation on multi-memory orchestration and lifecycle-aware long-term memory for LLM agents.
 
