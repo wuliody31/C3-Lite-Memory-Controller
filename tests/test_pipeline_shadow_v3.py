@@ -61,7 +61,7 @@ def build_pipeline() -> C3Pipeline:
     )
 
 
-def test_shadow_trace_is_present() -> None:
+def test_c3_v3_trace_is_present() -> None:
     pipeline = build_pipeline()
 
     try:
@@ -81,7 +81,7 @@ def test_shadow_trace_is_present() -> None:
         result.debug[
             "c3_v3_shadow_only"
         ]
-        is True
+        is False
     )
 
     assert (

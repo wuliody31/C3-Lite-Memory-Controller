@@ -38,6 +38,9 @@ from .query_analyzer import (
 from .repair_planner import (
     TargetedRepairPlanner,
 )
+from .repair_executor import (
+    EvidenceRepairExecutor,
+)
 from .requirement_compiler import (
     RequirementCompiler,
 )
@@ -801,7 +804,23 @@ class C3Pipeline:
         self.repair_planner = (
             TargetedRepairPlanner()
         )
-
+        self.repair_executor = (
+            EvidenceRepairExecutor(
+                config=config,
+                memory_store=memory_store,
+                procedure_store=procedure_store,
+                ranker=self.ranker,
+                candidate_budget=(
+                    self.candidate_budget
+                ),
+                detector=self.detector,
+                resolver=self.resolver,
+                selector=self.selector,
+                sufficiency=(
+                    self.requirement_sufficiency
+                ),
+            )
+        )
         # -------------------------------------------------
         # Legacy downstream generation/control
         # -------------------------------------------------
@@ -1135,6 +1154,76 @@ class C3Pipeline:
                 ),
             )
         )
+        # =================================================
+        # C3-v3 ACTIVE sufficiency-driven repair
+        # =================================================
+
+        c3_v3_repair_execution = (
+            self.repair_executor.execute(
+                state=state,
+                features=features,
+                original_route=route,
+                spec=(
+                    c3_v3_compilation
+                    .spec
+                ),
+                repair_plan=(
+                    c3_v3_repair_plan
+                ),
+                original_raw_candidates=(
+                    raw_candidates
+                ),
+                original_selected=selected,
+                original_conflicts=conflicts,
+                original_sufficiency=(
+                    c3_v3_sufficiency
+                ),
+            )
+        )
+
+        # Accept the repaired evidence set only when
+        # hard requirement coverage strictly improves.
+        if (
+            c3_v3_repair_execution
+            .accepted
+        ):
+            route = (
+                c3_v3_repair_execution
+                .route
+            )
+
+            selected = (
+                c3_v3_repair_execution
+                .selected
+            )
+
+            conflicts = (
+                c3_v3_repair_execution
+                .conflicts
+            )
+
+            c3_v3_sufficiency = (
+                c3_v3_repair_execution
+                .sufficiency
+            )
+
+        # NEW: include repair-round retrievals in the
+        # total retrieval trace.
+        if (
+            c3_v3_repair_execution
+            .attempted
+        ):
+            raw_retrieved_ids = list(
+                dict.fromkeys(
+                    [
+                        *raw_retrieved_ids,
+                        *(
+                            c3_v3_repair_execution
+                            .repair_retrieved_ids
+                        ),
+                    ]
+                )
+            )
 
         # =================================================
         # 9. Legacy coverage
@@ -1142,12 +1231,10 @@ class C3Pipeline:
 
         coverage = (
             self.coverage.compute(
-                features
-                .information_needs,
+                features.information_needs,
                 selected,
             )
         )
-
         # =================================================
         # 10. Confidence / answer decision
         # =================================================
@@ -1412,7 +1499,7 @@ class C3Pipeline:
                 # -----------------------------------------
 
                 "c3_v3_shadow_only": (
-                    True
+                    False
                 ),
 
                 "c3_v3_requirement_spec": (
@@ -1430,7 +1517,28 @@ class C3Pipeline:
                     c3_v3_repair_plan
                     .to_dict()
                 ),
-
+                "c3_v3_repair_execution": {
+                    "attempted": (
+                        c3_v3_repair_execution
+                        .attempted
+                    ),
+                    "accepted": (
+                        c3_v3_repair_execution
+                        .accepted
+                    ),
+                    "repair_retrieved_ids": (
+                        c3_v3_repair_execution
+                        .repair_retrieved_ids
+                    ),
+                    "added_candidate_ids": (
+                        c3_v3_repair_execution
+                        .added_candidate_ids
+                    ),
+                    "trace": (
+                        c3_v3_repair_execution
+                        .trace
+                    ),
+                },
                 "c3_v3_legacy_compatibility": {
                     "query_mode_match": (
                         c3_v3_compilation
