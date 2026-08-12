@@ -38,9 +38,36 @@ class RequirementCompiler:
         *,
         conflicts: list[ConflictGroup] | None = None,
     ) -> RequirementCompilation:
-        features = self.analyzer.analyse(query)
+        """Compile directly from a raw query."""
 
-        route = self.router.plan(features)
+        features = self.analyzer.analyse(
+            query
+        )
+
+        route = self.router.plan(
+            features
+        )
+
+        return self.compile_from_legacy(
+            query=query,
+            features=features,
+            route=route,
+            conflicts=conflicts,
+        )
+
+    def compile_from_legacy(
+        self,
+        *,
+        query: str,
+        features,
+        route,
+        conflicts: list[ConflictGroup] | None = None,
+    ) -> RequirementCompilation:
+        """Compile z_q from already validated RC8.3 decisions.
+
+        This avoids running QueryAnalyzer and RoutePlanner twice
+        when C3-v3 is integrated into the existing pipeline.
+        """
 
         evidence_plan = (
             self.requirement_planner.plan(
