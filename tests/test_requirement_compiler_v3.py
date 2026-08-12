@@ -162,3 +162,30 @@ def test_timeline_becomes_temporal_requirement() -> None:
 
     assert "earlier" in needs
     assert "current" in needs
+
+def test_previous_query_compiles_historical_requirement() -> None:
+    cfg = config()
+
+    compiled = RequirementCompiler(
+        cfg
+    ).compile(
+        "What was my previous MSc project scope?"
+    )
+
+    assert (
+        compiled.spec.temporal_mode
+        == QueryMode.HISTORICAL
+    )
+
+    assert (
+        compiled.spec.asks_historical_state
+    )
+
+    roles = {
+        requirement.role
+        for requirement
+        in compiled.spec.requirements
+    }
+
+    assert "answer_target" in roles
+    assert "historical_state" in roles

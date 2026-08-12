@@ -9,7 +9,10 @@ from src.retrievers import (
     InMemoryMemoryStore,
     ProceduralJsonStore,
 )
-from src.schemas import QueryState
+from src.schemas import (
+    QueryMode,
+    QueryState,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -164,3 +167,38 @@ def test_satisfied_query_does_not_plan_repair() -> None:
     assert not repair[
         "needed"
     ]
+
+def test_previous_scope_is_treated_as_historical() -> None:
+    pipeline = build_pipeline()
+
+    try:
+        result = pipeline.answer(
+            QueryState(
+                query=(
+                    "What was my previous "
+                    "MSc project scope?"
+                ),
+                user_id="user01",
+            )
+        )
+    finally:
+        pipeline.close()
+
+    assert (
+        result.query_mode
+        == QueryMode.HISTORICAL
+    )
+
+    requirement_spec = result.debug[
+        "c3_v3_requirement_spec"
+    ]
+
+    roles = {
+        item["role"]
+        for item
+        in requirement_spec[
+            "requirements"
+        ]
+    }
+
+    assert "historical_state" in roles

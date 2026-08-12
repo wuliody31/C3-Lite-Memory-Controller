@@ -31,6 +31,7 @@ class QueryAnalyzer:
     }
 
     TEMPORAL_HISTORICAL = {
+        "previous",
         "previously",
         "originally",
         "before",
