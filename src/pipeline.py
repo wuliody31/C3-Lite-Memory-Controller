@@ -100,6 +100,29 @@ def _candidate_score_trace(
         "validity_score": (
             candidate.validity_score
         ),
+        "legacy_validity_score": (
+            candidate.metadata.get(
+                "legacy_validity_score"
+            )
+        ),
+
+        "query_relative_validity_score": (
+            candidate.metadata.get(
+                "query_relative_validity_score"
+            )
+        ),
+
+        "query_relative_temporal_role": (
+            candidate.metadata.get(
+                "query_relative_temporal_role"
+            )
+        ),
+
+        "query_relative_temporal_compatible": (
+            candidate.metadata.get(
+                "query_relative_temporal_compatible"
+            )
+        ),
         "source_confidence_score": (
             candidate.source_confidence_score
         ),
@@ -1107,10 +1130,18 @@ class C3Pipeline:
                 candidate.memory_id
             ] = {
                 "old_validity_score": (
-                    candidate.validity_score
+                    candidate.metadata.get(
+                        "legacy_validity_score",
+                        candidate.validity_score,
+                    )
                 ),
                 "old_temporal_task_score": (
                     candidate.temporal_task_score
+                ),
+                "rank_query_relative_validity": (
+                    candidate.metadata.get(
+                        "query_relative_validity_score"
+                    )
                 ),
                 "new_query_relative_validity": (
                     temporal_result.score
