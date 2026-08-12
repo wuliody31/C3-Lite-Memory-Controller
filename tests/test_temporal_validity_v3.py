@@ -215,3 +215,122 @@ def test_resolution_action_overrides_raw_status() -> None:
         result.temporal_role
         == "historical_state"
     )
+
+def test_legacy_preferred_historical_does_not_turn_current_fact_historical() -> None:
+    cfg = config()
+
+    analyzer = QueryAnalyzer(cfg)
+
+    evaluator = (
+        QueryRelativeTemporalValidity(
+            cfg
+        )
+    )
+
+    features = analyzer.analyse(
+        "What was my previous MSc project scope?"
+    )
+
+    candidate = current_candidate()
+
+    # Legacy ConflictResolver may use this label for
+    # the preferred member of a historical conflict
+    # group even when the raw memory itself is current.
+    candidate.resolution_action = (
+        "preferred_historical"
+    )
+
+    result = evaluator.evaluate(
+        candidate=candidate,
+        features=features,
+    )
+
+    assert (
+        result.temporal_role
+        == "current_state"
+    )
+
+    assert result.score == 0.25
+
+    assert not result.compatible
+
+def test_current_episodic_memory_is_not_current_state_endpoint() -> None:
+    cfg = config()
+
+    analyzer = QueryAnalyzer(cfg)
+
+    evaluator = (
+        QueryRelativeTemporalValidity(
+            cfg
+        )
+    )
+
+    features = analyzer.analyse(
+        "What is my current MSc project scope?"
+    )
+
+    event = MemoryCandidate(
+        memory_id="event_current",
+        memory_type=MemoryType.EPISODIC,
+        text=(
+            "The user changed the project "
+            "scope during a supervision meeting."
+        ),
+        user_id="user01",
+        status="current",
+    )
+
+    result = evaluator.evaluate(
+        candidate=event,
+        features=features,
+    )
+
+    assert (
+        result.temporal_role
+        == "supporting_event"
+    )
+
+    assert result.score == 0.45
+
+    assert result.compatible
+
+
+def test_timeline_episodic_memory_is_transition_event() -> None:
+    cfg = config()
+
+    analyzer = QueryAnalyzer(cfg)
+
+    evaluator = (
+        QueryRelativeTemporalValidity(
+            cfg
+        )
+    )
+
+    features = analyzer.analyse(
+        "How did my project scope change over time?"
+    )
+
+    event = MemoryCandidate(
+        memory_id="event_transition",
+        memory_type=MemoryType.EPISODIC,
+        text=(
+            "The user changed the project "
+            "scope after supervisor feedback."
+        ),
+        user_id="user01",
+        status="current",
+    )
+
+    result = evaluator.evaluate(
+        candidate=event,
+        features=features,
+    )
+
+    assert (
+        result.temporal_role
+        == "transition_event"
+    )
+
+    assert result.score == 0.95
+
+    assert result.compatible

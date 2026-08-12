@@ -60,6 +60,9 @@ from .schemas import (
     RouteDecision,
     unique_candidates,
 )
+from .temporal_validity import (
+    QueryRelativeTemporalValidity,
+)
 from .shared_ranker import (
     SharedRanker,
 )
@@ -800,7 +803,11 @@ class C3Pipeline:
                 config
             )
         )
-
+        self.temporal_validity = (
+            QueryRelativeTemporalValidity(
+                config
+            )
+        )
         self.repair_planner = (
             TargetedRepairPlanner()
         )
@@ -1076,7 +1083,54 @@ class C3Pipeline:
                 features=features,
             )
         )
+        # =================================================
+        # C3-v3 SHADOW query-relative temporal validity
+        #
+        # Evaluate after conflict resolution so explicit
+        # resolution_action labels can be used.
+        #
+        # IMPORTANT:
+        # These scores do NOT modify final_score yet.
+        # =================================================
 
+        c3_v3_temporal_validity = {}
+
+        for candidate in resolved_candidates:
+            temporal_result = (
+                self.temporal_validity.evaluate(
+                    candidate=candidate,
+                    features=features,
+                )
+            )
+
+            c3_v3_temporal_validity[
+                candidate.memory_id
+            ] = {
+                "old_validity_score": (
+                    candidate.validity_score
+                ),
+                "old_temporal_task_score": (
+                    candidate.temporal_task_score
+                ),
+                "new_query_relative_validity": (
+                    temporal_result.score
+                ),
+                "temporal_role": (
+                    temporal_result.temporal_role
+                ),
+                "compatible": (
+                    temporal_result.compatible
+                ),
+                "reasons": list(
+                    temporal_result.reasons
+                ),
+                "status": (
+                    candidate.status
+                ),
+                "resolution_action": (
+                    candidate.resolution_action
+                ),
+            }
         # =================================================
         # 6. Requirement-aware evidence selection
         # =================================================
@@ -1507,7 +1561,9 @@ class C3Pipeline:
                     .spec
                     .to_dict()
                 ),
-
+                "c3_v3_temporal_validity": (
+                    c3_v3_temporal_validity
+                ),
                 "c3_v3_sufficiency": (
                     c3_v3_sufficiency
                     .to_dict()

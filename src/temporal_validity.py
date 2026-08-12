@@ -75,7 +75,6 @@ class QueryRelativeTemporalValidity:
 
     HISTORICAL_ACTIONS = {
         "historical",
-        "preferred_historical",
     }
 
     EXCLUDED_ACTIONS = {
@@ -419,11 +418,22 @@ class QueryRelativeTemporalValidity:
         self,
         candidate: MemoryCandidate,
     ) -> bool:
+        """Return whether a candidate represents a current state endpoint.
+
+        An explicit conflict-resolution action can identify an endpoint.
+
+        Otherwise, raw ``status=current`` establishes a current endpoint only
+        for semantic state memories. Episodic memories describe events and
+        must not become current-state endpoints merely because their storage
+        status is current.
+        """
+
         action = (
             candidate.resolution_action
             or ""
         ).lower()
 
+        # Explicit resolver semantics take precedence.
         if action in self.CURRENT_ACTIONS:
             return True
 
@@ -433,8 +443,12 @@ class QueryRelativeTemporalValidity:
         ):
             return False
 
+        # Raw current status represents a factual state endpoint only
+        # for semantic memory. Episodic memories remain events.
         return (
-            candidate.status.lower()
+            candidate.memory_type
+            == MemoryType.SEMANTIC
+            and candidate.status.lower()
             in self.current_statuses
         )
 
