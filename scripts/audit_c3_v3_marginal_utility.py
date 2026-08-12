@@ -1,11 +1,20 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 
 from src.backbones import MockBackbone
 from src.config import load_config
-from src.evidence_utility import EvidenceUtilityModel
+from src.evidence_requirements import (
+    EvidenceRequirement,
+)
+from src.evidence_utility import (
+    EvidenceUtilityModel,
+)
 from src.pipeline import C3Pipeline
+from src.requirement_gain_v3 import (
+    QueryConsistentRequirementGain,
+)
 from src.retrievers import (
     InMemoryMemoryStore,
     ProceduralJsonStore,
@@ -27,7 +36,11 @@ def build_pipeline() -> C3Pipeline:
     )
 
     stopwords = set(
-        config["query_analysis"]["stopwords"]
+        config[
+            "query_analysis"
+        ][
+            "stopwords"
+        ]
     )
 
     memory_store = (
@@ -65,26 +78,140 @@ def build_pipeline() -> C3Pipeline:
     )
 
 
+def extract_requirements(
+    result: Any,
+) -> list[EvidenceRequirement]:
+    """Reconstruct compiled EvidenceRequirement objects from debug trace."""
+
+    spec = result.debug[
+        "c3_v3_requirement_spec"
+    ]
+
+    raw_requirements = spec.get(
+        "requirements",
+        [],
+    )
+
+    requirements: list[
+        EvidenceRequirement
+    ] = []
+
+    for item in raw_requirements:
+        if isinstance(
+            item,
+            EvidenceRequirement,
+        ):
+            requirements.append(
+                item
+            )
+            continue
+
+        if not isinstance(
+            item,
+            dict,
+        ):
+            continue
+
+        requirements.append(
+            EvidenceRequirement(
+                role=str(
+                    item.get(
+                        "role",
+                        "",
+                    )
+                ),
+                min_count=int(
+                    item.get(
+                        "min_count",
+                        1,
+                    )
+                ),
+                hard=bool(
+                    item.get(
+                        "hard",
+                        True,
+                    )
+                ),
+                distinct=bool(
+                    item.get(
+                        "distinct",
+                        False,
+                    )
+                ),
+                description=str(
+                    item.get(
+                        "description",
+                        "",
+                    )
+                    or ""
+                ),
+            )
+        )
+
+    return [
+        requirement
+        for requirement
+        in requirements
+        if requirement.role
+    ]
+
+
+def print_requirements(
+    requirements: list[
+        EvidenceRequirement
+    ],
+) -> None:
+    print(
+        "COMPILED REQUIREMENTS:"
+    )
+
+    if not requirements:
+        print(
+            "  <none>"
+        )
+        return
+
+    for requirement in requirements:
+        print(
+            " ",
+            requirement.role,
+            "| hard=",
+            requirement.hard,
+            "| min_count=",
+            requirement.min_count,
+            "| distinct=",
+            requirement.distinct,
+        )
+
+
 def print_step(
     *,
     step: int,
     candidate: MemoryCandidate,
-    utility_result,
-    raw_requirement_gain: float,
-    selected_before: list[MemoryCandidate],
+    selected_before: list[
+        MemoryCandidate
+    ],
+    legacy_requirement_gain: float,
+    consistent_gain,
+    legacy_utility,
+    consistent_utility,
 ) -> None:
     print()
-    print("-" * 100)
+    print(
+        "-" * 100
+    )
 
     print(
-        f"STEP {step}: ADD {candidate.memory_id}"
+        f"STEP {step}: ADD "
+        f"{candidate.memory_id}"
     )
 
     print(
         "SELECTED BEFORE:",
         [
             item.memory_id
-            for item in selected_before
+            for item
+            in selected_before
         ],
     )
 
@@ -96,7 +223,7 @@ def print_step(
     )
 
     print(
-        "EVIDENCE ROLES:",
+        "LEGACY EVIDENCE ROLES:",
         candidate.metadata.get(
             "evidence_roles",
             [],
@@ -104,62 +231,122 @@ def print_step(
     )
 
     print(
-        "RAW SELECTOR REQUIREMENT GAIN:",
-        raw_requirement_gain,
+        "QUERY TEMPORAL ROLE:",
+        candidate.metadata.get(
+            "query_relative_temporal_role"
+        ),
+    )
+
+    print(
+        "TEMPORAL COMPATIBLE:",
+        candidate.metadata.get(
+            "query_relative_temporal_compatible"
+        ),
     )
 
     print()
 
     print(
-        "relevance                =",
-        utility_result.relevance,
+        "LEGACY SELECTOR REQUIREMENT GAIN:",
+        legacy_requirement_gain,
     )
 
     print(
-        "temporal_validity        =",
-        utility_result.temporal_validity,
+        "C3-V3 EFFECTIVE ROLES:",
+        consistent_gain.effective_roles,
     )
 
     print(
-        "provenance               =",
-        utility_result.provenance,
+        "C3-V3 GAINED ROLES:",
+        consistent_gain.gained_roles,
     )
 
     print(
-        "requirement_gain         =",
-        utility_result.requirement_gain,
+        "C3-V3 REQUIREMENT COVERAGE BEFORE:",
+        consistent_gain.before_coverage,
     )
 
     print(
-        "coverage_gain            =",
-        utility_result.coverage_gain,
+        "C3-V3 REQUIREMENT COVERAGE AFTER:",
+        consistent_gain.after_coverage,
     )
 
     print(
-        "incompatibility          =",
-        utility_result.incompatibility,
+        "C3-V3 REQUIREMENT GAIN:",
+        consistent_gain.gain,
     )
 
     print(
-        "redundancy               =",
-        utility_result.redundancy,
+        "C3-V3 HARD GAIN:",
+        consistent_gain.hard_gain,
     )
 
     print(
-        "token_cost               =",
-        utility_result.token_cost,
-    )
-
-    print(
-        "normalised_token_cost    =",
-        utility_result.normalised_token_cost,
+        "C3-V3 SOFT GAIN:",
+        consistent_gain.soft_gain,
     )
 
     print()
 
     print(
-        "MARGINAL UTILITY ΔU      =",
-        utility_result.utility,
+        "relevance             =",
+        consistent_utility.relevance,
+    )
+
+    print(
+        "temporal_validity     =",
+        consistent_utility.temporal_validity,
+    )
+
+    print(
+        "provenance            =",
+        consistent_utility.provenance,
+    )
+
+    print(
+        "coverage_gain         =",
+        consistent_utility.coverage_gain,
+    )
+
+    print(
+        "incompatibility       =",
+        consistent_utility.incompatibility,
+    )
+
+    print(
+        "redundancy            =",
+        consistent_utility.redundancy,
+    )
+
+    print(
+        "token_cost            =",
+        consistent_utility.token_cost,
+    )
+
+    print(
+        "normalised_token_cost =",
+        consistent_utility.normalised_token_cost,
+    )
+
+    print()
+
+    print(
+        "LEGACY-GAIN UTILITY   =",
+        legacy_utility.utility,
+    )
+
+    print(
+        "C3-V3 UTILITY ΔU      =",
+        consistent_utility.utility,
+    )
+
+    print(
+        "UTILITY CHANGE        =",
+        round(
+            consistent_utility.utility
+            - legacy_utility.utility,
+            6,
+        ),
     )
 
 
@@ -167,6 +354,9 @@ def audit_query(
     *,
     pipeline: C3Pipeline,
     utility_model: EvidenceUtilityModel,
+    requirement_gain_model: (
+        QueryConsistentRequirementGain
+    ),
     label: str,
     query: str,
 ) -> None:
@@ -183,36 +373,61 @@ def audit_query(
         )
     )
 
+    requirements = (
+        extract_requirements(
+            result
+        )
+    )
+
     print()
-    print("=" * 100)
-    print("CASE:", label)
-    print("QUERY:", query)
+    print(
+        "=" * 100
+    )
+
+    print(
+        "CASE:",
+        label,
+    )
+
+    print(
+        "QUERY:",
+        query,
+    )
+
     print(
         "QUERY MODE:",
         result.query_mode.value,
     )
+
     print(
         "FINAL SELECTED:",
         result.selected_ids,
     )
+
     print(
         "FINAL COVERAGE:",
         result.coverage,
+    )
+
+    print()
+
+    print_requirements(
+        requirements
     )
 
     selected_so_far: list[
         MemoryCandidate
     ] = []
 
-    utilities: list[
-        tuple[str, float]
+    summary_rows: list[
+        dict[str, Any]
     ] = []
 
     for step, candidate in enumerate(
         result.selected_evidence,
         start=1,
     ):
-        raw_requirement_gain = float(
+        legacy_requirement_gain = float(
             candidate.metadata.get(
                 "selector_requirement_gain",
                 0.0,
@@ -220,13 +435,32 @@ def audit_query(
             or 0.0
         )
 
-        utility_result = (
+        consistent_gain = (
+            requirement_gain_model.evaluate(
+                candidate=candidate,
+                selected=selected_so_far,
+                requirements=requirements,
+            )
+        )
+
+        legacy_utility = (
             utility_model.evaluate(
                 candidate=candidate,
                 selected=selected_so_far,
                 features=features,
                 requirement_gain=(
-                    raw_requirement_gain
+                    legacy_requirement_gain
+                ),
+            )
+        )
+
+        consistent_utility = (
+            utility_model.evaluate(
+                candidate=candidate,
+                selected=selected_so_far,
+                features=features,
+                requirement_gain=(
+                    consistent_gain.gain
                 ),
             )
         )
@@ -234,20 +468,52 @@ def audit_query(
         print_step(
             step=step,
             candidate=candidate,
-            utility_result=utility_result,
-            raw_requirement_gain=(
-                raw_requirement_gain
-            ),
             selected_before=(
                 selected_so_far
             ),
+            legacy_requirement_gain=(
+                legacy_requirement_gain
+            ),
+            consistent_gain=(
+                consistent_gain
+            ),
+            legacy_utility=(
+                legacy_utility
+            ),
+            consistent_utility=(
+                consistent_utility
+            ),
         )
 
-        utilities.append(
-            (
-                candidate.memory_id,
-                utility_result.utility,
-            )
+        summary_rows.append(
+            {
+                "memory_id": (
+                    candidate.memory_id
+                ),
+                "legacy_gain": (
+                    legacy_requirement_gain
+                ),
+                "consistent_gain": (
+                    consistent_gain.gain
+                ),
+                "hard_gain": (
+                    consistent_gain.hard_gain
+                ),
+                "soft_gain": (
+                    consistent_gain.soft_gain
+                ),
+                "legacy_utility": (
+                    legacy_utility.utility
+                ),
+                "utility": (
+                    consistent_utility.utility
+                ),
+                "compatible": (
+                    candidate.metadata.get(
+                        "query_relative_temporal_compatible"
+                    )
+                ),
+            }
         )
 
         selected_so_far.append(
@@ -255,41 +521,48 @@ def audit_query(
         )
 
     print()
-    print("-" * 100)
-
     print(
-        "SEQUENTIAL UTILITIES:"
+        "-" * 100
     )
 
-    for memory_id, utility in utilities:
+    print(
+        "FINAL STEP SUMMARY:"
+    )
+
+    for row in summary_rows:
         print(
-            memory_id,
-            "=>",
-            utility,
+            row[
+                "memory_id"
+            ],
+            "| legacy_gain=",
+            row[
+                "legacy_gain"
+            ],
+            "| valid_gain=",
+            row[
+                "consistent_gain"
+            ],
+            "| hard_gain=",
+            row[
+                "hard_gain"
+            ],
+            "| soft_gain=",
+            row[
+                "soft_gain"
+            ],
+            "| legacy_U=",
+            row[
+                "legacy_utility"
+            ],
+            "| c3_U=",
+            row[
+                "utility"
+            ],
+            "| compatible=",
+            row[
+                "compatible"
+            ],
         )
-
-    if len(utilities) >= 2:
-        first_id, first_utility = (
-            utilities[0]
-        )
-
-        print()
-        print(
-            "UTILITY AFTER FIRST EVIDENCE:"
-        )
-
-        for memory_id, utility in (
-            utilities[1:]
-        ):
-            print(
-                memory_id,
-                "relative_to_first=",
-                round(
-                    utility
-                    - first_utility,
-                    6,
-                ),
-            )
 
 
 def main() -> None:
@@ -302,18 +575,31 @@ def main() -> None:
         )
     )
 
+    requirement_gain_model = (
+        QueryConsistentRequirementGain()
+    )
+
     cases = [
         (
             "CURRENT",
-            "What is my current MSc project scope?",
+            (
+                "What is my current "
+                "MSc project scope?"
+            ),
         ),
         (
             "HISTORICAL",
-            "What was my previous MSc project scope?",
+            (
+                "What was my previous "
+                "MSc project scope?"
+            ),
         ),
         (
             "TIMELINE",
-            "How did my project scope change over time?",
+            (
+                "How did my project scope "
+                "change over time?"
+            ),
         ),
         (
             "PROCEDURAL",
@@ -326,8 +612,8 @@ def main() -> None:
         (
             "EXPLANATION",
             (
-                "Why did my MSc project scope "
-                "change?"
+                "Why did my MSc project "
+                "scope change?"
             ),
         ),
     ]
@@ -337,6 +623,9 @@ def main() -> None:
             audit_query(
                 pipeline=pipeline,
                 utility_model=utility_model,
+                requirement_gain_model=(
+                    requirement_gain_model
+                ),
                 label=label,
                 query=query,
             )

@@ -22,14 +22,23 @@ from .conflict_resolver import (
 from .coverage_estimator import (
     CoverageEstimator,
 )
+from .evidence_arbitrator_v3 import (
+    EvidenceArbitratorV3,
+)
 from .evidence_selector import (
     EvidenceSelector,
+)
+from .evidence_utility import (
+    EvidenceUtilityModel,
 )
 from .prompt_builder import (
     PromptBuilder,
 )
 from .query_analyzer import (
     QueryAnalyzer,
+)
+from .requirement_gain_v3 import (
+    QueryConsistentRequirementGain,
 )
 
 # ---------------------------------------------------------
@@ -812,6 +821,32 @@ class C3Pipeline:
         )
 
         # -------------------------------------------------
+        # C3-v3 shadow evidence-set arbitration
+        #
+        # Legacy EvidenceSelector remains active for
+        # generation. The arbitrator is a comparator only.
+        # -------------------------------------------------
+
+        self.evidence_utility_v3 = (
+            EvidenceUtilityModel(
+                config,
+                self.coverage,
+            )
+        )
+
+        self.requirement_gain_v3 = (
+            QueryConsistentRequirementGain()
+        )
+
+        self.evidence_arbitrator_v3 = (
+            EvidenceArbitratorV3(
+                config,
+                self.evidence_utility_v3,
+                self.requirement_gain_v3,
+            )
+        )
+
+        # -------------------------------------------------
         # C3-v3 shadow method-level components
         # -------------------------------------------------
 
@@ -1195,6 +1230,279 @@ class C3Pipeline:
                 .last_requirement_status
             )
         )
+
+        # =================================================
+        # 6B. C3-v3 SHADOW evidence arbitration comparator
+        #
+        # Comparison stage:
+        #     post-conflict-resolution / pre-repair
+        #
+        # The legacy selector remains the active selector.
+        # This block only computes an alternative evidence
+        # set over the SAME resolved candidate pool.
+        # =================================================
+
+        legacy_selected_pre_repair_ids = [
+            candidate.memory_id
+            for candidate
+            in selected
+        ]
+
+        c3_v3_shadow_comparison: dict[
+            str,
+            Any,
+        ] = {
+            "available": False,
+            "active_for_generation": False,
+            "comparison_stage": (
+                "post_resolution_pre_repair"
+            ),
+            "legacy_selected_ids": list(
+                legacy_selected_pre_repair_ids
+            ),
+            "c3_v3_selected_ids": [],
+            "same_set": False,
+            "same_order": False,
+            "removed_by_c3_v3": [],
+            "added_by_c3_v3": [],
+            "legacy_count": len(
+                legacy_selected_pre_repair_ids
+            ),
+            "c3_v3_count": 0,
+            "count_delta": (
+                -len(
+                    legacy_selected_pre_repair_ids
+                )
+            ),
+            "hard_complete": False,
+            "soft_complete": False,
+            "used_tokens": 0,
+            "rejected_incompatible": [],
+            "rejected_budget": [],
+            "steps": [],
+            "reason": (
+                "legacy_selector_plan_unavailable"
+            ),
+        }
+
+        legacy_plan = (
+            self.selector.last_plan
+        )
+
+        if legacy_plan is not None:
+            # Work on deep copies so shadow arbitration
+            # cannot mutate the active legacy candidates.
+            c3_v3_shadow_candidates = [
+                deepcopy(
+                    candidate
+                )
+                for candidate
+                in resolved_candidates
+            ]
+
+            # Re-evaluate temporal semantics after conflict
+            # resolution. Rank-time annotations may predate
+            # resolution_action changes.
+            for candidate in (
+                c3_v3_shadow_candidates
+            ):
+                temporal_result = (
+                    self.temporal_validity
+                    .evaluate(
+                        candidate=candidate,
+                        features=features,
+                    )
+                )
+
+                candidate.validity_score = (
+                    temporal_result.score
+                )
+
+                candidate.metadata[
+                    "query_relative_validity_score"
+                ] = (
+                    temporal_result.score
+                )
+
+                candidate.metadata[
+                    "query_relative_temporal_role"
+                ] = (
+                    temporal_result.temporal_role
+                )
+
+                candidate.metadata[
+                    "query_relative_temporal_compatible"
+                ] = (
+                    temporal_result.compatible
+                )
+
+                candidate.metadata[
+                    "query_relative_temporal_reasons"
+                ] = list(
+                    temporal_result.reasons
+                )
+
+            # Matched comparison: reuse the legacy role
+            # matcher so the experimental difference is
+            # the arbitration policy, not role extraction.
+            for candidate in (
+                c3_v3_shadow_candidates
+            ):
+                legacy_roles = (
+                    self.selector
+                    ._all_matching_roles(
+                        item=candidate,
+                        plan=legacy_plan,
+                        features=features,
+                        conflicts=conflicts,
+                    )
+                )
+
+                candidate.metadata[
+                    "evidence_roles"
+                ] = sorted(
+                    legacy_roles
+                )
+
+            c3_v3_shadow_arbitration = (
+                self.evidence_arbitrator_v3
+                .arbitrate(
+                    candidates=(
+                        c3_v3_shadow_candidates
+                    ),
+                    features=features,
+                    requirements=list(
+                        c3_v3_compilation
+                        .spec
+                        .requirements
+                    ),
+                    max_evidence=(
+                        c3_v3_compilation
+                        .spec
+                        .max_evidence
+                    ),
+                    token_budget=(
+                        c3_v3_compilation
+                        .spec
+                        .token_budget
+                    ),
+                    max_per_memory_type=(
+                        c3_v3_compilation
+                        .spec
+                        .max_per_memory_type
+                    ),
+                )
+            )
+
+            c3_v3_selected_ids_shadow = (
+                c3_v3_shadow_arbitration
+                .selected_ids
+            )
+
+            legacy_set = set(
+                legacy_selected_pre_repair_ids
+            )
+
+            c3_v3_set = set(
+                c3_v3_selected_ids_shadow
+            )
+
+            c3_v3_shadow_comparison = {
+                "available": True,
+                "active_for_generation": False,
+                "comparison_stage": (
+                    "post_resolution_pre_repair"
+                ),
+
+                "legacy_selected_ids": list(
+                    legacy_selected_pre_repair_ids
+                ),
+
+                "c3_v3_selected_ids": list(
+                    c3_v3_selected_ids_shadow
+                ),
+
+                "same_set": (
+                    legacy_set
+                    == c3_v3_set
+                ),
+
+                "same_order": (
+                    legacy_selected_pre_repair_ids
+                    == c3_v3_selected_ids_shadow
+                ),
+
+                "removed_by_c3_v3": [
+                    memory_id
+                    for memory_id
+                    in legacy_selected_pre_repair_ids
+                    if memory_id
+                    not in c3_v3_set
+                ],
+
+                "added_by_c3_v3": [
+                    memory_id
+                    for memory_id
+                    in c3_v3_selected_ids_shadow
+                    if memory_id
+                    not in legacy_set
+                ],
+
+                "legacy_count": len(
+                    legacy_selected_pre_repair_ids
+                ),
+
+                "c3_v3_count": len(
+                    c3_v3_selected_ids_shadow
+                ),
+
+                "count_delta": (
+                    len(
+                        c3_v3_selected_ids_shadow
+                    )
+                    - len(
+                        legacy_selected_pre_repair_ids
+                    )
+                ),
+
+                "hard_complete": (
+                    c3_v3_shadow_arbitration
+                    .hard_complete
+                ),
+
+                "soft_complete": (
+                    c3_v3_shadow_arbitration
+                    .soft_complete
+                ),
+
+                "used_tokens": (
+                    c3_v3_shadow_arbitration
+                    .used_tokens
+                ),
+
+                "rejected_incompatible": list(
+                    c3_v3_shadow_arbitration
+                    .rejected_incompatible
+                ),
+
+                "rejected_budget": list(
+                    c3_v3_shadow_arbitration
+                    .rejected_budget
+                ),
+
+                "steps": [
+                    step.to_dict()
+                    for step
+                    in (
+                        c3_v3_shadow_arbitration
+                        .steps
+                    )
+                ],
+
+                "reason": (
+                    "shadow_comparison_complete"
+                ),
+            }
 
         # =================================================
         # 7. C3-v3 SHADOW evidence sufficiency
@@ -1594,6 +1902,9 @@ class C3Pipeline:
                 ),
                 "c3_v3_temporal_validity": (
                     c3_v3_temporal_validity
+                ),
+                "c3_v3_arbitration_shadow": (
+                    c3_v3_shadow_comparison
                 ),
                 "c3_v3_sufficiency": (
                     c3_v3_sufficiency
