@@ -31,6 +31,9 @@ from .evidence_selector import (
 from .evidence_utility import (
     EvidenceUtilityModel,
 )
+from .information_need_gain_v3 import (
+    InformationNeedGainEvaluator,
+)
 from .prompt_builder import (
     PromptBuilder,
 )
@@ -813,6 +816,20 @@ class C3Pipeline:
             )
         )
 
+        # -------------------------------------------------
+        # C3-v3 strict semantic information-need audit
+        #
+        # Shadow instrumentation only. This does not alter
+        # legacy coverage, evidence selection, arbitration,
+        # repair, confidence, or generation.
+        # -------------------------------------------------
+
+        self.information_need_gain_v3 = (
+            InformationNeedGainEvaluator(
+                self.coverage
+            )
+        )
+
         self.selector = (
             EvidenceSelector(
                 config,
@@ -1407,11 +1424,141 @@ class C3Pipeline:
                 c3_v3_selected_ids_shadow
             )
 
+            # =============================================
+            # C3-v3 SHADOW strict information-need audit
+            #
+            # IMPORTANT:
+            # - read-only instrumentation;
+            # - does not add/remove evidence;
+            # - does not alter utility/arbitration;
+            # - does not affect generation.
+            # =============================================
+
+            shadow_candidate_by_id = {
+                candidate.memory_id: candidate
+                for candidate
+                in c3_v3_shadow_candidates
+            }
+
+            legacy_shadow_candidates = [
+                shadow_candidate_by_id[
+                    memory_id
+                ]
+                for memory_id
+                in legacy_selected_pre_repair_ids
+                if memory_id
+                in shadow_candidate_by_id
+            ]
+
+            c3_v3_selected_candidates_shadow = [
+                shadow_candidate_by_id[
+                    memory_id
+                ]
+                for memory_id
+                in c3_v3_selected_ids_shadow
+                if memory_id
+                in shadow_candidate_by_id
+            ]
+
+            strict_information_needs = list(
+                features.information_needs
+            )
+
+            legacy_information_need_coverage = (
+                self.information_need_gain_v3
+                .coverage_ratio(
+                    selected=(
+                        legacy_shadow_candidates
+                    ),
+                    information_needs=(
+                        strict_information_needs
+                    ),
+                )
+            )
+
+            c3_v3_information_need_coverage = (
+                self.information_need_gain_v3
+                .coverage_ratio(
+                    selected=(
+                        c3_v3_selected_candidates_shadow
+                    ),
+                    information_needs=(
+                        strict_information_needs
+                    ),
+                )
+            )
+
+            removed_information_need_gain: dict[
+                str,
+                Any,
+            ] = {}
+
+            for memory_id in (
+                legacy_selected_pre_repair_ids
+            ):
+                if memory_id in c3_v3_set:
+                    continue
+
+                candidate = (
+                    shadow_candidate_by_id
+                    .get(
+                        memory_id
+                    )
+                )
+
+                if candidate is None:
+                    continue
+
+                gain_result = (
+                    self.information_need_gain_v3
+                    .evaluate(
+                        candidate=candidate,
+                        selected=(
+                            c3_v3_selected_candidates_shadow
+                        ),
+                        information_needs=(
+                            strict_information_needs
+                        ),
+                    )
+                )
+
+                removed_information_need_gain[
+                    memory_id
+                ] = (
+                    gain_result
+                    .to_dict()
+                )
+
             c3_v3_shadow_comparison = {
                 "available": True,
                 "active_for_generation": False,
                 "comparison_stage": (
                     "post_resolution_pre_repair"
+                ),
+
+                # Strict semantic information-need audit.
+                "information_needs": (
+                    strict_information_needs
+                ),
+
+                "legacy_information_need_coverage": (
+                    legacy_information_need_coverage
+                ),
+
+                "c3_v3_information_need_coverage": (
+                    c3_v3_information_need_coverage
+                ),
+
+                "information_need_coverage_delta": round(
+                    (
+                        c3_v3_information_need_coverage
+                        - legacy_information_need_coverage
+                    ),
+                    6,
+                ),
+
+                "removed_information_need_gain": (
+                    removed_information_need_gain
                 ),
 
                 "legacy_selected_ids": list(
