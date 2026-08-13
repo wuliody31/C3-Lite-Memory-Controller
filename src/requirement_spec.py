@@ -47,6 +47,10 @@ class RequirementSpec:
     requirements: list[EvidenceRequirement] = field(
         default_factory=list
     )
+    # S_q: query-conditioned semantic obligations.
+    slots: list[RequirementSlot] = field(
+    default_factory=list
+    )
 
     # B_q and related evidence-set limits.
     token_budget: int = 0
@@ -95,6 +99,10 @@ class RequirementSpec:
                 requirement.to_dict()
                 for requirement in self.requirements
             ],
+            "slots": [
+                slot.to_dict()
+                for slot in self.slots
+        ],
             "token_budget": self.token_budget,
             "max_evidence": self.max_evidence,
             "max_per_memory_type": (
@@ -132,6 +140,33 @@ class RequirementSpec:
 
 from .schemas import QueryFeatures, RouteDecision
 
+@dataclass(frozen=True, slots=True)
+class RequirementSlot:
+    """One query-conditioned semantic obligation."""
+
+    slot_id: str
+    kind: str
+    target: str
+
+    hard: bool = True
+    min_count: int = 1
+    distinct: bool = False
+
+    temporal_role: str | None = None
+
+    description: str = ""
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "slot_id": self.slot_id,
+            "kind": self.kind,
+            "target": self.target,
+            "hard": self.hard,
+            "min_count": self.min_count,
+            "distinct": self.distinct,
+            "temporal_role": self.temporal_role,
+            "description": self.description,
+        }
 
 @dataclass(slots=True)
 class RequirementCompilation:
@@ -140,3 +175,4 @@ class RequirementCompilation:
     spec: RequirementSpec
     features: QueryFeatures
     route: RouteDecision
+

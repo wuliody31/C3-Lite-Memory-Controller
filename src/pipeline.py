@@ -1297,6 +1297,22 @@ class C3Pipeline:
             "rejected_incompatible": [],
             "rejected_budget": [],
             "steps": [],
+
+            # M2-C3.4 paired semantic-slot audit.
+            "legacy_slot_sufficient": None,
+            "c3_v3_slot_sufficient": None,
+            "legacy_hard_slot_coverage": None,
+            "c3_v3_hard_slot_coverage": None,
+            "slot_coverage_delta": None,
+            "legacy_missing_slots": [],
+            "c3_v3_missing_slots": [],
+            "lost_slots": [],
+            "gained_slots": [],
+            "introduced_slot_deficit": False,
+            "resolved_slot_deficit": False,
+            "legacy_slot_statuses": [],
+            "c3_v3_slot_statuses": [],
+
             "reason": (
                 "legacy_selector_plan_unavailable"
             ),
@@ -1460,6 +1476,161 @@ class C3Pipeline:
                 in shadow_candidate_by_id
             ]
 
+            # =============================================
+            # M2-C3.4 PAIRED SEMANTIC-SLOT SUFFICIENCY
+            #
+            # Both evidence sets are reconstructed from the
+            # SAME post-resolution shadow candidate pool,
+            # after the same query-relative temporal validity
+            # and evidence-role annotations have been applied.
+            #
+            # We intentionally pass an empty selector_status:
+            # this paired comparator reads ONLY the semantic
+            # slot fields from RequirementSufficiencyEvaluator.
+            # Legacy role sufficiency is not part of this
+            # causal comparison.
+            #
+            # IMPORTANT:
+            # This remains read-only instrumentation.
+            # It does not affect selection, repair, confidence,
+            # prompt construction, or generation.
+            # =============================================
+
+            legacy_slot_sufficiency = (
+                self.requirement_sufficiency
+                .evaluate(
+                    spec=(
+                        c3_v3_compilation
+                        .spec
+                    ),
+                    selected=(
+                        legacy_shadow_candidates
+                    ),
+                    selector_status={},
+                )
+            )
+
+            c3_v3_slot_sufficiency = (
+                self.requirement_sufficiency
+                .evaluate(
+                    spec=(
+                        c3_v3_compilation
+                        .spec
+                    ),
+                    selected=(
+                        c3_v3_selected_candidates_shadow
+                    ),
+                    selector_status={},
+                )
+            )
+
+            legacy_slot_dict = (
+                legacy_slot_sufficiency
+                .to_dict()
+            )
+
+            c3_v3_slot_dict = (
+                c3_v3_slot_sufficiency
+                .to_dict()
+            )
+
+            legacy_slot_status_map = {
+                status[
+                    "slot_id"
+                ]: bool(
+                    status[
+                        "complete"
+                    ]
+                )
+                for status
+                in legacy_slot_dict[
+                    "slot_statuses"
+                ]
+            }
+
+            c3_v3_slot_status_map = {
+                status[
+                    "slot_id"
+                ]: bool(
+                    status[
+                        "complete"
+                    ]
+                )
+                for status
+                in c3_v3_slot_dict[
+                    "slot_statuses"
+                ]
+            }
+
+            all_slot_ids = sorted(
+                set(
+                    legacy_slot_status_map
+                )
+                | set(
+                    c3_v3_slot_status_map
+                )
+            )
+
+            lost_slots = [
+                slot_id
+                for slot_id
+                in all_slot_ids
+                if (
+                    legacy_slot_status_map
+                    .get(
+                        slot_id,
+                        False,
+                    )
+                    and not (
+                        c3_v3_slot_status_map
+                        .get(
+                            slot_id,
+                            False,
+                        )
+                    )
+                )
+            ]
+
+            gained_slots = [
+                slot_id
+                for slot_id
+                in all_slot_ids
+                if (
+                    c3_v3_slot_status_map
+                    .get(
+                        slot_id,
+                        False,
+                    )
+                    and not (
+                        legacy_slot_status_map
+                        .get(
+                            slot_id,
+                            False,
+                        )
+                    )
+                )
+            ]
+
+            introduced_slot_deficit = (
+                legacy_slot_sufficiency
+                .slot_sufficient
+                and not (
+                    c3_v3_slot_sufficiency
+                    .slot_sufficient
+                )
+            )
+
+            resolved_slot_deficit = (
+                not (
+                    legacy_slot_sufficiency
+                    .slot_sufficient
+                )
+                and (
+                    c3_v3_slot_sufficiency
+                    .slot_sufficient
+                )
+            )
+
             strict_information_needs = list(
                 features.information_needs
             )
@@ -1534,6 +1705,77 @@ class C3Pipeline:
                 "active_for_generation": False,
                 "comparison_stage": (
                     "post_resolution_pre_repair"
+                ),
+
+                # M2-C3.4 paired semantic-slot audit.
+                "legacy_slot_sufficient": (
+                    legacy_slot_sufficiency
+                    .slot_sufficient
+                ),
+
+                "c3_v3_slot_sufficient": (
+                    c3_v3_slot_sufficiency
+                    .slot_sufficient
+                ),
+
+                "legacy_hard_slot_coverage": (
+                    legacy_slot_sufficiency
+                    .hard_slot_coverage
+                ),
+
+                "c3_v3_hard_slot_coverage": (
+                    c3_v3_slot_sufficiency
+                    .hard_slot_coverage
+                ),
+
+                "slot_coverage_delta": round(
+                    (
+                        c3_v3_slot_sufficiency
+                        .hard_slot_coverage
+                        - legacy_slot_sufficiency
+                        .hard_slot_coverage
+                    ),
+                    6,
+                ),
+
+                "legacy_missing_slots": list(
+                    legacy_slot_dict[
+                        "missing_hard_slots"
+                    ]
+                ),
+
+                "c3_v3_missing_slots": list(
+                    c3_v3_slot_dict[
+                        "missing_hard_slots"
+                    ]
+                ),
+
+                "lost_slots": list(
+                    lost_slots
+                ),
+
+                "gained_slots": list(
+                    gained_slots
+                ),
+
+                "introduced_slot_deficit": (
+                    introduced_slot_deficit
+                ),
+
+                "resolved_slot_deficit": (
+                    resolved_slot_deficit
+                ),
+
+                "legacy_slot_statuses": list(
+                    legacy_slot_dict[
+                        "slot_statuses"
+                    ]
+                ),
+
+                "c3_v3_slot_statuses": list(
+                    c3_v3_slot_dict[
+                        "slot_statuses"
+                    ]
                 ),
 
                 # Strict semantic information-need audit.
