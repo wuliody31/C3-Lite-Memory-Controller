@@ -1,0 +1,210 @@
+controller:
+  name: C3-Lite
+  version: v2.2-final-candidate
+  expansion: Context-adaptive, Conflict-aware, Confidence-controlled
+query_analysis:
+  aliases:
+    dissertation:
+    - project
+    - msc project
+    - thesis
+    current:
+    - currently
+    - now
+    - latest
+    - present
+    historical:
+    - previously
+    - originally
+    - before
+    - earlier
+    - past
+    timeline:
+    - over time
+    - change
+    - changed
+    - evolve
+    - history
+  stopwords:
+  - the
+  - a
+  - an
+  - is
+  - are
+  - was
+  - were
+  - do
+  - does
+  - did
+  - my
+  - me
+  - i
+  - to
+  - of
+  - and
+  - or
+  - in
+  - true
+  - for
+  - what
+  - which
+  - how
+  - why
+  - when
+routing:
+  thresholds:
+    episodic: 0.45
+    semantic: 0.45
+    procedural: 0.5
+  utility_weights:
+    intent: 0.3
+    lexical: 0.25
+    entity: 0.2
+    temporal_task: 0.15
+    prior: 0.1
+  priors:
+    episodic: 0.35
+    semantic: 0.45
+    procedural: 0.2
+  structural_gates:
+    force_timeline_route: true
+    force_conflict_route: true
+    force_historical_semantic_companion: true
+    force_procedural_semantic_companion: true
+    force_explanation_policy_route: true
+    force_factual_selection_route: true
+    fallback_top_route: true
+retrieval:
+  top_k:
+    episodic: 10
+    semantic: 10
+    procedural: 5
+  candidate_pool_multiplier: 3
+  include_archived_for:
+  - historical_state
+  - timeline
+  - conflict
+  - explainability
+  lexical_relevance_gate: 0.02
+  graph_entity_relevance_gate: 0.2
+  utility_relevance_gate: 0.4
+  enable_temporal_route_rescue: true
+  temporal_route_rescue_min_temporal: 0.95
+  temporal_route_rescue_min_validity: 0.85
+  temporal_route_rescue_min_route: 0.5
+  enable_explanation_rescue: true
+  explanation_rescue_min_utility: 0.38
+  explanation_rescue_min_validity: 0.85
+  explanation_rescue_min_route: 0.5
+ranking:
+  lexical_weight: 0.35
+  graph_entity_weight: 0.2
+  temporal_task_weight: 0.15
+  validity_weight: 0.1
+  source_confidence_weight: 0.1
+  route_compatibility_weight: 0.1
+candidate_budget:
+  enabled: true
+  method: boundary_aware_top_k
+  score_epsilon: 0.01
+  max_extra_per_memory_type: 5
+  max_total_extra: 8
+conflict:
+  explicit_relation_detection: true
+  implicit_slot_detection: true
+  preserve_historical_evidence: true
+  current_status_values:
+  - current
+  - active
+  - valid
+  outdated_status_values:
+  - outdated
+  - superseded
+  - archived
+  - invalid
+  authority_order:
+    supervisor_confirmed: 1.0
+    user_confirmed: 0.9
+    system_inferred: 0.6
+    unknown: 0.5
+selection:
+  method: structured_requirement_mmr
+  max_evidence: 5
+  max_per_memory_type: 4
+  evidence_token_budget: 1200
+  minimum_evidence: 2
+  relevance_weight: 0.45
+  requirement_weight: 0.3
+  coverage_gain_weight: 0.15
+  redundancy_weight: 0.1
+  min_marginal_score: 0.18
+  min_topical_score: 0.12
+  guarantee_procedural_if_routed: true
+evidence_requirements:
+  enabled: true
+  default_max_evidence: 5
+  hard_max_evidence: 8
+  max_per_memory_type: 4
+  evidence_token_budget: 1200
+  timeline_min_historical_states: 1
+  timeline_min_current_states: 1
+  timeline_min_transition_evidence: 1
+  timeline_transition_hard: false
+  timeline_preferred_evidence: 5
+  procedural_min_rules: 1
+  procedural_preferred_evidence: 5
+  conflict_min_alternatives: 1
+  conflict_min_resolutions: 1
+  conflict_preferred_evidence: 5
+  explanation_min_supporting_evidence: 1
+  explanation_preferred_evidence: 5
+  cardinality_extra_buffer: 1
+  answer_anchor_enabled: true
+  conflict_preservation_min_topical: 0.18
+  role_topical_thresholds:
+    answer_target: 0.2
+    current_state: 0.18
+    historical_state: 0.15
+    transition: 0.15
+    procedural_rule: 0.05
+    alternative_state: 0.16
+    preferred_resolution: 0.18
+    supporting_evidence: 0.14
+    distinct_item: 0.18
+confidence:
+  top_evidence_weight: 0.45
+  top3_mean_weight: 0.25
+  route_confidence_weight: 0.15
+  agreement_weight: 0.15
+  resolved_conflict_agreement: 0.85
+  no_conflict_agreement: 1.0
+  unresolved_conflict_agreement: 0.2
+decision:
+  direct_adequacy_threshold: 0.65
+  direct_coverage_threshold: 0.7
+  caveat_adequacy_threshold: 0.45
+  caveat_coverage_threshold: 0.35
+  abstain_message: There is not enough stored evidence to answer this reliably.
+  caveat_prefix: Based on the available memories,
+generation:
+  frozen_backbone: true
+  temperature: 0.0
+  max_new_tokens: 256
+  ollama_base_url: http://localhost:11434
+  default_model: llama3.2:3b
+  transformers_model: Qwen/Qwen3-8B
+  transformers_load_in_4bit: true
+  transformers_compute_dtype: bfloat16
+  transformers_enable_thinking: false
+  transformers_adapter_path: null
+logging:
+  save_route_scores: true
+  save_retrieved_ids: true
+  save_selected_ids: true
+  save_conflict_trace: true
+  save_final_prompt: true
+  save_latency: true
+  save_token_usage: true
+neo4j:
+  episode_fulltext_index: episode_text
+  semantic_fulltext_index: semantic_fact_text
