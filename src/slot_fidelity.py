@@ -78,6 +78,92 @@ class TransitionSetFidelity:
         }
 
 
+@dataclass(frozen=True, slots=True)
+class TemporalPathState:
+    """Threshold-free temporal recoverability state.
+
+    This separates two different evidence paths:
+
+      1. endpoint reconstruction:
+           historical endpoint + current endpoint;
+
+      2. explicit transition support:
+           transition evidence whose semantic quality remains
+           represented by the continuous bridge-fidelity score.
+
+    No transition-fidelity threshold is introduced here.
+    """
+
+    applicable: bool
+    reason: str
+
+    historical_endpoint_ids: tuple[str, ...] = ()
+    current_endpoint_ids: tuple[str, ...] = ()
+    transition_support_ids: tuple[str, ...] = ()
+
+    endpoint_overlap_ids: tuple[str, ...] = ()
+
+    historical_endpoint_available: bool = False
+    current_endpoint_available: bool = False
+
+    endpoint_sets_disjoint: bool = False
+    endpoint_reconstruction_available: bool = False
+
+    explicit_transition_support_available: bool = False
+    best_transition_fidelity: float | None = None
+
+    recoverability_status: str = "not_applicable"
+    path_modes: tuple[str, ...] = ()
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "applicable": self.applicable,
+            "reason": self.reason,
+
+            "historical_endpoint_ids": list(
+                self.historical_endpoint_ids
+            ),
+            "current_endpoint_ids": list(
+                self.current_endpoint_ids
+            ),
+            "transition_support_ids": list(
+                self.transition_support_ids
+            ),
+
+            "endpoint_overlap_ids": list(
+                self.endpoint_overlap_ids
+            ),
+
+            "historical_endpoint_available": (
+                self.historical_endpoint_available
+            ),
+            "current_endpoint_available": (
+                self.current_endpoint_available
+            ),
+
+            "endpoint_sets_disjoint": (
+                self.endpoint_sets_disjoint
+            ),
+            "endpoint_reconstruction_available": (
+                self.endpoint_reconstruction_available
+            ),
+
+            "explicit_transition_support_available": (
+                self.explicit_transition_support_available
+            ),
+            "best_transition_fidelity": (
+                self.best_transition_fidelity
+            ),
+
+            "recoverability_status": (
+                self.recoverability_status
+            ),
+            "path_modes": list(
+                self.path_modes
+            ),
+        }
+
+
 class TransitionSlotFidelityEvaluator:
     """M2-C3.7A query-conditioned transition bridge fidelity.
 
@@ -422,6 +508,18 @@ class TransitionSlotFidelityEvaluator:
             slot_statuses=c3_v3_slot_statuses,
         )
 
+        # M2-C3.7C.3 threshold-free temporal path availability.
+        # This does not convert lexical transition fidelity into a
+        # hard decision. Endpoint reconstruction is structural and
+        # threshold-free; transition-only cases remain unresolved.
+        legacy_path = self._temporal_path_state(
+            legacy
+        )
+
+        c3_v3_path = self._temporal_path_state(
+            c3_v3
+        )
+
         legacy_dict = legacy.to_dict()
         c3_v3_dict = c3_v3.to_dict()
 
@@ -474,6 +572,42 @@ class TransitionSlotFidelityEvaluator:
             )
         )
 
+        # Preserve the old field for compatibility, while exposing
+        # the exact semantics explicitly.
+        transition_support_set_changed = (
+            transition_support_replaced
+        )
+
+        best_transition_replaced = (
+            legacy.best_transition_id is not None
+            and c3_v3.best_transition_id is not None
+            and (
+                legacy.best_transition_id
+                != c3_v3.best_transition_id
+            )
+        )
+
+        endpoint_reconstruction_lost = (
+            legacy_path.endpoint_reconstruction_available
+            and not (
+                c3_v3_path.endpoint_reconstruction_available
+            )
+        )
+
+        endpoint_reconstruction_gained = (
+            not (
+                legacy_path.endpoint_reconstruction_available
+            )
+            and (
+                c3_v3_path.endpoint_reconstruction_available
+            )
+        )
+
+        endpoint_reconstruction_preserved = (
+            legacy_path.endpoint_reconstruction_available
+            and c3_v3_path.endpoint_reconstruction_available
+        )
+
         bridge_both_sides_lost = (
             legacy.best_bridge_both_sides
             and not (
@@ -493,9 +627,37 @@ class TransitionSlotFidelityEvaluator:
             ),
             "legacy": legacy_dict,
             "c3_v3": c3_v3_dict,
+            # Backwards-compatible name retained.
             "transition_support_replaced": (
                 transition_support_replaced
             ),
+
+            # Explicit names added in M2-C3.7C.3.
+            "transition_support_set_changed": (
+                transition_support_set_changed
+            ),
+            "best_transition_replaced": (
+                best_transition_replaced
+            ),
+
+            "temporal_path": {
+                "legacy": (
+                    legacy_path.to_dict()
+                ),
+                "c3_v3": (
+                    c3_v3_path.to_dict()
+                ),
+                "endpoint_reconstruction_lost": (
+                    endpoint_reconstruction_lost
+                ),
+                "endpoint_reconstruction_gained": (
+                    endpoint_reconstruction_gained
+                ),
+                "endpoint_reconstruction_preserved": (
+                    endpoint_reconstruction_preserved
+                ),
+            },
+
             "legacy_best_transition_id": (
                 legacy.best_transition_id
             ),
@@ -522,6 +684,175 @@ class TransitionSlotFidelityEvaluator:
                 "and no effect on arbitration or generation."
             ),
         }
+
+    # =====================================================
+    # M2-C3.7C.3 Temporal path availability
+    # =====================================================
+
+    @staticmethod
+    def _temporal_path_state(
+        fidelity: TransitionSetFidelity,
+    ) -> TemporalPathState:
+        """Build a threshold-free temporal recoverability state.
+
+        Endpoint reconstruction is considered structurally available
+        only when both endpoint slots have support and the support sets
+        are disjoint.
+
+        Explicit transition support is reported separately. Its semantic
+        adequacy remains a continuous fidelity value; no fitted or
+        hand-selected threshold is introduced.
+        """
+
+        if not fidelity.available:
+            return TemporalPathState(
+                applicable=False,
+                reason=(
+                    fidelity.reason
+                ),
+                recoverability_status=(
+                    "not_applicable"
+                ),
+            )
+
+        historical_ids = set(
+            fidelity.historical_support_ids
+        )
+
+        current_ids = set(
+            fidelity.current_support_ids
+        )
+
+        transition_ids = set(
+            fidelity.transition_support_ids
+        )
+
+        historical_available = bool(
+            historical_ids
+        )
+
+        current_available = bool(
+            current_ids
+        )
+
+        overlap_ids = (
+            historical_ids
+            & current_ids
+        )
+
+        endpoint_sets_disjoint = (
+            historical_available
+            and current_available
+            and not overlap_ids
+        )
+
+        endpoint_reconstruction_available = (
+            historical_available
+            and current_available
+            and endpoint_sets_disjoint
+        )
+
+        transition_support_available = bool(
+            transition_ids
+        )
+
+        path_modes: list[str] = []
+
+        if endpoint_reconstruction_available:
+            path_modes.append(
+                "endpoint_reconstruction"
+            )
+
+        if transition_support_available:
+            path_modes.append(
+                "explicit_transition_support"
+            )
+
+        if endpoint_reconstruction_available:
+            recoverability_status = (
+                "endpoint_reconstruction_available"
+            )
+
+            reason = (
+                "historical_and_current_slot_support_are_"
+                "both_available_and_disjoint"
+            )
+
+        elif transition_support_available:
+            recoverability_status = (
+                "transition_only_requires_fidelity_judgement"
+            )
+
+            reason = (
+                "transition_support_exists_but_endpoint_"
+                "reconstruction_is_unavailable_and_no_"
+                "transition_fidelity_threshold_is_used"
+            )
+
+        else:
+            recoverability_status = (
+                "no_structural_temporal_support"
+            )
+
+            reason = (
+                "neither_disjoint_endpoint_reconstruction_"
+                "nor_explicit_transition_support_is_available"
+            )
+
+        return TemporalPathState(
+            applicable=True,
+            reason=reason,
+
+            historical_endpoint_ids=tuple(
+                sorted(
+                    historical_ids
+                )
+            ),
+            current_endpoint_ids=tuple(
+                sorted(
+                    current_ids
+                )
+            ),
+            transition_support_ids=tuple(
+                sorted(
+                    transition_ids
+                )
+            ),
+
+            endpoint_overlap_ids=tuple(
+                sorted(
+                    overlap_ids
+                )
+            ),
+
+            historical_endpoint_available=(
+                historical_available
+            ),
+            current_endpoint_available=(
+                current_available
+            ),
+
+            endpoint_sets_disjoint=(
+                endpoint_sets_disjoint
+            ),
+            endpoint_reconstruction_available=(
+                endpoint_reconstruction_available
+            ),
+
+            explicit_transition_support_available=(
+                transition_support_available
+            ),
+            best_transition_fidelity=(
+                fidelity.best_bridge_fidelity
+            ),
+
+            recoverability_status=(
+                recoverability_status
+            ),
+            path_modes=tuple(
+                path_modes
+            ),
+        )
 
     # =====================================================
     # Candidate scoring
