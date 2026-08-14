@@ -1283,6 +1283,10 @@ class C3Pipeline:
             )
         )
 
+        legacy_evidence_requirement_status = dict(
+            evidence_requirement_status
+        )
+
         # =================================================
         # 6B. C3-v3 SHADOW evidence arbitration comparator
         #
@@ -1375,6 +1379,18 @@ class C3Pipeline:
         legacy_plan = (
             self.selector.last_plan
         )
+
+        c3_v3_shadow_candidates: list[
+            MemoryCandidate
+        ] = []
+
+        c3_v3_selected_candidates_shadow: list[
+            MemoryCandidate
+        ] = []
+
+        c3_v3_selected_ids_shadow: list[
+            str
+        ] = []
 
         if legacy_plan is not None:
             # Work on deep copies so shadow arbitration
@@ -2099,7 +2115,119 @@ class C3Pipeline:
             }
 
         # =================================================
-        # 7. C3-v3 SHADOW evidence sufficiency
+        # M2-C3.9A ACTIVE EVIDENCE ARBITRATION
+        #
+        # C3-v3 now becomes the active pre-repair evidence
+        # constructor.  Requirement status is recomputed
+        # set-wise from exactly the same compiled R_q used
+        # by arbitration, rather than reusing the legacy
+        # selector execution-path status.
+        #
+        # Legacy selection remains available only as the
+        # paired comparator in the diagnostic trace.
+        # =================================================
+
+        if (
+            c3_v3_shadow_comparison.get(
+                "available",
+                False,
+            )
+            and legacy_plan is not None
+        ):
+            selected = list(
+                c3_v3_selected_candidates_shadow
+            )
+
+            evidence_requirement_status = (
+                self.selector
+                .assess_selected_requirement_status(
+                    selected=selected,
+                    candidate_pool=(
+                        c3_v3_shadow_candidates
+                    ),
+                    requirements=list(
+                        c3_v3_compilation
+                        .spec
+                        .requirements
+                    ),
+                    features=features,
+                    conflicts=conflicts,
+                )
+            )
+
+            c3_v3_shadow_comparison[
+                "active_for_generation"
+            ] = True
+
+            c3_v3_shadow_comparison[
+                "active_selector"
+            ] = (
+                "c3_v3_evidence_arbitrator"
+            )
+
+            c3_v3_shadow_comparison[
+                "active_selected_ids_pre_repair"
+            ] = [
+                candidate.memory_id
+                for candidate in selected
+            ]
+
+            c3_v3_shadow_comparison[
+                "active_requirement_status"
+            ] = dict(
+                evidence_requirement_status
+            )
+
+            c3_v3_shadow_comparison[
+                "legacy_requirement_status"
+            ] = dict(
+                legacy_evidence_requirement_status
+            )
+
+            c3_v3_shadow_comparison[
+                "active_requirement_status_source"
+            ] = (
+                "setwise_legacy_role_reassessment"
+            )
+
+        else:
+            c3_v3_shadow_comparison[
+                "active_for_generation"
+            ] = False
+
+            c3_v3_shadow_comparison[
+                "active_selector"
+            ] = (
+                "legacy_evidence_selector_fallback"
+            )
+
+            c3_v3_shadow_comparison[
+                "active_selected_ids_pre_repair"
+            ] = [
+                candidate.memory_id
+                for candidate in selected
+            ]
+
+            c3_v3_shadow_comparison[
+                "active_requirement_status"
+            ] = dict(
+                evidence_requirement_status
+            )
+
+            c3_v3_shadow_comparison[
+                "legacy_requirement_status"
+            ] = dict(
+                legacy_evidence_requirement_status
+            )
+
+            c3_v3_shadow_comparison[
+                "active_requirement_status_source"
+            ] = (
+                "legacy_selector_last_requirement_status"
+            )
+
+        # =================================================
+        # 7. C3-v3 ACTIVE evidence sufficiency
         #
         # This reads the selected evidence and selector
         # requirement status. It does NOT modify selection.

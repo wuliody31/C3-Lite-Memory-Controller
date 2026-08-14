@@ -868,6 +868,137 @@ class EvidenceSelector:
 
         return selected
 
+    def assess_selected_requirement_status(
+        self,
+        *,
+        selected: list[MemoryCandidate],
+        candidate_pool: list[MemoryCandidate],
+        requirements: list[EvidenceRequirement],
+        features: QueryFeatures,
+        conflicts: list[ConflictGroup],
+    ) -> dict[str, dict[str, Any]]:
+        """Assess requirement satisfaction for an arbitrary evidence set.
+
+        Unlike ``last_requirement_status``, this method is independent of the
+        selector's sequential decision path.  It recomputes requirement
+        satisfaction directly from the supplied selected set while reusing
+        the existing deterministic RC8 role matcher.
+
+        ``candidate_pool`` is used only to estimate requirement eligibility
+        and feasibility.  The method is read-only and does not modify
+        ``last_plan`` or ``last_requirement_status``.
+        """
+
+        def matching_units(
+            candidates: list[MemoryCandidate],
+            requirement: EvidenceRequirement,
+        ) -> list[str]:
+            units: list[str] = []
+            seen_ids: set[str] = set()
+            seen_distinct: set[str] = set()
+
+            for item in candidates:
+                strength = self._role_strength(
+                    role=requirement.role,
+                    item=item,
+                    features=features,
+                    conflicts=conflicts,
+                )
+
+                if strength <= 0.0:
+                    continue
+
+                if requirement.distinct:
+                    key = self._distinct_item_key(
+                        item,
+                        features,
+                    )
+
+                    if not key:
+                        continue
+
+                    if key in seen_distinct:
+                        continue
+
+                    seen_distinct.add(key)
+                    units.append(key)
+                    continue
+
+                if item.memory_id in seen_ids:
+                    continue
+
+                seen_ids.add(item.memory_id)
+                units.append(item.memory_id)
+
+            return units
+
+        output: dict[
+            str,
+            dict[str, Any],
+        ] = {}
+
+        for requirement in requirements:
+            selected_units = matching_units(
+                selected,
+                requirement,
+            )
+
+            eligible_units = matching_units(
+                candidate_pool,
+                requirement,
+            )
+
+            raw_satisfied = len(
+                selected_units
+            )
+
+            eligible_count = len(
+                eligible_units
+            )
+
+            required_count = max(
+                1,
+                int(requirement.min_count),
+            )
+
+            complete = (
+                raw_satisfied
+                >= required_count
+            )
+
+            feasible = (
+                eligible_count
+                >= required_count
+            )
+
+            output[
+                requirement.role
+            ] = {
+                "required": required_count,
+                "satisfied": min(
+                    raw_satisfied,
+                    required_count,
+                ),
+                "hard": bool(
+                    requirement.hard
+                ),
+                "distinct": bool(
+                    requirement.distinct
+                ),
+                "eligible_count": (
+                    eligible_count
+                ),
+                "feasible": feasible,
+                "complete": complete,
+                "feasible_complete": (
+                    complete
+                    if feasible
+                    else None
+                ),
+            }
+
+        return output
+
     def _annotate_role_eligibility(
         self,
         *,

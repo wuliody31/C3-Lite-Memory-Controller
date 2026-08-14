@@ -626,3 +626,155 @@ def test_unrelated_unresolved_conflict_does_not_consume_slots() -> None:
         "s_a",
         "s_b",
     }.issubset(selected_ids)
+
+
+
+def test_setwise_requirement_status_matches_selector_current_query() -> None:
+    evidence_selector = selector()
+
+    query_features = features(
+        query="What is my current project scope?",
+        mode=QueryMode.CURRENT,
+        needs=[
+            "current project scope",
+            "current valid state",
+        ],
+    )
+
+    candidates = [
+        candidate(
+            "s_scope",
+            (
+                "The current project scope is a small "
+                "MSc memory controller prototype."
+            ),
+            score=0.82,
+            status="current",
+        ),
+    ]
+
+    selected = evidence_selector.select(
+        candidates=candidates,
+        features=query_features,
+        route=route(
+            MemoryType.SEMANTIC
+        ),
+        conflicts=[],
+    )
+
+    assert (
+        evidence_selector.last_plan
+        is not None
+    )
+
+    setwise = (
+        evidence_selector
+        .assess_selected_requirement_status(
+            selected=selected,
+            candidate_pool=candidates,
+            requirements=list(
+                evidence_selector
+                .last_plan
+                .requirements
+            ),
+            features=query_features,
+            conflicts=[],
+        )
+    )
+
+    legacy = (
+        evidence_selector
+        .last_requirement_status
+    )
+
+    for role in (
+        "answer_target",
+        "current_state",
+    ):
+        assert (
+            setwise[role]["satisfied"]
+            == legacy[role]["satisfied"]
+        )
+
+        assert (
+            setwise[role]["complete"]
+            == legacy[role]["complete"]
+        )
+
+
+def test_setwise_requirement_status_separates_feasibility_from_satisfaction() -> None:
+    evidence_selector = selector()
+
+    query_features = features(
+        query="What is my current project scope?",
+        mode=QueryMode.CURRENT,
+        needs=[
+            "current project scope",
+            "current valid state",
+        ],
+    )
+
+    candidates = [
+        candidate(
+            "s_scope",
+            (
+                "The current project scope is a small "
+                "MSc memory controller prototype."
+            ),
+            score=0.82,
+            status="current",
+        ),
+    ]
+
+    evidence_selector.select(
+        candidates=candidates,
+        features=query_features,
+        route=route(
+            MemoryType.SEMANTIC
+        ),
+        conflicts=[],
+    )
+
+    assert (
+        evidence_selector.last_plan
+        is not None
+    )
+
+    status = (
+        evidence_selector
+        .assess_selected_requirement_status(
+            selected=[],
+            candidate_pool=candidates,
+            requirements=list(
+                evidence_selector
+                .last_plan
+                .requirements
+            ),
+            features=query_features,
+            conflicts=[],
+        )
+    )
+
+    current = status[
+        "current_state"
+    ]
+
+    assert (
+        current["eligible_count"]
+        >= 1
+    )
+
+    assert (
+        current["feasible"]
+        is True
+    )
+
+    assert (
+        current["satisfied"]
+        == 0
+    )
+
+    assert (
+        current["complete"]
+        is False
+    )

@@ -233,6 +233,29 @@ class EvidenceRepairExecutor:
             self.selector.last_requirement_status
         )
 
+        # C3.9A set-wise repaired requirement status.
+        #
+        # Repair may still use the validated RC8 selector to construct
+        # a candidate repaired set, but acceptance must compare the same
+        # requirement semantics before and after repair.  Therefore
+        # selector-path credit is replaced by a direct set-wise assessment.
+        #
+        # candidate_pool=selected is deliberately conservative here:
+        # hard coverage depends on satisfaction/completion of the repaired
+        # set itself.  Global repair-pool feasibility remains diagnostic only.
+        selector_status = (
+            self.selector
+            .assess_selected_requirement_status(
+                selected=selected,
+                candidate_pool=selected,
+                requirements=list(
+                    spec.requirements
+                ),
+                features=features,
+                conflicts=conflicts,
+            )
+        )
+
         repaired_sufficiency = (
             self.sufficiency.evaluate(
                 spec=spec,

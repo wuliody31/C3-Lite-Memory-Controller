@@ -89,7 +89,7 @@ def shadow(
     ]
 
 
-def test_current_query_shadow_preserves_single_valid_evidence() -> None:
+def test_current_query_active_arbitration_preserves_single_valid_evidence() -> None:
     result = run_query(
         "What is my current MSc project scope?"
     )
@@ -100,7 +100,11 @@ def test_current_query_shadow_preserves_single_valid_evidence() -> None:
 
     assert trace[
         "active_for_generation"
-    ] is False
+    ] is True
+
+    assert trace[
+        "active_selector"
+    ] == "c3_v3_evidence_arbitrator"
 
     assert trace[
         "comparison_stage"
@@ -132,7 +136,7 @@ def test_current_query_shadow_preserves_single_valid_evidence() -> None:
     ]
 
 
-def test_historical_shadow_removes_temporally_incompatible_current_filler() -> None:
+def test_historical_active_arbitration_removes_temporally_incompatible_current_filler() -> None:
     result = run_query(
         "What was my previous MSc project scope?"
     )
@@ -171,10 +175,17 @@ def test_historical_shadow_removes_temporally_incompatible_current_filler() -> N
         "hard_complete"
     ] is True
 
-    # Still shadow-only.
+    # C3-v3 arbitration is now active for generation.
+    assert trace[
+        "active_for_generation"
+    ] is True
+
+    assert trace[
+        "active_selector"
+    ] == "c3_v3_evidence_arbitrator"
+
     assert result.selected_ids == [
         "s_user01_004",
-        "s_user01_003",
     ]
 
 
