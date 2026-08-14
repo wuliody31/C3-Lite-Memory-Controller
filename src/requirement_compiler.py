@@ -48,6 +48,10 @@ class RequirementCompiler:
     where:
         R_q = coarse evidence-role requirements;
         S_q = typed semantic requirement slots.
+
+    M2-C3.7B additionally refines the temporal obligation represented by S_q.
+    QueryMode.TIMELINE is treated as a coarse legacy routing signal, not as
+    proof that every query requires a historical-transition-current triple.
     """
 
     GENERIC_INFORMATION_NEEDS = {
@@ -93,12 +97,7 @@ class RequirementCompiler:
 
     # QueryAnalyzer intentionally treats many A-or-B forms as possible
     # conflicts. Slot compilation is more conservative: only explicit
-    # preference/choice questions become CONTRAST + RESOLUTION slots.
-    #
-    # This avoids misclassifying propositions such as:
-    #   "Does my project require model training or fine-tuning?"
-    # where "training or fine-tuning" is one semantic proposition rather than
-    # two competing alternatives.
+    # preference/choice questions become CONTRAST + RESOLUTION slots here.
     EXPLICIT_CHOICE_PATTERNS = (
         (
             r"\b(?:should|prioritise|prioritize|choose|select|prefer)\b"
@@ -108,6 +107,73 @@ class RequirementCompiler:
         r"\bversus\b",
         r"\bvs\b",
         r"\binstead\s+of\b",
+    )
+
+    # -----------------------------------------------------
+    # M2-C3.7B temporal-obligation patterns
+    #
+    # These patterns describe generic linguistic operators only.
+    # They contain no Dataset-A entities, answers, memory IDs or gold labels.
+    # -----------------------------------------------------
+
+    FULL_TRANSITION_PATTERNS = (
+        (
+            r"\bhow\b.+\b"
+            r"(?:change|changed|changes|changing|"
+            r"evolve|evolved|evolves|evolving|"
+            r"shift|shifted|shifts|shifting|"
+            r"develop|developed|develops|developing)"
+            r"\b"
+        ),
+        (
+            r"\b(?:change|changed|changes|changing|"
+            r"evolve|evolved|evolves|evolving|"
+            r"shift|shifted|shifts|shifting|"
+            r"transition|transitions)"
+            r"\b.+\bover\s+time\b"
+        ),
+        r"\bfrom\b.+\bto\b.+",
+    )
+
+    CONTINUITY_PATTERNS = (
+        r"\balways\b",
+        r"\bstill\b",
+        r"\bremain(?:ed|s|ing)?\b",
+        r"\bunchanged\b",
+        r"\bsame\s+throughout\b",
+        r"\bever\b",
+    )
+
+    HISTORICAL_LOOKUP_PATTERNS = (
+        (
+            r"\b(?:what|which|who|where)\b.+\b"
+            r"(?:originally|initially|earlier|previously|formerly)\b"
+        ),
+        (
+            r"\b(?:originally|initially|earlier|previously|formerly)\b.+\b"
+            r"(?:what|which|who|where)\b"
+        ),
+        r"\bearlier\b.+\b(?:outdated|superseded|replaced)\b",
+        r"\bwhat\b.+\bbefore\b.+",
+    )
+
+    CURRENT_LOOKUP_PATTERNS = (
+        r"\bwhat\s+is\b.+\bcurrent(?:ly)?\b",
+        r"\bwhat\s+is\s+my\s+current\b",
+        r"\bwhat\s+is\s+the\s+current\b",
+        r"\bcurrent\s+(?:state|focus|scope|position|positioning)\b",
+        r"\blatest\s+(?:state|focus|scope|position|positioning)\b",
+    )
+
+    TEMPORAL_CONTRAST_OPTION_PATTERNS = (
+        (
+            r"\bwhich\s+is\s+(?:more\s+)?current\s*:?\s*"
+            r"(.+?)\s+or\s+(.+?)(?:\?|$)"
+        ),
+        (
+            r"\b(?:is|are)\b.+?\bcurrently\b\s+"
+            r"(.+?)\s+or\s+(.+?)(?:\?|$)"
+        ),
     )
 
     # Query/task operators describe how to answer, not the semantic axis
@@ -143,6 +209,20 @@ class RequirementCompiler:
         "previously",
         "earlier",
         "latest",
+        "original",
+        "originally",
+        "initial",
+        "initially",
+        "formerly",
+        "now",
+        "outdated",
+        "superseded",
+        "replaced",
+        "before",
+        "after",
+        "always",
+        "still",
+        "ever",
         "change",
         "changed",
         "changes",
@@ -185,24 +265,45 @@ class RequirementCompiler:
         )
 
     # =========================================================
-    # Slot compilation helpers
+    # Generic slot compilation helpers
     # =========================================================
+
+    @staticmethod
+    def _normalised_text(
+        query: str,
+    ) -> str:
+        return " ".join(
+            query.lower().strip().split()
+        )
+
+    @classmethod
+    def _matches_any(
+        cls,
+        query: str,
+        patterns: tuple[str, ...],
+    ) -> bool:
+        text = cls._normalised_text(
+            query
+        )
+
+        return any(
+            re.search(
+                pattern,
+                text,
+                flags=re.IGNORECASE,
+            )
+            is not None
+            for pattern in patterns
+        )
 
     @classmethod
     def _is_multi_facet(
         cls,
         query: str,
     ) -> bool:
-        text = query.lower()
-
-        return any(
-            re.search(
-                pattern,
-                text,
-            )
-            is not None
-            for pattern
-            in cls.MULTI_FACET_PATTERNS
+        return cls._matches_any(
+            query,
+            cls.MULTI_FACET_PATTERNS,
         )
 
     @classmethod
@@ -210,16 +311,9 @@ class RequirementCompiler:
         cls,
         query: str,
     ) -> bool:
-        text = query.lower()
-
-        return any(
-            re.search(
-                pattern,
-                text,
-            )
-            is not None
-            for pattern
-            in cls.PROVENANCE_PATTERNS
+        return cls._matches_any(
+            query,
+            cls.PROVENANCE_PATTERNS,
         )
 
     @classmethod
@@ -227,16 +321,9 @@ class RequirementCompiler:
         cls,
         query: str,
     ) -> bool:
-        text = query.lower()
-
-        return any(
-            re.search(
-                pattern,
-                text,
-            )
-            is not None
-            for pattern
-            in cls.EXPLICIT_CHOICE_PATTERNS
+        return cls._matches_any(
+            query,
+            cls.EXPLICIT_CHOICE_PATTERNS,
         )
 
     @staticmethod
@@ -292,12 +379,7 @@ class RequirementCompiler:
         cls,
         query: str,
     ) -> list[str]:
-        """Extract explicit A/B options from normative choice questions.
-
-        This parser is deliberately conservative. If it cannot isolate two
-        stable options, the compiler will still emit a RESOLUTION slot but
-        will not invent benchmark-specific alternatives.
-        """
+        """Extract explicit A/B options from normative choice questions."""
 
         text = " ".join(
             query.strip().split()
@@ -346,13 +428,56 @@ class RequirementCompiler:
         return []
 
     @classmethod
+    def _temporal_contrast_options(
+        cls,
+        query: str,
+    ) -> list[str]:
+        """Extract A/B alternatives from temporal currentness comparisons."""
+
+        text = " ".join(
+            query.strip().split()
+        )
+
+        for pattern in (
+            cls.TEMPORAL_CONTRAST_OPTION_PATTERNS
+        ):
+            match = re.search(
+                pattern,
+                text,
+                flags=re.IGNORECASE,
+            )
+
+            if match is None:
+                continue
+
+            options = [
+                cls._clean_slot_target(
+                    match.group(1)
+                ),
+                cls._clean_slot_target(
+                    match.group(2)
+                ),
+            ]
+
+            options = [
+                option
+                for option in options
+                if option
+            ]
+
+            if len(options) == 2:
+                return options
+
+        return []
+
+    @classmethod
     def _primary_target(
         cls,
         *,
         query: str,
         features: QueryFeatures,
     ) -> str:
-        """Choose a query-conditioned semantic target without using gold data."""
+        """Choose a query-conditioned semantic target without gold data."""
 
         for need in features.information_needs:
             cleaned = " ".join(
@@ -379,19 +504,116 @@ class RequirementCompiler:
 
         return query.lower()
 
+    # =========================================================
+    # M2-C3.7B temporal-obligation refinement
+    # =========================================================
+
+    @classmethod
+    def _temporal_obligation_profile(
+        cls,
+        *,
+        query: str,
+        features: QueryFeatures,
+    ) -> str:
+        """Refine coarse legacy temporal mode into a semantic obligation.
+
+        The legacy QueryMode remains untouched. This method only controls
+        shadow RequirementSlot compilation.
+
+        Profiles:
+          - full_transition:
+                historical + explicit transition + current endpoint
+          - temporal_contrast:
+                compare alternative states and resolve currentness
+          - historical_lookup:
+                answer an earlier/original state directly
+          - current_lookup:
+                answer the current/latest state directly
+          - continuity:
+                judge a persistence/continuity proposition
+          - non_temporal:
+                no explicit temporal obligation required
+
+        Priority is intentionally semantic:
+          continuity and historical lookup are checked before the broad
+          legacy TIMELINE fallback, so words such as "always" or
+          "before changing" do not force a full-transition triple.
+        """
+
+        # "Was X always ...?" is a continuity proposition, not a request
+        # for the event that caused a transition.
+        if cls._matches_any(
+            query,
+            cls.CONTINUITY_PATTERNS,
+        ):
+            return "continuity"
+
+        # "What did I originally consider?" requests the earlier endpoint,
+        # even when words such as "changing" cause the legacy analyzer to
+        # mark the whole query as TIMELINE.
+        if cls._matches_any(
+            query,
+            cls.HISTORICAL_LOOKUP_PATTERNS,
+        ):
+            return "historical_lookup"
+
+        # "Which is more current: A or B?" and
+        # "Is X currently A or B?" require alternative-state resolution,
+        # not a historical-transition-current narrative.
+        if cls._temporal_contrast_options(
+            query
+        ):
+            return "temporal_contrast"
+
+        # Explicitly asking how something changed/evolved is the only
+        # profile that requires the full three-part temporal bridge.
+        if cls._matches_any(
+            query,
+            cls.FULL_TRANSITION_PATTERNS,
+        ):
+            return "full_transition"
+
+        # Preserve genuinely explicit legacy single-endpoint modes.
+        if (
+            features.query_mode
+            == QueryMode.HISTORICAL
+        ):
+            return "historical_lookup"
+
+        if (
+            features.query_mode
+            == QueryMode.CURRENT
+        ):
+            return "current_lookup"
+
+        # Current lexical intent is stronger evidence than the coarse
+        # TIMELINE label when no explicit transition/change is requested.
+        if cls._matches_any(
+            query,
+            cls.CURRENT_LOOKUP_PATTERNS,
+        ):
+            return "current_lookup"
+
+        # Important conservative fallback:
+        # QueryMode.TIMELINE alone is not enough to invent a full temporal
+        # triple. The audit showed that this legacy mode also contains
+        # factual/set queries and temporal comparisons.
+        return "non_temporal"
+
     def _compile_slots(
         self,
         *,
         query: str,
         features: QueryFeatures,
         explicit_cardinality: int | None,
+        temporal_profile: str,
     ) -> list[RequirementSlot]:
         """Compile query-conditioned semantic obligations.
 
         Important:
         - no gold answer or supporting-memory annotation is consulted;
-        - no slot is used for selection yet;
-        - this is a shadow representation for later sufficiency auditing.
+        - no slot is used for active selection yet;
+        - temporal_profile refines only the shadow semantic-slot layer.
         """
 
         slots: list[RequirementSlot] = []
@@ -451,7 +673,7 @@ class RequirementCompiler:
         )
 
         # -------------------------------------------------
-        # 1. Explicit preference / choice / conflict query.
+        # 1. Explicit normative preference / choice query.
         # -------------------------------------------------
 
         if (
@@ -488,12 +710,46 @@ class RequirementCompiler:
             )
 
         # -------------------------------------------------
-        # 2. Timeline query.
+        # 2. Temporal currentness contrast.
         # -------------------------------------------------
 
         elif (
-            features.query_mode
-            == QueryMode.TIMELINE
+            temporal_profile
+            == "temporal_contrast"
+        ):
+            options = (
+                self._temporal_contrast_options(
+                    query
+                )
+            )
+
+            for option in options:
+                add(
+                    kind="CONTRAST",
+                    target=option,
+                    hard=True,
+                    description=(
+                        "alternative temporal state whose currentness "
+                        "must be compared"
+                    ),
+                )
+
+            add(
+                kind="RESOLUTION",
+                target=semantic_axis,
+                hard=True,
+                description=(
+                    "resolved current state among temporal alternatives"
+                ),
+            )
+
+        # -------------------------------------------------
+        # 3. Full temporal transition.
+        # -------------------------------------------------
+
+        elif (
+            temporal_profile
+            == "full_transition"
         ):
             add(
                 kind="HISTORICAL_ENDPOINT",
@@ -502,7 +758,8 @@ class RequirementCompiler:
                     "historical_state"
                 ),
                 description=(
-                    "historical endpoint required by a timeline query"
+                    "historical endpoint required by an explicit "
+                    "change-over-time query"
                 ),
             )
 
@@ -513,7 +770,8 @@ class RequirementCompiler:
                     "transition_event"
                 ),
                 description=(
-                    "change or transition connecting temporal states"
+                    "change or transition connecting the historical "
+                    "and current semantic states"
                 ),
             )
 
@@ -524,12 +782,74 @@ class RequirementCompiler:
                     "current_state"
                 ),
                 description=(
-                    "current endpoint required by a timeline query"
+                    "current endpoint required by an explicit "
+                    "change-over-time query"
                 ),
             )
 
         # -------------------------------------------------
-        # 3. Multi-facet / enumerative query.
+        # 4. Historical endpoint lookup.
+        # -------------------------------------------------
+
+        elif (
+            temporal_profile
+            == "historical_lookup"
+        ):
+            add(
+                kind="HISTORICAL_ENDPOINT",
+                target=semantic_axis,
+                temporal_role=(
+                    "historical_state"
+                ),
+                description=(
+                    "earlier/original state directly requested by the query"
+                ),
+            )
+
+        # -------------------------------------------------
+        # 5. Current endpoint lookup.
+        # -------------------------------------------------
+
+        elif (
+            temporal_profile
+            == "current_lookup"
+        ):
+            add(
+                kind="CURRENT_ENDPOINT",
+                target=semantic_axis,
+                temporal_role=(
+                    "current_state"
+                ),
+                description=(
+                    "current/latest semantic state directly requested "
+                    "by the query"
+                ),
+            )
+
+        # -------------------------------------------------
+        # 6. Continuity proposition.
+        #
+        # Do not invent a transition event. The query asks whether a
+        # proposition persisted, so preserve the proposition as CONTENT
+        # until a dedicated continuity slot is justified independently.
+        # -------------------------------------------------
+
+        elif (
+            temporal_profile
+            == "continuity"
+        ):
+            add(
+                kind="CONTENT",
+                target=semantic_axis,
+                hard=True,
+                description=(
+                    "temporal continuity proposition; an explicit "
+                    "transition event is not required"
+                ),
+            )
+
+        # -------------------------------------------------
+        # 7. Multi-facet / enumerative query.
         # -------------------------------------------------
 
         elif (
@@ -564,64 +884,10 @@ class RequirementCompiler:
             )
 
         # -------------------------------------------------
-        # 4. Single current endpoint.
-        # -------------------------------------------------
-
-        elif (
-            features.query_mode
-            == QueryMode.CURRENT
-        ):
-            add(
-                kind="CURRENT_ENDPOINT",
-                target=semantic_axis,
-                temporal_role=(
-                    "current_state"
-                ),
-                description=(
-                    "current query-specific semantic endpoint"
-                ),
-            )
-
-        # -------------------------------------------------
-        # 5. Single historical endpoint.
-        # -------------------------------------------------
-
-        elif (
-            features.query_mode
-            == QueryMode.HISTORICAL
-        ):
-            add(
-                kind="HISTORICAL_ENDPOINT",
-                target=semantic_axis,
-                temporal_role=(
-                    "historical_state"
-                ),
-                description=(
-                    "historical query-specific semantic endpoint"
-                ),
-            )
-
-        # -------------------------------------------------
-        # 6. Procedural query.
-        # -------------------------------------------------
-
-        elif (
-            features.query_mode
-            == QueryMode.PROCEDURAL
-        ):
-            add(
-                kind="PROCEDURE",
-                target=semantic_axis,
-                temporal_role=(
-                    "procedural_rule"
-                ),
-                description=(
-                    "applicable rule or procedure required to answer"
-                ),
-            )
-
-        # -------------------------------------------------
-        # 7. Ordinary factual/content query.
+        # 8. Ordinary factual/content query.
+        #
+        # This is also the conservative fallback when the legacy analyzer
+        # emitted QueryMode.TIMELINE without an explicit temporal obligation.
         # -------------------------------------------------
 
         else:
@@ -634,7 +900,7 @@ class RequirementCompiler:
             )
 
         # -------------------------------------------------
-        # 8. Explainability support is orthogonal to base intent.
+        # 9. Explainability support is orthogonal to base intent.
         # -------------------------------------------------
 
         if features.asks_explanation:
@@ -648,7 +914,7 @@ class RequirementCompiler:
             )
 
         # -------------------------------------------------
-        # 9. Provenance is required only when explicitly requested.
+        # 10. Provenance is required only when explicitly requested.
         # -------------------------------------------------
 
         if self._asks_provenance(
@@ -702,11 +968,8 @@ class RequirementCompiler:
     ) -> RequirementCompilation:
         """Compile z_q from already validated RC8.3 decisions.
 
-        This avoids running QueryAnalyzer and RoutePlanner twice
-        when C3-v3 is integrated into the existing pipeline.
-
-        The legacy role requirements remain unchanged. Semantic slots are
-        compiled in parallel and remain shadow-only at this stage.
+        The coarse legacy query mode / role requirements remain unchanged.
+        M2-C3.7B refines only semantic RequirementSlots in shadow.
         """
 
         evidence_plan = (
@@ -717,11 +980,21 @@ class RequirementCompiler:
             )
         )
 
+        temporal_profile = (
+            self._temporal_obligation_profile(
+                query=query,
+                features=features,
+            )
+        )
+
         slots = self._compile_slots(
             query=query,
             features=features,
             explicit_cardinality=(
                 evidence_plan.explicit_cardinality
+            ),
+            temporal_profile=(
+                temporal_profile
             ),
         )
 
@@ -732,6 +1005,7 @@ class RequirementCompiler:
                 route.selected_types
             ),
 
+            # Preserve legacy mode for backwards compatibility.
             temporal_mode=(
                 features.query_mode
             ),
@@ -810,9 +1084,15 @@ class RequirementCompiler:
                 in route.reasons.items()
             },
 
-            compilation_reasons=list(
-                evidence_plan.reasons
-            ),
+            compilation_reasons=[
+                *list(
+                    evidence_plan.reasons
+                ),
+                (
+                    "semantic_temporal_obligation="
+                    + temporal_profile
+                ),
+            ],
         )
 
         return RequirementCompilation(

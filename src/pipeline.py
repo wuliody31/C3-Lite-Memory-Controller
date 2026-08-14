@@ -59,6 +59,9 @@ from .requirement_compiler import (
 from .requirement_sufficiency import (
     RequirementSufficiencyEvaluator,
 )
+from .slot_fidelity import (
+    TransitionSlotFidelityEvaluator,
+)
 
 from .route_planner import (
     RoutePlanner,
@@ -883,6 +886,22 @@ class C3Pipeline:
                 config
             )
         )
+
+        # -------------------------------------------------
+        # M2-C3.7A query-conditioned transition fidelity
+        #
+        # Shadow instrumentation only.  This evaluates
+        # whether TEMPORAL_TRANSITION support semantically
+        # bridges historical and current endpoint evidence.
+        # It does not change selection or generation.
+        # -------------------------------------------------
+
+        self.transition_slot_fidelity_v3 = (
+            TransitionSlotFidelityEvaluator(
+                config
+            )
+        )
+
         self.repair_planner = (
             TargetedRepairPlanner()
         )
@@ -1313,6 +1332,13 @@ class C3Pipeline:
             "legacy_slot_statuses": [],
             "c3_v3_slot_statuses": [],
 
+            # M2-C3.7A transition semantic-bridge fidelity.
+            "transition_fidelity_shadow": {
+                "available": False,
+                "active_for_generation": False,
+                "reason": "paired_slot_sets_unavailable",
+            },
+
             "reason": (
                 "legacy_selector_plan_unavailable"
             ),
@@ -1631,6 +1657,45 @@ class C3Pipeline:
                 )
             )
 
+            # =============================================
+            # M2-C3.7A QUERY-CONDITIONED TRANSITION FIDELITY
+            #
+            # Binary slot occupancy can remain complete even
+            # when C3 replaces the answer-critical transition
+            # with a semantically unrelated transition-shaped
+            # candidate.  Compare the Legacy and C3 transition
+            # support against their historical/current endpoint
+            # evidence using deterministic bridge diagnostics.
+            #
+            # IMPORTANT:
+            # - no learned weights;
+            # - no tuned decision threshold;
+            # - read-only shadow instrumentation;
+            # - no effect on active arbitration/generation.
+            # =============================================
+
+            transition_fidelity_shadow = (
+                self.transition_slot_fidelity_v3
+                .compare(
+                    legacy_selected=(
+                        legacy_shadow_candidates
+                    ),
+                    c3_v3_selected=(
+                        c3_v3_selected_candidates_shadow
+                    ),
+                    legacy_slot_statuses=list(
+                        legacy_slot_dict[
+                            "slot_statuses"
+                        ]
+                    ),
+                    c3_v3_slot_statuses=list(
+                        c3_v3_slot_dict[
+                            "slot_statuses"
+                        ]
+                    ),
+                )
+            )
+
             strict_information_needs = list(
                 features.information_needs
             )
@@ -1778,6 +1843,11 @@ class C3Pipeline:
                     ]
                 ),
 
+                # M2-C3.7A transition semantic-bridge fidelity.
+                "transition_fidelity_shadow": (
+                    transition_fidelity_shadow
+                ),
+
                 # Strict semantic information-need audit.
                 "information_needs": (
                     strict_information_needs
@@ -1810,6 +1880,53 @@ class C3Pipeline:
                 "c3_v3_selected_ids": list(
                     c3_v3_selected_ids_shadow
                 ),
+
+                # M2-C3.7C.2b read-only temporal annotation audit.
+                # The shadow pool is re-evaluated after conflict
+                # resolution, so its temporal annotations may differ
+                # from the rank-time full_candidate_score_trace.
+                "shadow_candidate_temporal_trace": [
+                    {
+                        "memory_id": candidate.memory_id,
+                        "memory_type": candidate.memory_type.value,
+                        "status": str(candidate.status),
+                        "subject": candidate.subject,
+                        "predicate": candidate.predicate,
+                        "object_value": candidate.object_value,
+                        "query_relative_temporal_role": (
+                            candidate.metadata.get(
+                                "query_relative_temporal_role",
+                                "",
+                            )
+                        ),
+                        "query_relative_temporal_compatible": (
+                            candidate.metadata.get(
+                                "query_relative_temporal_compatible"
+                            )
+                        ),
+                        "evidence_roles": list(
+                            candidate.metadata.get(
+                                "evidence_roles",
+                                [],
+                            )
+                        ),
+                        "resolution_action": (
+                            str(candidate.resolution_action)
+                            if candidate.resolution_action
+                            else None
+                        ),
+                        "selected_by_legacy": (
+                            candidate.memory_id
+                            in legacy_set
+                        ),
+                        "selected_by_c3_v3": (
+                            candidate.memory_id
+                            in c3_v3_set
+                        ),
+                    }
+                    for candidate
+                    in c3_v3_shadow_candidates
+                ],
 
                 "same_set": (
                     legacy_set

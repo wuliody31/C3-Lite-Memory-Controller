@@ -1491,23 +1491,33 @@ class RequirementSufficiencyEvaluator:
             return True
 
         if kind == "CURRENT_ENDPOINT":
-            return (
-                temporal_role
-                in self.CURRENT_TEMPORAL_ROLES
-                or (
-                    "current_state"
-                    in evidence_roles
+            # Query-relative temporal role is authoritative when available.
+            # Legacy selector roles are only a fallback for candidates that
+            # do not have a query-relative temporal annotation.
+            if temporal_role:
+                return (
+                    temporal_role
+                    in self.CURRENT_TEMPORAL_ROLES
                 )
+
+            return (
+                "current_state"
+                in evidence_roles
             )
 
         if kind == "HISTORICAL_ENDPOINT":
-            return (
-                temporal_role
-                in self.HISTORICAL_TEMPORAL_ROLES
-                or (
-                    "historical_state"
-                    in evidence_roles
+            # Do not allow a legacy multi-role annotation to make the same
+            # temporally historical candidate occupy the current endpoint,
+            # or vice versa.
+            if temporal_role:
+                return (
+                    temporal_role
+                    in self.HISTORICAL_TEMPORAL_ROLES
                 )
+
+            return (
+                "historical_state"
+                in evidence_roles
             )
 
         if kind == "RESOLUTION":

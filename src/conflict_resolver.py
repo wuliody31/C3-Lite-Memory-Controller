@@ -114,7 +114,20 @@ class ConflictResolver:
                     continue
 
                 if query_mode == QueryMode.TIMELINE:
-                    candidate.resolution_action = "current_endpoint"
+                    status = candidate.status.lower()
+
+                    # A preferred candidate in a timeline conflict is not
+                    # automatically the current endpoint. Preserve lifecycle
+                    # identity for archived / superseded historical states.
+                    if status in self.outdated_statuses:
+                        candidate.resolution_action = "historical"
+                    elif status in self.current_statuses:
+                        candidate.resolution_action = "current_endpoint"
+                    else:
+                        # Unknown lifecycle state: keep preference without
+                        # inventing a temporal endpoint.
+                        candidate.resolution_action = "preferred"
+
                 elif query_mode == QueryMode.HISTORICAL:
                     candidate.resolution_action = "preferred_historical"
                 else:
