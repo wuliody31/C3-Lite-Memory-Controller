@@ -277,3 +277,145 @@ def test_temporal_hard_slot_loss_is_substituted_by_endpoint_path():
         item.criticality_class
         == "contributory"
     )
+
+
+def test_add_back_restores_missing_hard_slot():
+    item = evaluator()._compare_add_back(
+        memory_id="restored",
+
+        before=result(
+            coverage=0.0,
+            sufficient=False,
+        ),
+        before_dict=slot_dict(
+            kind="CONTENT",
+            complete=False,
+            count=0,
+            ids=(),
+        ),
+        before_path=path(),
+
+        after=result(
+            coverage=1.0,
+            sufficient=True,
+        ),
+        after_dict=slot_dict(
+            kind="CONTENT",
+            complete=True,
+            count=1,
+            ids=("restored",),
+        ),
+        after_path=path(),
+
+        hard_slot_ids={"slot_1"},
+    )
+
+    assert item.restoration_class == "restorative"
+    assert item.effective_hard_slots_restored == (
+        "slot_1",
+    )
+
+
+def test_add_back_transition_is_supportive_when_endpoint_path_exists():
+    item = evaluator()._compare_add_back(
+        memory_id="transition",
+
+        before=result(
+            coverage=0.0,
+            sufficient=False,
+        ),
+        before_dict=slot_dict(
+            slot_id="transition_slot",
+            kind="TEMPORAL_TRANSITION",
+            complete=False,
+            count=0,
+            ids=(),
+        ),
+        before_path=path(
+            applicable=True,
+            endpoint=True,
+            transition=False,
+        ),
+
+        after=result(
+            coverage=1.0,
+            sufficient=True,
+        ),
+        after_dict=slot_dict(
+            slot_id="transition_slot",
+            kind="TEMPORAL_TRANSITION",
+            complete=True,
+            count=1,
+            ids=("transition",),
+        ),
+        after_path=path(
+            applicable=True,
+            endpoint=True,
+            transition=True,
+        ),
+
+        hard_slot_ids={
+            "transition_slot"
+        },
+    )
+
+    assert (
+        item.effective_hard_slots_restored
+        == ()
+    )
+
+    assert (
+        item.path_redundant_restored_slots
+        == ("transition_slot",)
+    )
+
+    assert item.restoration_class == "supportive"
+
+
+def test_add_back_endpoint_path_gain_is_restorative():
+    item = evaluator()._compare_add_back(
+        memory_id="endpoint",
+
+        before=result(),
+        before_dict=slot_dict(),
+        before_path=path(
+            applicable=True,
+            endpoint=False,
+            transition=True,
+        ),
+
+        after=result(),
+        after_dict=slot_dict(),
+        after_path=path(
+            applicable=True,
+            endpoint=True,
+            transition=True,
+        ),
+
+        hard_slot_ids={"slot_1"},
+    )
+
+    assert item.endpoint_path_gained is True
+    assert item.restoration_class == "restorative"
+
+
+def test_add_back_irrelevant_memory_has_no_restoration():
+    item = evaluator()._compare_add_back(
+        memory_id="noise",
+
+        before=result(),
+        before_dict=slot_dict(),
+        before_path=path(),
+
+        after=result(),
+        after_dict=slot_dict(),
+        after_path=path(),
+
+        hard_slot_ids={"slot_1"},
+    )
+
+    assert item.restoration_class == "no_restoration"
+    assert (
+        "no_requirement_or_path_gain"
+        in item.reasons
+    )

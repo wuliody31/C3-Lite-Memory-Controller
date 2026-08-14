@@ -1361,6 +1361,12 @@ class C3Pipeline:
                 "reason": "paired_slot_sets_unavailable",
             },
 
+            "add_back_restoration_shadow": {
+                "available": False,
+                "active_for_generation": False,
+                "reason": "paired_slot_sets_unavailable",
+            },
+
             "reason": (
                 "legacy_selector_plan_unavailable"
             ),
@@ -1739,6 +1745,36 @@ class C3Pipeline:
                 .to_dict()
             )
 
+            removed_legacy_candidates_shadow = [
+                shadow_candidate_by_id[
+                    memory_id
+                ]
+                for memory_id
+                in legacy_selected_pre_repair_ids
+                if (
+                    memory_id
+                    not in c3_v3_set
+                    and memory_id
+                    in shadow_candidate_by_id
+                )
+            ]
+
+            add_back_restoration_shadow = (
+                self.marginal_contribution_v3
+                .evaluate_add_back(
+                    spec=(
+                        c3_v3_compilation.spec
+                    ),
+                    selected=(
+                        c3_v3_selected_candidates_shadow
+                    ),
+                    candidates=(
+                        removed_legacy_candidates_shadow
+                    ),
+                )
+                .to_dict()
+            )
+
             strict_information_needs = list(
                 features.information_needs
             )
@@ -1894,6 +1930,10 @@ class C3Pipeline:
                 # M2-C3.8A leave-one-out requirement/path audit.
                 "marginal_contribution_shadow": (
                     marginal_contribution_shadow
+                ),
+
+                "add_back_restoration_shadow": (
+                    add_back_restoration_shadow
                 ),
 
                 # Strict semantic information-need audit.
