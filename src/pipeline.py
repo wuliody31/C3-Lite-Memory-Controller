@@ -62,6 +62,9 @@ from .requirement_sufficiency import (
 from .slot_fidelity import (
     TransitionSlotFidelityEvaluator,
 )
+from .marginal_contribution import (
+    MarginalContributionEvaluator,
+)
 
 from .route_planner import (
     RoutePlanner,
@@ -902,6 +905,19 @@ class C3Pipeline:
             )
         )
 
+        # M2-C3.8A threshold-free leave-one-out structural
+        # contribution audit. Shadow only.
+        self.marginal_contribution_v3 = (
+            MarginalContributionEvaluator(
+                sufficiency=(
+                    self.requirement_sufficiency
+                ),
+                transition_fidelity=(
+                    self.transition_slot_fidelity_v3
+                ),
+            )
+        )
+
         self.repair_planner = (
             TargetedRepairPlanner()
         )
@@ -1339,6 +1355,12 @@ class C3Pipeline:
                 "reason": "paired_slot_sets_unavailable",
             },
 
+            "marginal_contribution_shadow": {
+                "available": False,
+                "active_for_generation": False,
+                "reason": "paired_slot_sets_unavailable",
+            },
+
             "reason": (
                 "legacy_selector_plan_unavailable"
             ),
@@ -1696,6 +1718,27 @@ class C3Pipeline:
                 )
             )
 
+            # =============================================
+            # M2-C3.8A LEAVE-ONE-OUT MARGINAL CONTRIBUTION
+            #
+            # For every selected C3-v3 memory, remove it once
+            # and re-evaluate semantic slot/path sufficiency.
+            # Read-only shadow instrumentation.
+            # =============================================
+
+            marginal_contribution_shadow = (
+                self.marginal_contribution_v3
+                .evaluate(
+                    spec=(
+                        c3_v3_compilation.spec
+                    ),
+                    selected=(
+                        c3_v3_selected_candidates_shadow
+                    ),
+                )
+                .to_dict()
+            )
+
             strict_information_needs = list(
                 features.information_needs
             )
@@ -1846,6 +1889,11 @@ class C3Pipeline:
                 # M2-C3.7A transition semantic-bridge fidelity.
                 "transition_fidelity_shadow": (
                     transition_fidelity_shadow
+                ),
+
+                # M2-C3.8A leave-one-out requirement/path audit.
+                "marginal_contribution_shadow": (
+                    marginal_contribution_shadow
                 ),
 
                 # Strict semantic information-need audit.
